@@ -322,7 +322,9 @@ export class AsyncQueuer<TValue> {
     number,
     AsyncRetryer<(item: TValue) => Promise<any>>
   >()
+  #activeRetryers = new Set<AsyncRetryer<(item: TValue) => Promise<any>>>()
   #timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set()
+  #isTicking = false
 
   constructor(
     public fn: (item: TValue) => Promise<any>,
@@ -425,54 +427,60 @@ export class AsyncQueuer<TValue> {
       this.#setState({ pendingTick: false })
       return
     }
-    this.#setState({ pendingTick: true })
+    if (this.#isTicking) return
+    this.#isTicking = true
+    try {
+      this.#setState({ pendingTick: true })
 
-    // Check for expired items
-    this.#checkExpiredItems()
+      // Check for expired items
+      this.#checkExpiredItems()
 
-    // Process items concurrently up to the concurrency limit
-    let scheduledAsyncWork = false
-    const activeItems = [...this.store.state.activeItems]
-    while (
-      activeItems.length < this.#getConcurrency() &&
-      this.store.state.items.length > 0
-    ) {
-      const nextItem = this.peekNextItem()
-      if (nextItem === undefined) {
-        break
+      // Process items concurrently up to the concurrency limit
+      let scheduledAsyncWork = false
+      const activeItems = [...this.store.state.activeItems]
+      while (
+        activeItems.length < this.#getConcurrency() &&
+        this.store.state.items.length > 0
+      ) {
+        const nextItem = this.peekNextItem()
+        if (nextItem === undefined) {
+          break
+        }
+        activeItems.push(nextItem)
+        this.#setState({
+          activeItems: [...activeItems],
+        })
+        scheduledAsyncWork = true
+        ;(async () => {
+          try {
+            await this.#execute(undefined, true)
+          } catch {
+            // errors are already surfaced via onError/errorCount (and rethrown to
+            // direct execute/flush callers); swallowing here prevents unhandled
+            // rejections and keeps the processing chain alive
+          }
+
+          const wait = this.#getWait()
+          if (wait > 0) {
+            const timeoutId = setTimeout(() => {
+              this.#timeoutIds.delete(timeoutId)
+              this.#tick()
+            }, wait)
+            this.#timeoutIds.add(timeoutId)
+            return
+          }
+
+          this.#tick()
+        })()
       }
-      activeItems.push(nextItem)
-      this.#setState({
-        activeItems: [...activeItems],
-      })
-      scheduledAsyncWork = true
-      ;(async () => {
-        try {
-          await this.execute()
-        } catch {
-          // errors are already surfaced via onError/errorCount (and rethrown to
-          // direct execute/flush callers); swallowing here prevents unhandled
-          // rejections and keeps the processing chain alive
-        }
 
-        const wait = this.#getWait()
-        if (wait > 0) {
-          const timeoutId = setTimeout(() => {
-            this.#timeoutIds.delete(timeoutId)
-            this.#tick()
-          }, wait)
-          this.#timeoutIds.add(timeoutId)
-          return
-        }
-
-        this.#tick()
-      })()
-    }
-
-    // pendingTick must stay true while executions or wait timers are pending so
-    // that addItem does not trigger an extra tick that bypasses the wait period
-    if (!scheduledAsyncWork) {
-      this.#setState({ pendingTick: false })
+      // Keep the scheduled chain marked pending. addItem may fill a free slot
+      // while work is active, but must preserve an armed wait timer.
+      if (!scheduledAsyncWork) {
+        this.#setState({ pendingTick: false })
+      }
+    } finally {
+      this.#isTicking = false
     }
   }
 
@@ -561,7 +569,14 @@ export class AsyncQueuer<TValue> {
       this.options.onItemsChange?.(this)
     }
 
-    if (this.store.state.isRunning && !this.store.state.pendingTick) {
+    const { activeItems, isRunning, pendingTick } = this.store.state
+    // A pending execution is not a wait timer. New items can use spare capacity
+    // while it runs, without restarting a paused flush or bypassing a wait.
+    const hasAvailableExecutionSlot =
+      activeItems.length > 0 &&
+      activeItems.length < this.#getConcurrency() &&
+      this.#timeoutIds.size === 0
+    if (isRunning && (!pendingTick || hasAvailableExecutionSlot)) {
       this.#tick()
     }
 
@@ -632,7 +647,14 @@ export class AsyncQueuer<TValue> {
    * queuer.execute('back');
    * ```
    */
-  execute = async (position?: QueuePosition): Promise<any> => {
+  execute = (position?: QueuePosition): Promise<any> => {
+    return this.#execute(position, false)
+  }
+
+  #execute = async (
+    position: QueuePosition | undefined,
+    ownsActiveItem: boolean,
+  ): Promise<any> => {
     const item = this.getNextItem(position)
 
     if (item !== undefined) {
@@ -641,12 +663,13 @@ export class AsyncQueuer<TValue> {
         executionCount: currentExecutionCount,
         isExecuting: true,
       })
+      const currentAsyncRetryer = new AsyncRetryer(
+        this.fn,
+        this.options.asyncRetryerOptions,
+      )
+      this.#activeRetryers.add(currentAsyncRetryer)
+      this.asyncRetryers.set(currentExecutionCount, currentAsyncRetryer)
       try {
-        const currentAsyncRetryer = new AsyncRetryer(
-          this.fn,
-          this.options.asyncRetryerOptions,
-        )
-        this.asyncRetryers.set(currentExecutionCount, currentAsyncRetryer)
         const lastResult = await currentAsyncRetryer.execute(item) // EXECUTE!
         this.#setState({
           successCount: this.store.state.successCount + 1,
@@ -662,18 +685,24 @@ export class AsyncQueuer<TValue> {
           throw error
         }
       } finally {
-        this.asyncRetryers.delete(currentExecutionCount) // dispose retryer
-        // remove only one occurrence so duplicate item values keep accurate
-        // concurrency accounting
+        if (
+          this.asyncRetryers.get(currentExecutionCount) === currentAsyncRetryer
+        ) {
+          this.asyncRetryers.delete(currentExecutionCount)
+        }
+        this.#activeRetryers.delete(currentAsyncRetryer)
+        // Manual executions do not own automatic concurrency slots. Remove one
+        // occurrence only for a scheduled execution, including duplicate values.
         const remainingActiveItems = [...this.store.state.activeItems]
-        const activeItemIndex = remainingActiveItems.indexOf(item)
-        if (activeItemIndex !== -1) {
-          remainingActiveItems.splice(activeItemIndex, 1)
+        if (ownsActiveItem) {
+          const activeItemIndex = remainingActiveItems.indexOf(item)
+          if (activeItemIndex !== -1) {
+            remainingActiveItems.splice(activeItemIndex, 1)
+          }
         }
         this.#setState({
           activeItems: remainingActiveItems,
-          // other executions may still be in flight (concurrency > 1 or flush)
-          isExecuting: this.asyncRetryers.size > 0,
+          isExecuting: this.#activeRetryers.size > 0,
           settleCount: this.store.state.settleCount + 1,
         })
         this.options.onSettled?.(item, this)
@@ -868,7 +897,9 @@ export class AsyncQueuer<TValue> {
 
   /**
    * Returns the AbortSignal for a specific execution.
-   * If no executionCount is provided, returns the signal for the most recent execution.
+   * If no executionCount is provided, returns the signal for the latest active execution.
+   * Capture the signal before awaiting work, since another execution may start meanwhile.
+   * Explicit counts refer to executions started since the most recent reset().
    * Returns null if no execution is found or not currently executing.
    *
    * @param executionCount - Optional specific execution to get signal for
@@ -887,8 +918,10 @@ export class AsyncQueuer<TValue> {
    * ```
    */
   getAbortSignal = (executionCount?: number): AbortSignal | null => {
-    const count = executionCount ?? this.store.state.executionCount
-    const retryer = this.asyncRetryers.get(count)
+    const retryer =
+      executionCount === undefined
+        ? [...this.#activeRetryers].pop()
+        : this.asyncRetryers.get(executionCount)
     return retryer?.getAbortSignal() ?? null
   }
 
@@ -897,7 +930,8 @@ export class AsyncQueuer<TValue> {
    * Does NOT clear out the items.
    */
   abort = (): void => {
-    this.asyncRetryers.forEach((retryer) => retryer.abort())
+    this.#activeRetryers.forEach((retryer) => retryer.abort())
+    this.#activeRetryers.clear()
     this.asyncRetryers.clear()
     this.#setState({
       isExecuting: false,
@@ -905,12 +939,22 @@ export class AsyncQueuer<TValue> {
   }
 
   /**
-   * Resets the queuer state to its default values
+   * Clears pending items and counters and restores automatic processing.
+   * Active executions remain abortable and retain their concurrency slots until
+   * they settle. Existing wait timers remain scheduled. Explicit execution count
+   * lookups start over after reset().
    */
   reset = (): void => {
-    this.#setState(getDefaultAsyncQueuerState<TValue>())
+    this.asyncRetryers.clear()
+    this.#setState({
+      ...getDefaultAsyncQueuerState<TValue>(),
+      activeItems: this.store.state.activeItems,
+      isExecuting: this.#activeRetryers.size > 0,
+      pendingTick:
+        this.store.state.activeItems.length > 0 || this.#timeoutIds.size > 0,
+    })
     this.options.onItemsChange?.(this)
-    this.asyncRetryers.forEach((retryer) => retryer.reset())
+    this.#activeRetryers.forEach((retryer) => retryer.reset())
   }
 }
 

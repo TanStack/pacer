@@ -86,7 +86,7 @@ batcher.addItem(2);
 new AsyncBatcher<TValue>(fn, initialOptions): AsyncBatcher<TValue>;
 ```
 
-Defined in: [async-batcher.ts:277](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L277)
+Defined in: [async-batcher.ts:281](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L281)
 
 #### Parameters
 
@@ -120,7 +120,7 @@ Defined in: [async-batcher.ts:271](https://github.com/TanStack/pacer/blob/main/p
 fn: (items) => Promise<any>;
 ```
 
-Defined in: [async-batcher.ts:278](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L278)
+Defined in: [async-batcher.ts:282](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L282)
 
 #### Parameters
 
@@ -170,7 +170,7 @@ Defined in: [async-batcher.ts:266](https://github.com/TanStack/pacer/blob/main/p
 abort(): void;
 ```
 
-Defined in: [async-batcher.ts:494](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L494)
+Defined in: [async-batcher.ts:509](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L509)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT cancel any pending execution that have not started yet.
@@ -188,7 +188,7 @@ Does NOT clear out the items.
 addItem(item): Promise<any>;
 ```
 
-Defined in: [async-batcher.ts:346](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L346)
+Defined in: [async-batcher.ts:350](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L350)
 
 Adds an item to the async batcher
 If the batch size is reached, timeout occurs, or shouldProcess returns true, the batch will be processed
@@ -217,7 +217,7 @@ The error from the batch function if no onError handler is configured or throwOn
 cancel(): void;
 ```
 
-Defined in: [async-batcher.ts:507](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L507)
+Defined in: [async-batcher.ts:523](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L523)
 
 Cancels any pending execution that have not started yet.
 Does NOT abort any execution already in progress.
@@ -235,7 +235,7 @@ Does NOT clear out the items.
 clear(): void;
 ```
 
-Defined in: [async-batcher.ts:455](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L455)
+Defined in: [async-batcher.ts:466](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L466)
 
 Removes all items from the async batcher
 
@@ -251,7 +251,7 @@ Removes all items from the async batcher
 flush(): Promise<any>;
 ```
 
-Defined in: [async-batcher.ts:429](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L429)
+Defined in: [async-batcher.ts:440](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L440)
 
 Processes the current batch of items immediately
 
@@ -267,10 +267,12 @@ Processes the current batch of items immediately
 getAbortSignal(executionCount?): AbortSignal | null;
 ```
 
-Defined in: [async-batcher.ts:483](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L483)
+Defined in: [async-batcher.ts:496](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L496)
 
 Returns the AbortSignal for a specific execution.
-If no executionCount is provided, returns the signal for the most recent execution.
+If no executionCount is provided, returns the signal for the latest active execution,
+including executions started before reset(). Explicit counts refer to executions
+started since the most recent reset(). Capture the signal before awaiting work.
 Returns null if no execution is found or not currently executing.
 
 #### Parameters
@@ -312,7 +314,7 @@ const batcher = new AsyncBatcher(
 peekAllItems(): TValue[];
 ```
 
-Defined in: [async-batcher.ts:437](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L437)
+Defined in: [async-batcher.ts:448](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L448)
 
 Returns a copy of all items in the async batcher
 
@@ -328,7 +330,7 @@ Returns a copy of all items in the async batcher
 peekFailedItems(): TValue[];
 ```
 
-Defined in: [async-batcher.ts:441](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L441)
+Defined in: [async-batcher.ts:452](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L452)
 
 #### Returns
 
@@ -342,9 +344,12 @@ Defined in: [async-batcher.ts:441](https://github.com/TanStack/pacer/blob/main/p
 reset(): void;
 ```
 
-Defined in: [async-batcher.ts:517](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L517)
+Defined in: [async-batcher.ts:536](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L536)
 
-Resets the async batcher state to its default values
+Resets counters and collected items without aborting active executions.
+Active executions remain abortable and keep isExecuting true until they settle.
+Their completions contribute to the reset outcome counters. Explicit execution
+count lookups start over; previously captured abort signals remain valid.
 
 #### Returns
 
@@ -358,7 +363,7 @@ Resets the async batcher state to its default values
 setOptions(newOptions): void;
 ```
 
-Defined in: [async-batcher.ts:305](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L305)
+Defined in: [async-batcher.ts:309](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-batcher.ts#L309)
 
 Updates the async batcher options
 

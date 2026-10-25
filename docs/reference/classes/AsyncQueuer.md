@@ -82,7 +82,7 @@ asyncQueuer.start();
 new AsyncQueuer<TValue>(fn, initialOptions?): AsyncQueuer<TValue>;
 ```
 
-Defined in: [async-queuer.ts:327](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L327)
+Defined in: [async-queuer.ts:329](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L329)
 
 #### Parameters
 
@@ -116,7 +116,7 @@ Defined in: [async-queuer.ts:321](https://github.com/TanStack/pacer/blob/main/pa
 fn: (item) => Promise<any>;
 ```
 
-Defined in: [async-queuer.ts:328](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L328)
+Defined in: [async-queuer.ts:330](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L330)
 
 #### Parameters
 
@@ -166,7 +166,7 @@ Defined in: [async-queuer.ts:316](https://github.com/TanStack/pacer/blob/main/pa
 abort(): void;
 ```
 
-Defined in: [async-queuer.ts:899](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L899)
+Defined in: [async-queuer.ts:932](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L932)
 
 Aborts all ongoing executions with the internal abort controllers.
 Does NOT clear out the items.
@@ -186,7 +186,7 @@ addItem(
    runOnItemsChange?): boolean;
 ```
 
-Defined in: [async-queuer.ts:490](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L490)
+Defined in: [async-queuer.ts:498](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L498)
 
 Adds an item to the queue. If the queue is full, the item is rejected and onReject is called.
 Items can be inserted based on priority or at the front/back depending on configuration.
@@ -225,7 +225,7 @@ queuer.addItem('task2', 'front');
 clear(): void;
 ```
 
-Defined in: [async-queuer.ts:864](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L864)
+Defined in: [async-queuer.ts:893](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L893)
 
 Removes all pending items from the queue.
 Does NOT affect active tasks.
@@ -242,7 +242,7 @@ Does NOT affect active tasks.
 execute(position?): Promise<any>;
 ```
 
-Defined in: [async-queuer.ts:635](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L635)
+Defined in: [async-queuer.ts:650](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L650)
 
 Removes and returns the next item from the queue and executes the task function with it.
 
@@ -272,7 +272,7 @@ queuer.execute('back');
 flush(numberOfItems?, position?): Promise<void>;
 ```
 
-Defined in: [async-queuer.ts:689](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L689)
+Defined in: [async-queuer.ts:718](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L718)
 
 Processes a specified number of items to execute immediately with no wait time
 If no numberOfItems is provided, all items will be processed
@@ -299,7 +299,7 @@ If no numberOfItems is provided, all items will be processed
 flushAsBatch(batchFunction): Promise<void>;
 ```
 
-Defined in: [async-queuer.ts:726](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L726)
+Defined in: [async-queuer.ts:755](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L755)
 
 Processes all items in the queue as a batch using the provided function as an argument
 The queue is cleared after processing
@@ -322,10 +322,12 @@ The queue is cleared after processing
 getAbortSignal(executionCount?): AbortSignal | null;
 ```
 
-Defined in: [async-queuer.ts:889](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L889)
+Defined in: [async-queuer.ts:920](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L920)
 
 Returns the AbortSignal for a specific execution.
-If no executionCount is provided, returns the signal for the most recent execution.
+If no executionCount is provided, returns the signal for the latest active execution.
+Capture the signal before awaiting work, since another execution may start meanwhile.
+Explicit counts refer to executions started since the most recent reset().
 Returns null if no execution is found or not currently executing.
 
 #### Parameters
@@ -363,7 +365,7 @@ const queuer = new AsyncQueuer(
 getNextItem(position?): TValue | undefined;
 ```
 
-Defined in: [async-queuer.ts:583](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L583)
+Defined in: [async-queuer.ts:598](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L598)
 
 Removes and returns the next item from the queue without executing the task function.
 Use for manual queue management. Normally, use execute() to process items.
@@ -395,7 +397,7 @@ queuer.getNextItem('back');
 peekActiveItems(): TValue[];
 ```
 
-Defined in: [async-queuer.ts:826](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L826)
+Defined in: [async-queuer.ts:855](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L855)
 
 Returns the items currently being processed (active tasks).
 
@@ -411,7 +413,7 @@ Returns the items currently being processed (active tasks).
 peekAllItems(): TValue[];
 ```
 
-Defined in: [async-queuer.ts:819](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L819)
+Defined in: [async-queuer.ts:848](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L848)
 
 Returns a copy of all items in the queue, including active and pending items.
 
@@ -427,7 +429,7 @@ Returns a copy of all items in the queue, including active and pending items.
 peekNextItem(position?): TValue | undefined;
 ```
 
-Defined in: [async-queuer.ts:809](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L809)
+Defined in: [async-queuer.ts:838](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L838)
 
 Returns the next item in the queue without removing it.
 
@@ -456,7 +458,7 @@ queuer.peekNextItem('back'); // back
 peekPendingItems(): TValue[];
 ```
 
-Defined in: [async-queuer.ts:833](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L833)
+Defined in: [async-queuer.ts:862](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L862)
 
 Returns the items waiting to be processed (pending tasks).
 
@@ -472,9 +474,12 @@ Returns the items waiting to be processed (pending tasks).
 reset(): void;
 ```
 
-Defined in: [async-queuer.ts:910](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L910)
+Defined in: [async-queuer.ts:947](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L947)
 
-Resets the queuer state to its default values
+Clears pending items and counters and restores automatic processing.
+Active executions remain abortable and retain their concurrency slots until
+they settle. Existing wait timers remain scheduled. Explicit execution count
+lookups start over after reset().
 
 #### Returns
 
@@ -488,7 +493,7 @@ Resets the queuer state to its default values
 setOptions(newOptions): void;
 ```
 
-Defined in: [async-queuer.ts:372](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L372)
+Defined in: [async-queuer.ts:374](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L374)
 
 Updates the queuer options. New options are merged with existing options.
 
@@ -510,7 +515,7 @@ Updates the queuer options. New options are merged with existing options.
 start(): void;
 ```
 
-Defined in: [async-queuer.ts:840](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L840)
+Defined in: [async-queuer.ts:869](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L869)
 
 Starts processing items in the queue. If already running, does nothing.
 
@@ -526,7 +531,7 @@ Starts processing items in the queue. If already running, does nothing.
 stop(): void;
 ```
 
-Defined in: [async-queuer.ts:850](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L850)
+Defined in: [async-queuer.ts:879](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-queuer.ts#L879)
 
 Stops processing items in the queue. Does not clear the queue.
 
