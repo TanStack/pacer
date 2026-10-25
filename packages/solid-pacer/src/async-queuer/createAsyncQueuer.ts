@@ -1,6 +1,12 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createRenderEffect,
+  onCleanup,
+  untrack,
+} from 'solid-js'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { SolidPacerOptions } from '../types'
@@ -208,13 +214,20 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
     selector: (state: AsyncQueuerState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useSelector(asyncQueuer.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      asyncQueuer.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
+    return createMemo(() => {
+      const children = props.children
+      return typeof children === 'function'
+        ? untrack(() => children(selected))
+        : children
+    }) as unknown as JSX.Element
   }
 
   const state = useSelector(asyncQueuer.store, selector, { compare: shallow })

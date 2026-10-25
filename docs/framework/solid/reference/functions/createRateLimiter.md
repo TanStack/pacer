@@ -10,7 +10,7 @@ function createRateLimiter<TFn, TSelected>(
 selector?): SolidRateLimiter<TFn, TSelected>;
 ```
 
-Defined in: [rate-limiter/createRateLimiter.ts:193](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L193)
+Defined in: [rate-limiter/createRateLimiter.ts:199](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/rate-limiter/createRateLimiter.ts#L199)
 
 A low-level Solid hook that creates a `RateLimiter` instance to enforce rate limits on function execution.
 

@@ -3,7 +3,7 @@ id: SolidAsyncRateLimiter
 title: SolidAsyncRateLimiter
 ---
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L26)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L32)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:26](https://github.com
 options: AsyncRateLimiterOptions<TFn> & SolidAsyncRateLimiterOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:30](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L30)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:36](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L36)
 
 #### Overrides
 
@@ -44,7 +44,7 @@ Omit.options
 setOptions: (options) => void;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:32](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L32)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L38)
 
 Updates the async rate limiter options
 
@@ -72,7 +72,7 @@ Omit.setOptions
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L58)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:64](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L64)
 
 Reactive state that will be updated when the rate limiter state changes
 
@@ -86,7 +86,7 @@ Use this instead of `rateLimiter.store.state`
 readonly store: Store<Readonly<AsyncRateLimiterState<TFn>>>;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:64](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L64)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:70](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L70)
 
 #### Deprecated
 
@@ -102,7 +102,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L49)
+Defined in: [async-rate-limiter/createAsyncRateLimiter.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-rate-limiter/createAsyncRateLimiter.ts#L55)
 
 A Solid component that allows you to subscribe to the rate limiter state.
 

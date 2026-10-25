@@ -1,5 +1,11 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createRenderEffect,
+  onCleanup,
+  untrack,
+} from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -179,13 +185,20 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
     selector: (state: DebouncerState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useSelector(asyncDebouncer.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      asyncDebouncer.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
+    return createMemo(() => {
+      const children = props.children
+      return typeof children === 'function'
+        ? untrack(() => children(selected))
+        : children
+    }) as unknown as JSX.Element
   }
 
   const state = useSelector(asyncDebouncer.store, selector, {

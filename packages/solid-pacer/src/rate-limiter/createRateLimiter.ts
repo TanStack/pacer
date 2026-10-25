@@ -1,5 +1,11 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createRenderEffect,
+  onCleanup,
+  untrack,
+} from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
@@ -211,13 +217,20 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
     selector: (state: RateLimiterState) => TSelected
     children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
   }) {
-    const selected = useSelector(rateLimiter.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      rateLimiter.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
+    return createMemo(() => {
+      const children = props.children
+      return typeof children === 'function'
+        ? untrack(() => children(selected))
+        : children
+    }) as unknown as JSX.Element
   }
 
   const state = useSelector(rateLimiter.store, selector, { compare: shallow })

@@ -3,7 +3,7 @@ id: SolidAsyncThrottler
 title: SolidAsyncThrottler
 ---
 
-Defined in: [async-throttler/createAsyncThrottler.ts:26](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L26)
+Defined in: [async-throttler/createAsyncThrottler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L32)
 
 ## Extends
 
@@ -28,7 +28,7 @@ Defined in: [async-throttler/createAsyncThrottler.ts:26](https://github.com/TanS
 options: AsyncThrottlerOptions<TFn> & SolidAsyncThrottlerOptions<TFn, TSelected>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:30](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L30)
+Defined in: [async-throttler/createAsyncThrottler.ts:36](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L36)
 
 #### Overrides
 
@@ -44,7 +44,7 @@ Omit.options
 setOptions: (options) => void;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:32](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L32)
+Defined in: [async-throttler/createAsyncThrottler.ts:38](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L38)
 
 Updates the async throttler options
 
@@ -72,7 +72,7 @@ Omit.setOptions
 readonly state: Accessor<Readonly<TSelected>>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:58](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L58)
+Defined in: [async-throttler/createAsyncThrottler.ts:64](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L64)
 
 Reactive state that will be updated when the throttler state changes
 
@@ -86,7 +86,7 @@ Use this instead of `throttler.store.state`
 readonly store: Store<Readonly<AsyncThrottlerState<TFn>>>;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:64](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L64)
+Defined in: [async-throttler/createAsyncThrottler.ts:70](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L70)
 
 #### Deprecated
 
@@ -102,7 +102,7 @@ Although, you can make the state reactive by using the `useSelector` in your own
 Subscribe: <TSelected>(props) => Element;
 ```
 
-Defined in: [async-throttler/createAsyncThrottler.ts:49](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L49)
+Defined in: [async-throttler/createAsyncThrottler.ts:55](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-throttler/createAsyncThrottler.ts#L55)
 
 A Solid component that allows you to subscribe to the throttler state.
 
