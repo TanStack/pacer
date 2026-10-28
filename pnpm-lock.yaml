@@ -10904,7 +10904,7 @@ importers:
         specifier: workspace:*
         version: link:../pacer-devtools
       solid-js:
-        specifier: '>=1.9.7'
+        specifier: ^1.9.7
         version: 1.9.15
     devDependencies:
       csstype:
