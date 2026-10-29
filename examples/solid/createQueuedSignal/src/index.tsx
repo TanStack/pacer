@@ -1,4 +1,4 @@
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { createQueuedSignal } from '@tanstack/solid-pacer/queuer'
 import { createSignal } from 'solid-js'
 

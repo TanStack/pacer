@@ -1,5 +1,5 @@
 import { createMemo, createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { rateLimit } from '@tanstack/solid-pacer/rate-limiter'
 
 function App1() {

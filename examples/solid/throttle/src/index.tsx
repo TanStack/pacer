@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { throttle } from '@tanstack/solid-pacer/throttler'
 
 function App1() {

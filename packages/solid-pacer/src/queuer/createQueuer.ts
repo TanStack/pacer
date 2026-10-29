@@ -1,11 +1,11 @@
 import { Queuer } from '@tanstack/pacer/queuer'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 
 export interface SolidQueuerOptions<
@@ -41,8 +41,8 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: QueuerState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the queuer state changes
    *
@@ -170,14 +170,13 @@ export function createQueuer<TValue, TSelected = {}>(
     () => new Queuer(fn, mergedOptions()),
   ) as unknown as SolidQueuer<TValue, TSelected>
 
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => queuer.setOptions(latest))
+  createRenderEffect(mergedOptions, (latest) => {
+    queuer.setOptions(latest)
   })
 
   queuer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: QueuerState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
     const selected = useSelector(queuer.store, props.selector, {
       compare: shallow,
@@ -190,15 +189,13 @@ export function createQueuer<TValue, TSelected = {}>(
 
   const state = useSelector(queuer.store, selector, { compare: shallow })
 
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = queuer.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        queuer.stop()
-      }
-    })
+  onCleanup(() => {
+    const onUnmount = queuer.options.onUnmount
+    if (onUnmount) {
+      onUnmount(result)
+    } else {
+      queuer.stop()
+    }
   })
 
   const result = {

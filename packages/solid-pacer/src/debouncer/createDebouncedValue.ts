@@ -1,4 +1,4 @@
-import { createEffect } from 'solid-js'
+import { createEffect, untrack } from 'solid-js'
 import { createDebouncedSignal } from './createDebouncedSignal'
 import type { SolidPacerOptions } from '../types'
 import type { SolidDebouncer, SolidDebouncerOptions } from './createDebouncer'
@@ -56,8 +56,8 @@ import type { DebouncerState } from '@tanstack/pacer/debouncer'
  * );
  *
  * // debouncedQuery will update 500ms after searchQuery stops changing
- * createEffect(() => {
- *   fetchSearchResults(debouncedQuery());
+ * createEffect(debouncedQuery, (query) => {
+ *   fetchSearchResults(query);
  * });
  *
  * // Access debouncer state via signals
@@ -75,13 +75,13 @@ export function createDebouncedValue<TValue, TSelected = {}>(
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, TSelected>] {
   const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
-    value(),
+    untrack(value),
     initialOptions,
     selector,
   )
 
-  createEffect(() => {
-    setDebouncedValue(value() as any)
+  createEffect(value, (latest) => {
+    setDebouncedValue(latest as any)
   })
 
   return [debouncedValue, debouncer]

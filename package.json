@@ -37,7 +37,7 @@
     "test:lib:dev": "pnpm test:lib && nx watch --all -- pnpm test:lib",
     "test:pr": "pnpm run test:projects && nx affected --targets=test:e2e:types,test:e2e:lint,test:eslint,test:sherif,test:knip,test:docs,test:lib,test:types,build,test:build",
     "test:projects": "node scripts/verify-test-projects.ts",
-    "test:sherif": "sherif",
+    "test:sherif": "sherif -i solid-js -i @tanstack/solid-store",
     "test:types": "nx affected --targets=test:types --exclude=examples/**",
     "watch": "pnpm run build:all && nx watch --all -- pnpm run build:all",
     "test:e2e": "nx run-many --target=test:e2e --parallel=2",

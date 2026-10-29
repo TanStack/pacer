@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { debounce } from '@tanstack/solid-pacer/debouncer'
 
 function App1() {

@@ -1,6 +1,6 @@
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { createBatcher } from '@tanstack/solid-pacer/batcher'
 
 function App1() {

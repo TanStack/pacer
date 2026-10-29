@@ -1,6 +1,6 @@
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
-import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { createSignal, flush } from 'solid-js'
+import { render } from '@solidjs/web'
 import {
   createRateLimiter,
   rateLimiterOptions,
@@ -92,7 +92,7 @@ function App1() {
                   <td>{state().msUntilNextWindow}</td>
                 </tr>
                 <tr>
-                  <td colSpan={2}>
+                  <td colspan={2}>
                     <hr />
                   </td>
                 </tr>
@@ -150,6 +150,8 @@ function App2() {
     const target = e.target as HTMLInputElement
     const newValue = target.value
     setInstantSearch(newValue)
+    // Apply the new value to reactive options (such as `enabled`) first.
+    flush()
     rateLimiter.maybeExecute(newValue)
   }
 
@@ -195,7 +197,7 @@ function App2() {
                   <td>{state().msUntilNextWindow}</td>
                 </tr>
                 <tr>
-                  <td colSpan={2}>
+                  <td colspan={2}>
                     <hr />
                   </td>
                 </tr>
