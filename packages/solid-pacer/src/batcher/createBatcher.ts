@@ -1,11 +1,11 @@
 import { Batcher } from '@tanstack/pacer/batcher'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 
 export interface SolidBatcherOptions<
@@ -41,8 +41,8 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: BatcherState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the batcher state changes
    *
@@ -169,14 +169,13 @@ export function createBatcher<TValue, TSelected = {}>(
     () => new Batcher(fn, mergedOptions()),
   ) as unknown as SolidBatcher<TValue, TSelected>
 
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => batcher.setOptions(latest))
+  createRenderEffect(mergedOptions, (latest) => {
+    batcher.setOptions(latest)
   })
 
   batcher.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: BatcherState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
     const selected = useSelector(batcher.store, props.selector, {
       compare: shallow,
@@ -189,15 +188,13 @@ export function createBatcher<TValue, TSelected = {}>(
 
   const state = useSelector(batcher.store, selector, { compare: shallow })
 
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = batcher.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        batcher.cancel()
-      }
-    })
+  onCleanup(() => {
+    const onUnmount = batcher.options.onUnmount
+    if (onUnmount) {
+      onUnmount(result)
+    } else {
+      batcher.cancel()
+    }
   })
 
   const result = {

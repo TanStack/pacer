@@ -76,7 +76,13 @@ export function createThrottledSignal<TValue, TSelected = {}>(
   Setter<TValue>,
   SolidThrottler<Setter<TValue>, TSelected>,
 ] {
-  const [throttledValue, setThrottledValue] = createSignal<TValue>(value)
+  const [throttledValue, setThrottledValue] = createSignal<TValue>(
+    // Solid 2 reads a function passed to `createSignal` as a compute
+    // function, so a function value is wrapped to stay a plain value.
+    (typeof value === 'function' ? () => value : value) as any,
+    // Written from timers and from effects (the *Value primitives).
+    { ownedWrite: true },
+  )
   const throttler = createThrottler(setThrottledValue, initialOptions, selector)
   return [throttledValue, throttler.maybeExecute as Setter<TValue>, throttler]
 }

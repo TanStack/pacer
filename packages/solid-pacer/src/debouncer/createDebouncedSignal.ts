@@ -87,7 +87,13 @@ export function createDebouncedSignal<TValue, TSelected = {}>(
   Setter<TValue>,
   SolidDebouncer<Setter<TValue>, TSelected>,
 ] {
-  const [debouncedValue, setDebouncedValue] = createSignal<TValue>(value)
+  const [debouncedValue, setDebouncedValue] = createSignal<TValue>(
+    // Solid 2 reads a function passed to `createSignal` as a compute
+    // function, so a function value is wrapped to stay a plain value.
+    (typeof value === 'function' ? () => value : value) as any,
+    // Written from timers and from effects (the *Value primitives).
+    { ownedWrite: true },
+  )
 
   const debouncer = createDebouncer(setDebouncedValue, initialOptions, selector)
 

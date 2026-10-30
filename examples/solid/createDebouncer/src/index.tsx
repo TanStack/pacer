@@ -1,6 +1,6 @@
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
-import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { createSignal, flush } from 'solid-js'
+import { render } from '@solidjs/web'
 import { createDebouncer } from '@tanstack/solid-pacer/debouncer'
 
 function App1() {
@@ -25,6 +25,8 @@ function App1() {
   function increment() {
     const newInstantCount = instantCount() + 1
     setInstantCount(newInstantCount)
+    // Apply the new value to reactive options (such as `enabled`) first.
+    flush()
     setCountDebouncer.maybeExecute(newInstantCount) // debounced state update
   }
 
@@ -50,7 +52,7 @@ function App1() {
                   <td>{state().executionCount}</td>
                 </tr>
                 <tr>
-                  <td colSpan={2}>
+                  <td colspan={2}>
                     <hr />
                   </td>
                 </tr>
@@ -108,6 +110,8 @@ function App2() {
     const target = e.target as HTMLInputElement
     const newValue = target.value
     setSearchText(newValue)
+    // Apply the new value to reactive options (such as `enabled`) first.
+    flush()
     setSearchDebouncer.maybeExecute(newValue)
   }
 
@@ -143,7 +147,7 @@ function App2() {
                   <td>{state().executionCount}</td>
                 </tr>
                 <tr>
-                  <td colSpan={2}>
+                  <td colspan={2}>
                     <hr />
                   </td>
                 </tr>

@@ -1,5 +1,5 @@
-import { createContext, useContext } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { createComponent, createContext, useContext } from 'solid-js'
+import type { Element } from 'solid-js'
 import type { SolidAsyncBatcherOptions } from '../async-batcher/createAsyncBatcher'
 import type { SolidAsyncDebouncerOptions } from '../async-debouncer/createAsyncDebouncer'
 import type { SolidAsyncQueuerOptions } from '../async-queuer/createAsyncQueuer'
@@ -31,7 +31,7 @@ interface PacerContextValue {
 const PacerContext = createContext<PacerContextValue | null>(null)
 
 export interface PacerProviderProps {
-  children: JSX.Element
+  children: Element
   defaultOptions?: PacerProviderOptions
 }
 
@@ -44,11 +44,14 @@ export function PacerProvider(props: PacerProviderProps) {
     },
   }
 
-  return (
-    <PacerContext.Provider value={contextValue}>
-      {props.children}
-    </PacerContext.Provider>
-  )
+  // Built without JSX so the adapter only depends on `solid-js`, not on the
+  // `@solidjs/web` renderer that compiled JSX imports from.
+  return createComponent(PacerContext, {
+    value: contextValue,
+    get children() {
+      return props.children
+    },
+  })
 }
 
 export function usePacerContext() {

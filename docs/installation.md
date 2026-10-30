@@ -37,7 +37,11 @@ Developer tools are available using [TanStack Devtools](https://tanstack.com/dev
 
 # Solid
 
+`@tanstack/solid-pacer` 0.25 and later work with Solid 2; for Solid 1, install `@tanstack/solid-pacer@0.24`.
+
 ## Devtools
+
+The devtools adapter still runs on Solid 1, so it isn't available for Solid 2 apps yet.
 
 Developer tools are available using [TanStack Devtools](https://tanstack.com/devtools/latest). Install the devtools adapter and the Pacer devtools plugin as dev dependencies to inspect your pacers at runtime.
 

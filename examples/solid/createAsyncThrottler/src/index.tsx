@@ -1,6 +1,6 @@
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { createAsyncThrottler } from '@tanstack/solid-pacer/async-throttler'
 
 interface SearchResult {

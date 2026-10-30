@@ -1,11 +1,11 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   DebouncerOptions,
@@ -45,8 +45,8 @@ export interface SolidDebouncer<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: DebouncerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the debouncer state changes
    *
@@ -170,14 +170,13 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
     () => new Debouncer<TFn>(fn, mergedOptions()),
   ) as unknown as SolidDebouncer<TFn, TSelected>
 
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => asyncDebouncer.setOptions(latest))
+  createRenderEffect(mergedOptions, (latest) => {
+    asyncDebouncer.setOptions(latest)
   })
 
   asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: DebouncerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
     const selected = useSelector(asyncDebouncer.store, props.selector, {
       compare: shallow,
@@ -192,15 +191,13 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
     compare: shallow,
   })
 
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = asyncDebouncer.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        asyncDebouncer.cancel()
-      }
-    })
+  onCleanup(() => {
+    const onUnmount = asyncDebouncer.options.onUnmount
+    if (onUnmount) {
+      onUnmount(result)
+    } else {
+      asyncDebouncer.cancel()
+    }
   })
 
   const result = {

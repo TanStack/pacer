@@ -105,7 +105,13 @@ export function createRateLimitedSignal<TValue, TSelected = {}>(
   Setter<TValue>,
   SolidRateLimiter<Setter<TValue>, TSelected>,
 ] {
-  const [rateLimitedValue, setRateLimitedValue] = createSignal<TValue>(value)
+  const [rateLimitedValue, setRateLimitedValue] = createSignal<TValue>(
+    // Solid 2 reads a function passed to `createSignal` as a compute
+    // function, so a function value is wrapped to stay a plain value.
+    (typeof value === 'function' ? () => value : value) as any,
+    // Written from timers and from effects (the *Value primitives).
+    { ownedWrite: true },
+  )
 
   const rateLimiter = createRateLimiter(
     setRateLimitedValue,

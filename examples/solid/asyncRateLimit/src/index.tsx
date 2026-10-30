@@ -1,5 +1,5 @@
 import { For, createMemo, createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { asyncRateLimit } from '@tanstack/solid-pacer/async-rate-limiter'
 
 function SearchApp() {

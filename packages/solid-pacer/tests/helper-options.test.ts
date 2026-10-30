@@ -1,4 +1,4 @@
-import { createRoot, createSignal } from 'solid-js'
+import { createRoot, createSignal, flush } from 'solid-js'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createDebouncedSignal } from '../src/debouncer/createDebouncedSignal'
 import { createDebouncedValue } from '../src/debouncer/createDebouncedValue'
@@ -46,6 +46,7 @@ it.each(['factory', 'getters'] as const)(
     })
     const stores = utilities.map((utility) => utility.store)
     update(200)
+    flush()
     utilities.forEach((utility, index) => {
       expect(utility.options).toMatchObject({ wait: 200, window: 200 })
       expect(utility.store).toBe(stores[index])
@@ -68,13 +69,19 @@ it('uses updated options for subsequent debounced signal writes', () => {
     }))
   })
   setValue('first')
+  flush()
   vi.advanceTimersByTime(100)
+  flush()
   expect(value()).toBe('first')
   updateWait(200)
+  flush()
   setValue('second')
+  flush()
   vi.advanceTimersByTime(100)
+  flush()
   expect(value()).toBe('first')
   vi.advanceTimersByTime(100)
+  flush()
   expect(value()).toBe('second')
   dispose()
 })

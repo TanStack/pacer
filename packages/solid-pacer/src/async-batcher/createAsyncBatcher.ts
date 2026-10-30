@@ -1,11 +1,11 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
@@ -47,8 +47,8 @@ export interface SolidAsyncBatcher<TValue, TSelected = {}> extends Omit<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: AsyncBatcherState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the batcher state changes
    *
@@ -205,14 +205,13 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
     () => new AsyncBatcher<TValue>(fn, mergedOptions()),
   ) as unknown as SolidAsyncBatcher<TValue, TSelected>
 
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => asyncBatcher.setOptions(latest))
+  createRenderEffect(mergedOptions, (latest) => {
+    asyncBatcher.setOptions(latest)
   })
 
   asyncBatcher.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncBatcherState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
     const selected = useSelector(asyncBatcher.store, props.selector, {
       compare: shallow,
@@ -225,16 +224,14 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
 
   const state = useSelector(asyncBatcher.store, selector, { compare: shallow })
 
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = asyncBatcher.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        asyncBatcher.cancel()
-        asyncBatcher.abort()
-      }
-    })
+  onCleanup(() => {
+    const onUnmount = asyncBatcher.options.onUnmount
+    if (onUnmount) {
+      onUnmount(result)
+    } else {
+      asyncBatcher.cancel()
+      asyncBatcher.abort()
+    }
   })
 
   const result = {

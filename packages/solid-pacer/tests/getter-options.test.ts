@@ -1,14 +1,27 @@
 import {
   createComponent,
-  createComputed,
+  createRenderEffect,
   createRoot,
   createSignal,
+  flush,
 } from 'solid-js'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createDebouncer } from '../src/debouncer/createDebouncer'
 import { createRateLimiter } from '../src/rate-limiter/createRateLimiter'
 import { createQueuer } from '../src/queuer/createQueuer'
 import { PacerProvider } from '../src/provider/PacerProvider'
+
+// Observes the rendered result the way a renderer would, so children run
+// and their computations stay live.
+const mount = (element: unknown) =>
+  createRenderEffect(
+    () => {
+      let resolved = element
+      while (typeof resolved === 'function') resolved = resolved()
+      return resolved
+    },
+    () => {},
+  )
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
@@ -32,6 +45,7 @@ it('uses an updated getter limit for the next execution without replacing the st
   expect(limiter.maybeExecute()).toBe(true)
   expect(limiter.maybeExecute()).toBe(false)
   update(2)
+  flush()
   expect(limiter.maybeExecute()).toBe(true)
   expect(limiter.store).toBe(store)
   dispose()
@@ -47,23 +61,26 @@ it.each(['factory', 'object'] as const)(
       dispose = cleanup
       const [wait, setWait] = createSignal(100)
       update = setWait
-      createComponent(PacerProvider, {
-        defaultOptions: {
-          get debouncer() {
-            return { leading: wait() === 100 }
+      mount(
+        createComponent(PacerProvider, {
+          defaultOptions: {
+            get debouncer() {
+              return { leading: wait() === 100 }
+            },
           },
-        },
-        get children() {
-          utility = createDebouncer(
-            () => {},
-            form === 'factory' ? () => ({ wait: 100 }) : { wait: 100 },
-          )
-          return null
-        },
-      })
+          get children() {
+            utility = createDebouncer(
+              () => {},
+              form === 'factory' ? () => ({ wait: 100 }) : { wait: 100 },
+            )
+            return null
+          },
+        }),
+      )
     })
     const store = utility.store
     update(200)
+    flush()
     expect(utility.options.leading).toBe(false)
     expect(utility.store).toBe(store)
     dispose()
@@ -78,17 +95,20 @@ it('tracks replacement provider defaultOptions and preserves instance options pr
     dispose = cleanup
     const [wait, setWait] = createSignal(100)
     update = setWait
-    createComponent(PacerProvider, {
-      get defaultOptions() {
-        return { debouncer: { trailing: wait() === 100, leading: true } }
-      },
-      get children() {
-        utility = createDebouncer(() => {}, { wait: 100, leading: false })
-        return null
-      },
-    })
+    mount(
+      createComponent(PacerProvider, {
+        get defaultOptions() {
+          return { debouncer: { trailing: wait() === 100, leading: true } }
+        },
+        get children() {
+          utility = createDebouncer(() => {}, { wait: 100, leading: false })
+          return null
+        },
+      }),
+    )
   })
   update(200)
+  flush()
   expect(utility.options).toMatchObject({
     wait: 100,
     leading: false,
@@ -105,21 +125,24 @@ it('tracks getters within provider utility defaults', () => {
     dispose = cleanup
     const [wait, setWait] = createSignal(100)
     update = setWait
-    createComponent(PacerProvider, {
-      defaultOptions: {
-        debouncer: {
-          get leading() {
-            return wait() === 100
+    mount(
+      createComponent(PacerProvider, {
+        defaultOptions: {
+          debouncer: {
+            get leading() {
+              return wait() === 100
+            },
           },
         },
-      },
-      get children() {
-        utility = createDebouncer(() => {}, { wait: 100 })
-        return null
-      },
-    })
+        get children() {
+          utility = createDebouncer(() => {}, { wait: 100 })
+          return null
+        },
+      }),
+    )
   })
   update(200)
+  flush()
   expect(utility.options.leading).toBe(false)
   dispose()
 })
@@ -148,6 +171,7 @@ it.each(['omit', 'undefined', 'manual'] as const)(
     })
     utility.maybeExecute()
     update(false)
+    flush()
     if (mode === 'manual') utility.setOptions({ onUnmount: manual })
     expect(utility.options.onUnmount).toBe(
       mode === 'undefined' ? undefined : mode === 'manual' ? manual : first,
@@ -156,6 +180,7 @@ it.each(['omit', 'undefined', 'manual'] as const)(
     expect(first).toHaveBeenCalledTimes(mode === 'omit' ? 1 : 0)
     expect(manual).toHaveBeenCalledTimes(mode === 'manual' ? 1 : 0)
     vi.advanceTimersByTime(100)
+    flush()
     expect(callback).toHaveBeenCalledTimes(mode === 'undefined' ? 0 : 1)
   },
 )
@@ -181,8 +206,10 @@ it('keeps partial merge semantics for omitted and explicit undefined options', (
     )
   })
   update(1)
+  flush()
   expect(utility.options.leading).toBe(true)
   update(2)
+  flush()
   expect(utility.options.leading).toBeUndefined()
   dispose()
 })
@@ -202,22 +229,29 @@ it('constructs once without tracking internal function-valued options or invokin
     updateWindow = setWindow
     updateLimit = setLimit
     dynamicLimit.mockImplementation(() => limit())
-    createComputed(() => {
-      constructions++
-      utility = createRateLimiter(() => {}, {
-        get window() {
-          return window()
-        },
-        limit: dynamicLimit,
-        onExecute,
-      })
-    })
+    // Created inside a tracking scope: reads made while constructing must not
+    // subscribe it, or the limiter would be rebuilt on every option change.
+    createRenderEffect(
+      () => {
+        constructions++
+        utility = createRateLimiter(() => {}, {
+          get window() {
+            return window()
+          },
+          limit: dynamicLimit,
+          onExecute,
+        })
+      },
+      () => {},
+    )
   })
   const original = utility,
     store = utility.store
   dynamicLimit.mockClear()
   updateWindow(2000)
+  flush()
   updateLimit(2)
+  flush()
   expect(constructions).toBe(1)
   expect(utility).toBe(original)
   expect(utility.store).toBe(store)
@@ -263,6 +297,7 @@ it('consumes key, initial items and nested initial state once', () => {
   const initialReads = initialCount.mock.calls.length
   expect(initialReads).toBeGreaterThan(0)
   update(2)
+  flush()
   expect(utility.key).toBe('getter-queue-1')
   expect(utility.store).toBe(store)
   expect(utility.store.state.items).toEqual(['item-1'])
@@ -286,40 +321,44 @@ it.each(['fallback', 'clear'] as const)(
       dispose = cleanup
       const [custom, setCustom] = createSignal(true)
       update = setCustom
-      createComponent(PacerProvider, {
-        defaultOptions: {
-          debouncer: {
-            onUnmount(received) {
-              expect(received).toBe(utility)
-              expect(received.state()).toEqual({ pending: true })
-              providerCleanup(received)
-              received.cancel()
+      mount(
+        createComponent(PacerProvider, {
+          defaultOptions: {
+            debouncer: {
+              onUnmount(received) {
+                expect(received).toBe(utility)
+                expect(received.state()).toEqual({ pending: true })
+                providerCleanup(received)
+                received.cancel()
+              },
             },
           },
-        },
-        get children() {
-          utility = createDebouncer(
-            callback,
-            () => ({
-              wait: 100,
-              ...(custom()
-                ? { onUnmount: customCleanup }
-                : mode === 'clear'
-                  ? { onUnmount: undefined }
-                  : {}),
-            }),
-            (state) => ({ pending: state.isPending }),
-          )
-          return null
-        },
-      })
+          get children() {
+            utility = createDebouncer(
+              callback,
+              () => ({
+                wait: 100,
+                ...(custom()
+                  ? { onUnmount: customCleanup }
+                  : mode === 'clear'
+                    ? { onUnmount: undefined }
+                    : {}),
+              }),
+              (state) => ({ pending: state.isPending }),
+            )
+            return null
+          },
+        }),
+      )
     })
     utility.maybeExecute()
     update(false)
+    flush()
     dispose()
     expect(customCleanup).not.toHaveBeenCalled()
     expect(providerCleanup).toHaveBeenCalledTimes(mode === 'fallback' ? 1 : 0)
     vi.advanceTimersByTime(100)
+    flush()
     expect(callback).not.toHaveBeenCalled()
   },
 )

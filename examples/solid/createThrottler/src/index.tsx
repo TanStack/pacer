@@ -1,6 +1,6 @@
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
-import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { createSignal, flush } from 'solid-js'
+import { render } from '@solidjs/web'
 import { createThrottler } from '@tanstack/solid-pacer/throttler'
 
 function App1() {
@@ -97,6 +97,8 @@ function App2() {
     const target = e.target as HTMLInputElement
     const newValue = target.value
     setInstantSearch(newValue)
+    // Apply the new value to reactive options (such as `enabled`) first.
+    flush()
     setSearchThrottler.maybeExecute(newValue)
   }
 

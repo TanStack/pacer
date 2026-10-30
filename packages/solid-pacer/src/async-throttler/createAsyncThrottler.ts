@@ -1,11 +1,11 @@
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
+import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type { SolidPacerOptions } from '../types'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncThrottlerOptions,
@@ -48,8 +48,8 @@ export interface SolidAsyncThrottler<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: AsyncThrottlerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the throttler state changes
    *
@@ -193,14 +193,13 @@ export function createAsyncThrottler<
     () => new AsyncThrottler(fn, mergedOptions()),
   ) as unknown as SolidAsyncThrottler<TFn, TSelected>
 
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => asyncThrottler.setOptions(latest))
+  createRenderEffect(mergedOptions, (latest) => {
+    asyncThrottler.setOptions(latest)
   })
 
   asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
     selector: (state: AsyncThrottlerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
     const selected = useSelector(asyncThrottler.store, props.selector, {
       compare: shallow,
@@ -215,16 +214,14 @@ export function createAsyncThrottler<
     compare: shallow,
   })
 
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = asyncThrottler.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        asyncThrottler.cancel()
-        asyncThrottler.abort()
-      }
-    })
+  onCleanup(() => {
+    const onUnmount = asyncThrottler.options.onUnmount
+    if (onUnmount) {
+      onUnmount(result)
+    } else {
+      asyncThrottler.cancel()
+      asyncThrottler.abort()
+    }
   })
 
   const result = {
