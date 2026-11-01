@@ -54,3 +54,5 @@ minimumReleaseAgeExclude:
   - '@tanstack/octane-store@0.13.0'
   # Preact 11 peer support: published less than 24 hours ago
   - '@tanstack/preact-store@0.13.5'
+  # Renovate security update: happy-dom@21.0.4
+  - happy-dom@21.0.4
