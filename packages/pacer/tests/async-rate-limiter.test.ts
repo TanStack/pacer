@@ -789,9 +789,11 @@ describe('asyncRateLimit', () => {
 describe('AsyncRateLimiter internal retryer devtools registration', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+    vi.stubEnv('NODE_ENV', 'development')
   })
   afterEach(() => {
     vi.useRealTimers()
+    vi.unstubAllEnvs()
   })
 
   it('should not register internal retryers with or without a key', async () => {

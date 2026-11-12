@@ -286,7 +286,7 @@ export class AsyncBatcher<TValue> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    if (this.key) {
+    if (process.env.NODE_ENV === 'development' && this.key) {
       pacerEventClient.on('d-AsyncBatcher', (event) => {
         if (event.payload.key !== this.key) return
         this.#setState(

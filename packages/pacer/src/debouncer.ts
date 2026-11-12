@@ -158,7 +158,7 @@ export class Debouncer<TFn extends AnyFunction> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    if (this.key) {
+    if (process.env.NODE_ENV === 'development' && this.key) {
       pacerEventClient.on('d-Debouncer', (event) => {
         if (event.payload.key !== this.key) return
         this.#setState(

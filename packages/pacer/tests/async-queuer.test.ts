@@ -1336,6 +1336,13 @@ describe('AsyncQueuer', () => {
   })
 
   describe('internal retryer devtools registration', () => {
+    beforeEach(() => {
+      vi.stubEnv('NODE_ENV', 'development')
+    })
+    afterEach(() => {
+      vi.unstubAllEnvs()
+    })
+
     it('should not register internal retryers when the queuer has no key', async () => {
       const asyncQueuer = new AsyncQueuer<number>(
         (item) => Promise.resolve(item * 2),

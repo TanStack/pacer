@@ -1373,9 +1373,11 @@ describe('asyncDebounce helper function', () => {
 describe('AsyncDebouncer internal retryer devtools registration', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+    vi.stubEnv('NODE_ENV', 'development')
   })
   afterEach(() => {
     vi.useRealTimers()
+    vi.unstubAllEnvs()
   })
 
   it('should not register internal retryers when the debouncer has no key', async () => {
