@@ -1,0 +1,164 @@
+---
+id: createAsyncQueuer
+title: createAsyncQueuer
+---
+
+```ts
+function createAsyncQueuer<TValue, TSelected>(
+   fn,
+   options?,
+selector?): SolidAsyncQueuer<TValue, TSelected>;
+```
+
+Defined in: [async-queuer/createAsyncQueuer.ts:189](https://github.com/TanStack/pacer/blob/main/packages/solid-pacer/src/async-queuer/createAsyncQueuer.ts#L189)
+
+Creates a Solid-compatible AsyncQueuer instance for managing an asynchronous queue of items, exposing Solid signals for all stateful properties.
+
+Features:
+- Priority queueing via `getPriority` or item `priority` property
+- Configurable concurrency limit
+- FIFO (First In First Out) or LIFO (Last In First Out) queue behavior
+- Pause/resume processing
+- Task cancellation
+- Item expiration
+- Lifecycle callbacks for success, error, settled, items change, etc.
+- All stateful properties (active items, pending items, counts, etc.) are exposed as Solid signals for reactivity
+
+Tasks are processed concurrently up to the configured concurrency limit. When a task completes,
+the next pending task is processed if the concurrency limit allows.
+
+Error Handling:
+- If an `onError` handler is provided, it will be called with the error and queuer instance
+- If `throwOnError` is true (default when no onError handler is provided), the error will be thrown
+- If `throwOnError` is false (default when onError handler is provided), the error will be swallowed
+- Both onError and throwOnError can be used together; the handler will be called before any error is thrown
+- The error state can be checked using the underlying AsyncQueuer instance
+
+## State Management and Selector
+
+The hook uses TanStack Store for reactive state management. You can subscribe to state changes
+in two ways:
+
+**1. Using `queuer.Subscribe` component (Recommended for component tree subscriptions)**
+
+Use the `Subscribe` component to subscribe to state changes deep in your component tree without
+needing to pass a selector to the hook. This is ideal when you want to subscribe to state
+in child components.
+
+**2. Using the `selector` parameter (For hook-level subscriptions)**
+
+The `selector` parameter allows you to specify which state changes will trigger reactive updates
+at the hook level, optimizing performance by preventing unnecessary updates when irrelevant
+state changes occur.
+
+**By default, there will be no reactive state subscriptions** and you must opt-in to state
+tracking by providing a selector function or using the `Subscribe` component. This prevents unnecessary
+updates and gives you full control over when your component tracks state changes.
+
+Available state properties:
+- `activeItems`: Array of items currently being processed
+- `errorCount`: Number of items that failed processing
+- `isRunning`: Whether the queuer is currently running (not stopped)
+- `items`: Array of items waiting to be processed
+- `rejectionCount`: Number of items that were rejected (expired or failed validation)
+- `settleCount`: Number of items that have completed processing (successful or failed)
+- `successCount`: Number of items that were processed successfully
+
+## Unmount behavior
+
+By default, the primitive stops the queuer and aborts any in-flight task executions when the owning component unmounts.
+Abort only cancels underlying operations (e.g. fetch) when the abort signal from `getAbortSignal()` is passed to them.
+Use the `onUnmount` option to customize this. For example, to flush pending items instead:
+
+```tsx
+const queuer = createAsyncQueuer(fn, {
+  concurrency: 2,
+  started: false,
+  onUnmount: (q) => q.flush()
+});
+```
+
+Note: For async utils, `flush()` returns a Promise and runs fire-and-forget in the cleanup.
+If your task function updates Solid signals, those updates may run after the component has
+unmounted, which can cause unexpected reactive updates. Guard your callbacks accordingly when
+using onUnmount with flush.
+
+Example usage:
+```tsx
+// Default behavior - no reactive state subscriptions
+const asyncQueuer = createAsyncQueuer(async (item) => {
+  // process item
+  return await fetchData(item);
+}, {
+  initialItems: [],
+  concurrency: 2,
+  maxSize: 100,
+  started: false,
+  onSuccess: (result) => {
+    console.log('Item processed:', result);
+  },
+  onError: (error) => {
+    console.error('Processing failed:', error);
+  }
+});
+
+// Opt-in to track queue state changes (optimized for UI updates)
+const asyncQueuer = createAsyncQueuer(
+  async (item) => await fetchData(item),
+  { concurrency: 2, started: true },
+  (state) => ({
+    items: state.items,
+    activeItems: state.activeItems,
+    isRunning: state.isRunning
+  })
+);
+
+// Opt-in to track processing metrics changes (optimized for tracking progress)
+const asyncQueuer = createAsyncQueuer(
+  async (item) => await fetchData(item),
+  { concurrency: 2, started: true },
+  (state) => ({
+    successCount: state.successCount,
+    errorCount: state.errorCount,
+    settleCount: state.settleCount
+  })
+);
+
+// Add items to queue
+asyncQueuer.addItem(newItem);
+
+// Start processing
+asyncQueuer.start();
+
+// Access the selected state (will be empty object {} unless selector provided)
+const { items, activeItems } = asyncQueuer.state();
+```
+
+## Type Parameters
+
+### TValue
+
+`TValue`
+
+### TSelected
+
+`TSelected` = \{
+\}
+
+## Parameters
+
+### fn
+
+(`value`) => `Promise`\<`any`\>
+
+### options?
+
+[`SolidPacerOptions`](../type-aliases/SolidPacerOptions.md)\<[`SolidAsyncQueuerOptions`](../interfaces/SolidAsyncQueuerOptions.md)\<`TValue`, `TSelected`\>\> = `{}`
+
+### selector?
+
+(`state`) => `TSelected`
+
+## Returns
+
+[`SolidAsyncQueuer`](../interfaces/SolidAsyncQueuer.md)\<`TValue`, `TSelected`\>

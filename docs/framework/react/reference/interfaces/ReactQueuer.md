@@ -1,0 +1,98 @@
+---
+id: ReactQueuer
+title: ReactQueuer
+---
+
+Defined in: [queuer/useQueuer.ts:20](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L20)
+
+## Extends
+
+- `Omit`\<`Queuer`\<`TValue`\>, `"store"`\>
+
+## Type Parameters
+
+### TValue
+
+`TValue`
+
+### TSelected
+
+`TSelected` = \{
+\}
+
+## Properties
+
+### state
+
+```ts
+readonly state: Readonly<TSelected>;
+```
+
+Defined in: [queuer/useQueuer.ts:46](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L46)
+
+Reactive state that will be updated and re-rendered when the queuer state changes
+
+Use this instead of `queuer.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<QueuerState<TValue>>>;
+```
+
+Defined in: [queuer/useQueuer.ts:52](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L52)
+
+#### Deprecated
+
+Use `queuer.state` instead of `queuer.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
+```
+
+Defined in: [queuer/useQueuer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/queuer/useQueuer.ts#L37)
+
+A React HOC (Higher Order Component) that allows you to subscribe to the queuer state.
+
+This is useful for opting into state re-renders for specific parts of the queuer state
+deep in your component tree without needing to pass a selector to the hook.
+
+#### Type Parameters
+
+##### TSelected
+
+`TSelected`
+
+#### Parameters
+
+##### props
+
+###### children
+
+`ReactNode` \| ((`state`) => `ReactNode`)
+
+###### selector
+
+(`state`) => `TSelected`
+
+#### Returns
+
+`ReactNode` \| `Promise`\<`ReactNode`\>
+
+#### Example
+
+```ts
+<queuer.Subscribe selector={(state) => ({ size: state.size, isRunning: state.isRunning })}>
+  {({ size, isRunning }) => (
+    <div>Queue: {size} items, {isRunning ? 'Processing' : 'Idle'}</div>
+  )}
+</queuer.Subscribe>
+```

@@ -1,0 +1,108 @@
+---
+id: AsyncRetryerState
+title: AsyncRetryerState
+---
+
+Defined in: [async-retryer.ts:5](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L5)
+
+## Type Parameters
+
+### TFn
+
+`TFn` *extends* [`AnyAsyncFunction`](../type-aliases/AnyAsyncFunction.md)
+
+## Properties
+
+### currentAttempt
+
+```ts
+currentAttempt: number;
+```
+
+Defined in: [async-retryer.ts:9](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L9)
+
+The current retry attempt number (0 when not executing)
+
+***
+
+### executionCount
+
+```ts
+executionCount: number;
+```
+
+Defined in: [async-retryer.ts:13](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L13)
+
+Total number of completed executions (successful or failed)
+
+***
+
+### isExecuting
+
+```ts
+isExecuting: boolean;
+```
+
+Defined in: [async-retryer.ts:17](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L17)
+
+Whether the retryer is currently executing the function
+
+***
+
+### lastError
+
+```ts
+lastError: Error | undefined;
+```
+
+Defined in: [async-retryer.ts:21](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L21)
+
+The most recent error encountered during execution
+
+***
+
+### lastExecutionTime
+
+```ts
+lastExecutionTime: number;
+```
+
+Defined in: [async-retryer.ts:25](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L25)
+
+Timestamp of the last execution completion in milliseconds
+
+***
+
+### lastResult
+
+```ts
+lastResult: Awaited<ReturnType<TFn>> | undefined;
+```
+
+Defined in: [async-retryer.ts:29](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L29)
+
+The result from the most recent successful execution
+
+***
+
+### status
+
+```ts
+status: "disabled" | "idle" | "executing" | "retrying";
+```
+
+Defined in: [async-retryer.ts:33](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L33)
+
+Current execution status - 'disabled' when not enabled, 'idle' when ready, 'executing' when running
+
+***
+
+### totalExecutionTime
+
+```ts
+totalExecutionTime: number;
+```
+
+Defined in: [async-retryer.ts:37](https://github.com/TanStack/pacer/blob/main/packages/pacer/src/async-retryer.ts#L37)
+
+Total time spent executing (including retries) in milliseconds

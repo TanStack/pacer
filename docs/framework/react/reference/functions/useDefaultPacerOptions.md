@@ -1,0 +1,14 @@
+---
+id: useDefaultPacerOptions
+title: useDefaultPacerOptions
+---
+
+```ts
+function useDefaultPacerOptions(): PacerProviderOptions;
+```
+
+Defined in: [provider/PacerProvider.tsx:70](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/provider/PacerProvider.tsx#L70)
+
+## Returns
+
+[`PacerProviderOptions`](../interfaces/PacerProviderOptions.md)

@@ -1,0 +1,98 @@
+---
+id: ReactAsyncBatcher
+title: ReactAsyncBatcher
+---
+
+Defined in: [async-batcher/useAsyncBatcher.ts:23](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L23)
+
+## Extends
+
+- `Omit`\<`AsyncBatcher`\<`TValue`\>, `"store"`\>
+
+## Type Parameters
+
+### TValue
+
+`TValue`
+
+### TSelected
+
+`TSelected` = \{
+\}
+
+## Properties
+
+### state
+
+```ts
+readonly state: Readonly<TSelected>;
+```
+
+Defined in: [async-batcher/useAsyncBatcher.ts:49](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L49)
+
+Reactive state that will be updated and re-rendered when the batcher state changes
+
+Use this instead of `batcher.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<AsyncBatcherState<TValue>>>;
+```
+
+Defined in: [async-batcher/useAsyncBatcher.ts:55](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L55)
+
+#### Deprecated
+
+Use `batcher.state` instead of `batcher.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
+```
+
+Defined in: [async-batcher/useAsyncBatcher.ts:40](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/async-batcher/useAsyncBatcher.ts#L40)
+
+A React HOC (Higher Order Component) that allows you to subscribe to the batcher state.
+
+This is useful for opting into state re-renders for specific parts of the batcher state
+deep in your component tree without needing to pass a selector to the hook.
+
+#### Type Parameters
+
+##### TSelected
+
+`TSelected`
+
+#### Parameters
+
+##### props
+
+###### children
+
+`ReactNode` \| ((`state`) => `ReactNode`)
+
+###### selector
+
+(`state`) => `TSelected`
+
+#### Returns
+
+`ReactNode` \| `Promise`\<`ReactNode`\>
+
+#### Example
+
+```ts
+<batcher.Subscribe selector={(state) => ({ size: state.size, isExecuting: state.isExecuting })}>
+  {({ size, isExecuting }) => (
+    <div>Batch: {size} items, {isExecuting ? 'Processing' : 'Ready'}</div>
+  )}
+</batcher.Subscribe>
+```

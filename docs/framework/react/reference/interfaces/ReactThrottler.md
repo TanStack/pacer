@@ -1,0 +1,98 @@
+---
+id: ReactThrottler
+title: ReactThrottler
+---
+
+Defined in: [throttler/useThrottler.ts:24](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L24)
+
+## Extends
+
+- `Omit`\<`Throttler`\<`TFn`\>, `"store"`\>
+
+## Type Parameters
+
+### TFn
+
+`TFn` *extends* `AnyFunction`
+
+### TSelected
+
+`TSelected` = \{
+\}
+
+## Properties
+
+### state
+
+```ts
+readonly state: Readonly<TSelected>;
+```
+
+Defined in: [throttler/useThrottler.ts:50](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L50)
+
+Reactive state that will be updated and re-rendered when the throttler state changes
+
+Use this instead of `throttler.store.state`
+
+***
+
+### ~~store~~
+
+```ts
+readonly store: Store<Readonly<ThrottlerState<TFn>>>;
+```
+
+Defined in: [throttler/useThrottler.ts:56](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L56)
+
+#### Deprecated
+
+Use `throttler.state` instead of `throttler.store.state` if you want to read reactive state.
+The state on the store object is not reactive, as it has not been wrapped in a `useSelector` hook internally.
+Although, you can make the state reactive by using the `useSelector` in your own usage.
+
+***
+
+### Subscribe
+
+```ts
+Subscribe: <TSelected>(props) => ReactNode | Promise<ReactNode>;
+```
+
+Defined in: [throttler/useThrottler.ts:41](https://github.com/TanStack/pacer/blob/main/packages/react-pacer/src/throttler/useThrottler.ts#L41)
+
+A React HOC (Higher Order Component) that allows you to subscribe to the throttler state.
+
+This is useful for opting into state re-renders for specific parts of the throttler state
+deep in your component tree without needing to pass a selector to the hook.
+
+#### Type Parameters
+
+##### TSelected
+
+`TSelected`
+
+#### Parameters
+
+##### props
+
+###### children
+
+`ReactNode` \| ((`state`) => `ReactNode`)
+
+###### selector
+
+(`state`) => `TSelected`
+
+#### Returns
+
+`ReactNode` \| `Promise`\<`ReactNode`\>
+
+#### Example
+
+```ts
+<throttler.Subscribe selector={(state) => ({ isPending: state.isPending })}>
+  {({ isPending }) => (
+    <div>{isPending ? 'Throttling...' : 'Ready'}</div>
+  )}
+</throttler.Subscribe>
+```
