@@ -266,7 +266,7 @@ export class AsyncRateLimiter<TFn extends AnyAsyncFunction> {
       this.#setCleanupTimeout(executionTime)
     }
 
-    if (process.env.NODE_ENV === 'development' && this.key) {
+    if (this.key && process.env.NODE_ENV === 'development') {
       pacerEventClient.on('d-AsyncRateLimiter', (event) => {
         if (event.payload.key !== this.key) return
         this.#setState(

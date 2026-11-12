@@ -105,11 +105,9 @@ export const emitChange = <TEvent extends keyof PacerEventMap>(
   event: TEvent,
   instance: PacerUtilEmitSource,
 ) => {
-  if (process.env.NODE_ENV === 'development') {
-    const key = instance.key
-    if (!key) {
-      return
-    }
+  const key = instance.key
+  // Check `key` first: unbundled Node evaluates `process.env` on every call.
+  if (key && process.env.NODE_ENV === 'development') {
     registerPacerDevtoolsInstance(key, instance)
     pacerEventClient.emit(
       event,
