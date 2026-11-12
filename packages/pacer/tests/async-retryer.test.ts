@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AsyncRetryer, asyncRetry } from '../src/async-retryer'
 import { getPacerDevtoolsInstance } from '../src'
 
@@ -1146,6 +1146,13 @@ describe('asyncRetry utility function', () => {
 })
 
 describe('AsyncRetryer devtools registration', () => {
+  beforeEach(() => {
+    vi.stubEnv('NODE_ENV', 'development')
+  })
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
+
   it('should not register with the devtools registry even when keyed', async () => {
     const retryer = new AsyncRetryer(
       (value: string) => Promise.resolve(value),

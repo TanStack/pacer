@@ -353,7 +353,7 @@ export class AsyncQueuer<TValue> {
       }
     }
 
-    if (this.key) {
+    if (this.key && process.env.NODE_ENV === 'development') {
       pacerEventClient.on('d-AsyncQueuer', (e) => {
         if (e.payload.key !== this.key) return
         this.#setState(

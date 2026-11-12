@@ -6,5 +6,5 @@
       "@tanstack/pacer/*": ["../pacer/src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "../pacer/src/process-env.d.ts"]
 }

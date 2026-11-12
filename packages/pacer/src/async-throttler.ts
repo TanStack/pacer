@@ -250,7 +250,7 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
     }
     this.#setState(this.options.initialState ?? {})
 
-    if (this.key) {
+    if (this.key && process.env.NODE_ENV === 'development') {
       pacerEventClient.on('d-AsyncThrottler', (event) => {
         if (event.payload.key !== this.key) return
         this.#setState(

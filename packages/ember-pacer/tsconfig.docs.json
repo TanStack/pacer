@@ -7,7 +7,7 @@
     },
     "rootDir": ".."
   },
-  "include": ["src"],
+  "include": ["src", "../pacer/src/process-env.d.ts"],
   "typedocOptions": {
     "excludeExternals": true
   }

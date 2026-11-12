@@ -96,34 +96,39 @@ type PacerUtilEmitSource = {
   options: unknown
 }
 
-class PacerEventClient extends EventClient<PacerEventMap> {
-  constructor(props?: { debug: boolean }) {
-    super({
-      pluginId: 'pacer',
-      debug: props?.debug,
-      /**
-       * TanStack Devtools starts `ClientEventBus` inside an async dynamic import
-       * after the first commit. Pacer utils often emit during the first render
-       * (constructor → store sync). `EventClient` only retries `tanstack-connect`
-       * `#maxRetries` times at `reconnectEveryMs` before it gives up and drops
-       * all queued events permanently. Default 300ms × 5 ≈ 1.5s is often too
-       * short; Form uses 1000ms here for the same reason.
-       */
-      reconnectEveryMs: 1000,
-    })
-  }
-}
-
+/**
+ * Devtools only run in development, matching `@tanstack/devtools-event-client`.
+ * Production bundlers fold this check, so the devtools registry, payload
+ * cloning and the event client are tree-shaken out.
+ */
 export const emitChange = <TEvent extends keyof PacerEventMap>(
   event: TEvent,
   instance: PacerUtilEmitSource,
 ) => {
   const key = instance.key
-  if (!key) {
-    return
+  // Check `key` first: unbundled Node evaluates `process.env` on every call.
+  if (key && process.env.NODE_ENV === 'development') {
+    registerPacerDevtoolsInstance(key, instance)
+    pacerEventClient.emit(
+      event,
+      toPacerDevtoolsWirePayload({ ...instance, key }),
+    )
   }
-  registerPacerDevtoolsInstance(key, instance)
-  pacerEventClient.emit(event, toPacerDevtoolsWirePayload({ ...instance, key }))
 }
 
-export const pacerEventClient = new PacerEventClient()
+/**
+ * A plain `EventClient` instance (no subclass) so bundlers can drop it when unused.
+ */
+export const pacerEventClient: EventClient<PacerEventMap> =
+  /* @__PURE__ */ new EventClient<PacerEventMap>({
+    pluginId: 'pacer',
+    /**
+     * TanStack Devtools starts `ClientEventBus` inside an async dynamic import
+     * after the first commit. Pacer utils often emit during the first render
+     * (constructor → store sync). `EventClient` only retries `tanstack-connect`
+     * `#maxRetries` times at `reconnectEveryMs` before it gives up and drops
+     * all queued events permanently. Default 300ms × 5 ≈ 1.5s is often too
+     * short; Form uses 1000ms here for the same reason.
+     */
+    reconnectEveryMs: 1000,
+  })

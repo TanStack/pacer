@@ -174,7 +174,7 @@ export class RateLimiter<TFn extends AnyFunction> {
       this.#setCleanupTimeout(executionTime)
     }
 
-    if (this.key) {
+    if (this.key && process.env.NODE_ENV === 'development') {
       pacerEventClient.on('d-RateLimiter', (event) => {
         if (event.payload.key !== this.key) return
         this.#setState(event.payload.store.state as Partial<RateLimiterState>)
