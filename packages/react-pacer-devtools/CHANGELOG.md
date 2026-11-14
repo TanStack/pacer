@@ -1,5 +1,13 @@
 # @tanstack/react-pacer-devtools
 
+## 0.9.2
+
+### Patch Changes
+
+- [#309](https://github.com/TanStack/pacer/pull/309) [`9368fd1`](https://github.com/TanStack/pacer/commit/9368fd1dca6ee56ff10c60df45d073c03e85e939) - Update runtime dependency ranges to their latest patch and minor releases.
+- Updated dependencies [[`9368fd1`](https://github.com/TanStack/pacer/commit/9368fd1dca6ee56ff10c60df45d073c03e85e939)]:
+  - @tanstack/pacer-devtools@1.6.1
+
 ## 0.9.1
 
 ### Patch Changes
