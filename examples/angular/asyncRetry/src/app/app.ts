@@ -1,5 +1,5 @@
-import { Component, computed, signal } from '@angular/core'
 import { JsonPipe } from '@angular/common'
+import { Component, computed, signal } from '@angular/core'
 import { asyncRetry } from '@tanstack/angular-pacer'
 
 type Scenario = 'default' | 'timeout' | 'jitter' | 'linear'
@@ -59,7 +59,12 @@ export class App {
     ])
   }
   setScenario(value: string): void {
-    if (value === 'default' || value === 'timeout' || value === 'jitter' || value === 'linear')
+    if (
+      value === 'default' ||
+      value === 'timeout' ||
+      value === 'jitter' ||
+      value === 'linear'
+    )
       this.scenario.set(value)
   }
   async fetchUser(): Promise<void> {
@@ -72,8 +77,11 @@ export class App {
     const fetchWithRetry = asyncRetry(
       async (id: string): Promise<UserData> => {
         this.log(`Attempting to fetch user ${id}`)
-        await new Promise((resolve) => setTimeout(resolve, scenario === 'timeout' ? 3000 : 800))
-        if (Math.random() < 0.6) throw new Error(`Network error fetching user ${id}`)
+        await new Promise((resolve) =>
+          setTimeout(resolve, scenario === 'timeout' ? 3000 : 800),
+        )
+        if (Math.random() < 0.6)
+          throw new Error(`Network error fetching user ${id}`)
         return {
           id: Number.parseInt(id),
           name: `User ${id}`,

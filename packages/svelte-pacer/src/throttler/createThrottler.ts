@@ -1,13 +1,13 @@
 import { Throttler } from '@tanstack/pacer/throttler'
-import { bindPacer } from '../utils/bindPacer.svelte'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SveltePacerSubscribe } from '../utils/createSubscribe'
+import { bindPacer } from '../utils/bindPacer.svelte'
 import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { SveltePacerOptions } from '../types'
+import type { SveltePacerSubscribe } from '../utils/createSubscribe'
 
 /** Options for createThrottler, including owner cleanup. */
 export interface SvelteThrottlerOptions<

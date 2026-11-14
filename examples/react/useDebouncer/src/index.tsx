@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react'
-import ReactDOM from 'react-dom/client'
 import { useDebouncer } from '@tanstack/react-pacer/debouncer'
 import { PacerProvider } from '@tanstack/react-pacer/provider'
+import { useRef, useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 function App1() {
   // Use your state management library of choice

@@ -1,10 +1,10 @@
 import { observe, readSource } from '../utils/cell'
 import { createThrottledState } from './createThrottledState'
-import type { ReactiveControllerHost } from 'lit'
-import type { LitThrottler, LitThrottlerOptions } from './createThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell'
+import type { LitThrottler, LitThrottlerOptions } from './createThrottler'
 /**
  * Derives a throttled value from its current source.
  *

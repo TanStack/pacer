@@ -1,7 +1,7 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
 import { useBatcher } from '@tanstack/preact-pacer/batcher'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
 
 function App1() {
   // Use your state management library of choice

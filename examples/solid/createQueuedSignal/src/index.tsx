@@ -1,6 +1,6 @@
-import { render } from 'solid-js/web'
 import { createQueuedSignal } from '@tanstack/solid-pacer/queuer'
 import { createSignal } from 'solid-js'
+import { render } from 'solid-js/web'
 
 function App1() {
   // Queuer that uses Solid signals under the hood

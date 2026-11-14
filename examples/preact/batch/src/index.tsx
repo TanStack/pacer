@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'preact/hooks'
-import { render } from 'preact'
 import { batch } from '@tanstack/preact-pacer/batcher'
+import { render } from 'preact'
+import { useCallback, useState } from 'preact/hooks'
 
 function App() {
   const [processedBatches, setProcessedBatches] = useState<

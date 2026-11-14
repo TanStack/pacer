@@ -1,6 +1,6 @@
+import { createTheme } from '@tanstack/devtools-ui'
 import * as goober from 'goober'
 import { createEffect, createSignal } from 'solid-js'
-import { createTheme } from '@tanstack/devtools-ui'
 import { tokens } from './tokens'
 
 const stylesFactory = (theme: 'light' | 'dark') => {

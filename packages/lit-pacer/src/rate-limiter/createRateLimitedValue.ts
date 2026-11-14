@@ -1,10 +1,10 @@
 import { observe, readSource } from '../utils/cell'
 import { createRateLimitedState } from './createRateLimitedState'
-import type { ReactiveControllerHost } from 'lit'
-import type { LitRateLimiter, LitRateLimiterOptions } from './createRateLimiter'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell'
+import type { LitRateLimiter, LitRateLimiterOptions } from './createRateLimiter'
 /**
  * Derives a rate-limited value from its current source.
  *

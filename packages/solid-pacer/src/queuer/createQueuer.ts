@@ -1,12 +1,12 @@
 import { Queuer } from '@tanstack/pacer/queuer'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
-import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SolidPacerOptions } from '../types'
+import { createPacerOptions } from '../utils/createPacerOptions'
+import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
-import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { SolidPacerOptions } from '../types'
 
 export interface SolidQueuerOptions<
   TValue,

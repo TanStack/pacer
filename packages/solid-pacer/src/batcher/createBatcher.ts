@@ -1,12 +1,12 @@
 import { Batcher } from '@tanstack/pacer/batcher'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
-import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SolidPacerOptions } from '../types'
+import { createPacerOptions } from '../utils/createPacerOptions'
+import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { Store } from '@tanstack/solid-store'
 import type { Accessor, JSX } from 'solid-js'
-import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
+import type { SolidPacerOptions } from '../types'
 
 export interface SolidBatcherOptions<
   TValue,

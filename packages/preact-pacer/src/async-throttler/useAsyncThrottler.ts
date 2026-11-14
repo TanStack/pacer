@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { shallow, useSelector } from '@tanstack/preact-store'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/preact-store'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncThrottlerOptions,
   AsyncThrottlerState,
 } from '@tanstack/pacer/async-throttler'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { Store } from '@tanstack/preact-store'
 import type { ComponentChildren } from 'preact'
 
 export interface PreactAsyncThrottlerOptions<

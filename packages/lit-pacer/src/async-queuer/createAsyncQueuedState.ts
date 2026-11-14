@@ -1,8 +1,8 @@
 import { createAsyncQueuer } from './createAsyncQueuer'
-import type { ReactiveControllerHost } from 'lit'
-import type { LitAsyncQueuer, LitAsyncQueuerOptions } from './createAsyncQueuer'
 import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
+import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
+import type { LitAsyncQueuer, LitAsyncQueuerOptions } from './createAsyncQueuer'
 /**
  * Exposes pending queue items together with the queue that processes them.
  *

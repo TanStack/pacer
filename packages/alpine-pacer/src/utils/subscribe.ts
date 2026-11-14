@@ -1,5 +1,5 @@
-import Alpine from 'alpinejs'
 import { shallow } from '@tanstack/store'
+import Alpine from 'alpinejs'
 import type { ReadonlyStore } from '@tanstack/store'
 import type { PacerScope } from '../provider/PacerProvider'
 

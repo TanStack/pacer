@@ -6,13 +6,13 @@ import {
   untracked,
 } from '@angular/core'
 import { injectRateLimiter } from './injectRateLimiter'
+import type { Signal } from '@angular/core'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
   AngularRateLimiter,
   AngularRateLimiterOptions,
 } from './injectRateLimiter'
-import type { Signal } from '@angular/core'
 
 /**
  * A readonly Angular value signal with its underlying utility ref.

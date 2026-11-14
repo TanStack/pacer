@@ -18,9 +18,9 @@ import { createThrottledState } from '../throttler/createThrottledState'
 import { createThrottledValue } from '../throttler/createThrottledValue'
 import { createThrottler } from '../throttler/createThrottler'
 import { createScope } from './PacerProvider'
-import type { PacerProviderOptions } from './PacerProvider'
 import type * as P from '../index'
 import type * as C from '../utils/cell'
+import type { PacerProviderOptions } from './PacerProvider'
 
 /** Creates typed Pacer factories sharing an Alpine lifecycle and reactive defaults. */
 export function createPacerScope(

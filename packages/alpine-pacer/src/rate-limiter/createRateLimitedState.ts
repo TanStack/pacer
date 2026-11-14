@@ -1,13 +1,13 @@
 import { createCell } from '../utils/cell'
 import { createRateLimiter } from './createRateLimiter'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type { PacerScope } from '../provider/PacerProvider'
+import type { AlpinePacerOptions } from '../types'
+import type { CellValue, SetValue } from '../utils/cell'
 import type {
   AlpineRateLimiter,
   AlpineRateLimiterOptions,
 } from './createRateLimiter'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
-import type { AlpinePacerOptions } from '../types'
-import type { CellValue, SetValue } from '../utils/cell'
 /**
  * Creates rate-limited state with a scheduled setter.
  *

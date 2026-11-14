@@ -10,9 +10,15 @@ export class App {
   readonly search = signal('')
   readonly currentValue = signal(50)
   readonly instantExecutions = signal(1)
-  readonly controlledCount = injectThrottledValue(this.instantCount, () => ({ wait: 1000 }))
-  readonly controlledSearch = injectThrottledValue(this.search, () => ({ wait: 1000 }))
-  readonly controlledValue = injectThrottledValue(this.currentValue, () => ({ wait: 250 }))
+  readonly controlledCount = injectThrottledValue(this.instantCount, () => ({
+    wait: 1000,
+  }))
+  readonly controlledSearch = injectThrottledValue(this.search, () => ({
+    wait: 1000,
+  }))
+  readonly controlledValue = injectThrottledValue(this.currentValue, () => ({
+    wait: 250,
+  }))
   increment(): void {
     const next = this.instantCount() + 1
     this.instantCount.set(next)

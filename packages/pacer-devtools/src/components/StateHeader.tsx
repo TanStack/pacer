@@ -1,13 +1,13 @@
+import { shallow, useSelector } from '@tanstack/solid-store'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime.js'
 import { Show, createSignal, onCleanup, onMount } from 'solid-js'
-import { shallow, useSelector } from '@tanstack/solid-store'
 import { useStyles } from '../styles/use-styles'
-import { reductionFromState } from '../utils/reduction-from-state'
 import {
   getPacerUtilStoreState,
   isPacerUtilTanStackStore,
 } from '../utils/read-pacer-store-state'
+import { reductionFromState } from '../utils/reduction-from-state'
 
 dayjs.extend(relativeTime)
 

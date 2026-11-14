@@ -1,10 +1,10 @@
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
-import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
 import {
   createRateLimiter,
   rateLimiterOptions,
 } from '@tanstack/solid-pacer/rate-limiter'
+import { createSignal } from 'solid-js'
+import { render } from 'solid-js/web'
 
 const commonRateLimiterOptions = rateLimiterOptions({ limit: 5, window: 5000 })
 

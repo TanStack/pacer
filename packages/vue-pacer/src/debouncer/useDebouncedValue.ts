@@ -1,9 +1,9 @@
 import { observe, readSource } from '../utils/cell'
 import { useDebouncedState } from './useDebouncedState'
-import type { VueDebouncer, VueDebouncerOptions } from './useDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { VuePacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell'
+import type { VueDebouncer, VueDebouncerOptions } from './useDebouncer'
 /**
  * Derives a debounced value from its current source.
  *

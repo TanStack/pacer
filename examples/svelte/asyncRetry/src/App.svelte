@@ -1,7 +1,7 @@
 <script lang="ts">
   import { TanStackDevtools } from '@tanstack/svelte-devtools'
-  import { pacerDevtoolsPlugin } from '@tanstack/svelte-pacer-devtools'
   import { asyncRetry } from '@tanstack/svelte-pacer'
+  import { pacerDevtoolsPlugin } from '@tanstack/svelte-pacer-devtools'
 
   interface UserData {
     id: number

@@ -1,9 +1,9 @@
-import { createStore, produce } from 'solid-js/store'
-import { createContext, createEffect, onCleanup, useContext } from 'solid-js'
 import {
   getPacerDevtoolsInstance,
   pacerEventClient,
 } from '@tanstack/pacer/event-client'
+import { createContext, createEffect, onCleanup, useContext } from 'solid-js'
+import { createStore, produce } from 'solid-js/store'
 import type {
   AsyncBatcher,
   AsyncDebouncer,
@@ -135,9 +135,9 @@ export function PacerContextProvider(props: { children: any }) {
                 const index = list.findIndex((item) => item.key === key)
                 const inst = instance as { key: string }
                 if (index !== -1) {
-                  list[index] = inst as (typeof list)[number]
+                  list[index] = inst
                 } else {
-                  list.push(inst as (typeof list)[number])
+                  list.push(inst)
                 }
                 draft.lastUpdatedByKey[key] = Date.now()
               }),

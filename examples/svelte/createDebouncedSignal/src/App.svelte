@@ -1,8 +1,8 @@
 <script lang="ts">
   import { TanStackDevtools } from '@tanstack/svelte-devtools'
   import { pacerDevtoolsPlugin } from '@tanstack/svelte-pacer-devtools'
-  import { untrack } from 'svelte'
   import { createDebouncedSignal } from '@tanstack/svelte-pacer/debouncer'
+  import { untrack } from 'svelte'
 
   let instantCount = $state(0)
 

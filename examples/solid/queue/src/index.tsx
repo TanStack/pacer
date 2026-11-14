@@ -1,8 +1,8 @@
+import { TanStackDevtools } from '@tanstack/solid-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/solid-pacer-devtools'
+import { queue } from '@tanstack/solid-pacer/queuer'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { queue } from '@tanstack/solid-pacer/queuer'
-import { pacerDevtoolsPlugin } from '@tanstack/solid-pacer-devtools'
-import { TanStackDevtools } from '@tanstack/solid-devtools'
 
 function App1() {
   const [queueItems, setQueueItems] = createSignal<Array<number>>([])

@@ -7,23 +7,23 @@ import {
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
-import { toAccessorSignal } from '../utils/maybeAccessor'
 import {
   injectForwardMethods,
   methodNames,
 } from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
-import { injectInsideZone } from '../utils/zoneCompatibility'
 import { injectSelector } from '../utils/injectSelector'
-import type { MaybeAccessor } from '../utils/maybeAccessor'
-import type { MethodMap } from '../utils/injectForwardMethods'
-import type { ReadonlySelected } from '../utils/internalTypes'
+import { toAccessorSignal } from '../utils/maybeAccessor'
+import { injectInsideZone } from '../utils/zoneCompatibility'
 import type { Signal } from '@angular/core'
 import type {
   AnyFunction,
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer'
+import type { MethodMap } from '../utils/injectForwardMethods'
+import type { ReadonlySelected } from '../utils/internalTypes'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 
 /**
  * Options for {@link injectRateLimiter}, including core configuration and Angular cleanup.

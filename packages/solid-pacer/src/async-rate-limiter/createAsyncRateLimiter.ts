@@ -1,16 +1,16 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createPacerOptions } from '../utils/createPacerOptions'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SolidPacerOptions } from '../types'
-import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { Store } from '@tanstack/solid-store'
+import type { Accessor, JSX } from 'solid-js'
+import type { SolidPacerOptions } from '../types'
 
 export interface SolidAsyncRateLimiterOptions<
   TFn extends AnyAsyncFunction,

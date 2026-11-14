@@ -1,9 +1,9 @@
+import { TanStackDevtools } from '@tanstack/solid-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/solid-pacer-devtools'
+import { PacerProvider } from '@tanstack/solid-pacer/provider'
+import { createQueuer } from '@tanstack/solid-pacer/queuer'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createQueuer } from '@tanstack/solid-pacer/queuer'
-import { PacerProvider } from '@tanstack/solid-pacer/provider'
-import { pacerDevtoolsPlugin } from '@tanstack/solid-pacer-devtools'
-import { TanStackDevtools } from '@tanstack/solid-devtools'
 
 function App1() {
   // The function that we will be queuing

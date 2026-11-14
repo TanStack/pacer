@@ -1,10 +1,10 @@
 import { useLayoutEffect } from 'octane'
 import { splitSlot, subSlot } from '../utils/slots'
 import { useThrottledState } from './useThrottledState'
-import type { OctaneThrottler, OctaneThrottlerOptions } from './useThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { OctanePacerOptions } from '../types'
 import type { SetValue } from '../utils/cell'
+import type { OctaneThrottler, OctaneThrottlerOptions } from './useThrottler'
 /**
  * Derives a throttled value from its current source.
  *
@@ -64,7 +64,8 @@ export function useThrottledValue<TValue, TSelected = {}>(
       OctaneThrottlerOptions<SetValue<TValue>, TSelected>
     >,
     args[1] as
-      ((state: ThrottlerState<SetValue<TValue>>) => TSelected) | undefined,
+      | ((state: ThrottlerState<SetValue<TValue>>) => TSelected)
+      | undefined,
     subSlot(slot, 'state'),
   )
   useLayoutEffect(

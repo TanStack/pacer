@@ -5,14 +5,14 @@ import {
 } from '@angular/core'
 import { toAccessorSignal } from '../utils/maybeAccessor'
 import { injectThrottler } from './injectThrottler'
+import type { WritableSignal } from '@angular/core'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
-import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { SignalWrite } from '../utils/internalTypes'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
   AngularThrottler,
   AngularThrottlerOptions,
 } from './injectThrottler'
-import type { WritableSignal } from '@angular/core'
 
 /**
  * An Angular writable signal whose `set` and `update` writes are throttled.

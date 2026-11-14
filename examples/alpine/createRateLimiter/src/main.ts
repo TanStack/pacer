@@ -1,11 +1,11 @@
-import Alpine from 'alpinejs'
 import { createPacerScope, rateLimiterOptions } from '@tanstack/alpine-pacer'
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import Alpine from 'alpinejs'
 import type {
   AlpineRateLimiter,
   RateLimiterState,
 } from '@tanstack/alpine-pacer'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 
 Alpine.data('counter', () => {
   const scope = createPacerScope()

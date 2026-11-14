@@ -1,7 +1,7 @@
 import { createQueuer } from './createQueuer'
-import type { SvelteQueuer, SvelteQueuerOptions } from './createQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
 import type { SveltePacerOptions } from '../types'
+import type { SvelteQueuer, SvelteQueuerOptions } from './createQueuer'
 /**
  * Exposes pending queue items together with the queue that processes them.
  *

@@ -1,7 +1,6 @@
 import { ThemeContextProvider } from '@tanstack/devtools-ui'
 import { PacerContextProvider } from '../PacerContextProvider'
 import { Shell } from './Shell'
-
 import type { TanStackDevtoolsTheme } from '@tanstack/devtools-ui'
 
 interface DevtoolsProps {

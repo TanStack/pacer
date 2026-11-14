@@ -1,4 +1,3 @@
-import { Queuer } from '@tanstack/pacer/queuer'
 import Helper from '@ember/component/helper'
 import {
   isDestroyed,
@@ -6,11 +5,12 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { Queuer } from '@tanstack/pacer/queuer'
 import { createSubscribe } from '../utils/Subscribe'
 import { initializeQueue } from '../utils/initializeQueue'
 import { select } from '../utils/select'
-import type { EmberPacerSubscribe } from '../utils/Subscribe'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { EmberPacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useQueuer, including owner cleanup. */
 export interface EmberQueuerOptions<

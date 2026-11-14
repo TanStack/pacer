@@ -1,11 +1,11 @@
 import { useEffect } from 'preact/hooks'
 import { useRateLimitedState } from './useRateLimitedState'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { Dispatch, StateUpdater } from 'preact/hooks'
 import type {
   PreactRateLimiter,
   PreactRateLimiterOptions,
 } from './useRateLimiter'
-import type { Dispatch, StateUpdater } from 'preact/hooks'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 
 /**
  * A high-level Preact hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.

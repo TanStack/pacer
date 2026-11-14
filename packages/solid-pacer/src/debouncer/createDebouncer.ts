@@ -1,16 +1,16 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { shallow, useSelector } from '@tanstack/solid-store'
-import { createPacerOptions } from '../utils/createPacerOptions'
+import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SolidPacerOptions } from '../types'
-import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
-import type { AnyFunction } from '@tanstack/pacer/types'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   DebouncerOptions,
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
+import type { AnyFunction } from '@tanstack/pacer/types'
+import type { Store } from '@tanstack/solid-store'
+import type { Accessor, JSX } from 'solid-js'
+import type { SolidPacerOptions } from '../types'
 
 export interface SolidDebouncerOptions<
   TFn extends AnyFunction,

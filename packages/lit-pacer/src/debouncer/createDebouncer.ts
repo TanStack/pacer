@@ -1,7 +1,6 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { bindPacer } from '../utils/bindPacer'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { LitPacerSubscribe } from '../utils/subscribe'
+import { bindPacer } from '../utils/bindPacer'
 import type {
   DebouncerOptions,
   DebouncerState,
@@ -9,6 +8,7 @@ import type {
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
+import type { LitPacerSubscribe } from '../utils/subscribe'
 
 /** Options for createDebouncer, including owner cleanup. */
 export interface LitDebouncerOptions<

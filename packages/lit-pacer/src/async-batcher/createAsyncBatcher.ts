@@ -1,13 +1,13 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
-import { bindPacer } from '../utils/bindPacer'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { LitPacerSubscribe } from '../utils/subscribe'
+import { bindPacer } from '../utils/bindPacer'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
 import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
+import type { LitPacerSubscribe } from '../utils/subscribe'
 
 /** Options for createAsyncBatcher, including owner cleanup. */
 export interface LitAsyncBatcherOptions<

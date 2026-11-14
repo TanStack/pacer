@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'preact/hooks'
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
 import { rateLimit } from '@tanstack/preact-pacer/rate-limiter'
+import { render } from 'preact'
+import { useCallback, useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 function App1() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')

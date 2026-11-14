@@ -1,10 +1,10 @@
 import { observe, readSource } from '../utils/cell'
 import { createDebouncedState } from './createDebouncedState'
-import type { ReactiveControllerHost } from 'lit'
-import type { LitDebouncer, LitDebouncerOptions } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell'
+import type { LitDebouncer, LitDebouncerOptions } from './createDebouncer'
 /**
  * Derives a debounced value from its current source.
  *

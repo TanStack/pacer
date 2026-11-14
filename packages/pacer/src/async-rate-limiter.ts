@@ -1,7 +1,7 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import { parseFunctionOrValue } from './utils'
 import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction } from './types'
 

@@ -1,5 +1,5 @@
-import { defineConfig } from 'tsdown'
 import preact from '@preact/preset-vite'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   // Disable Prefresh for library builds. The consuming app's Vite dev server

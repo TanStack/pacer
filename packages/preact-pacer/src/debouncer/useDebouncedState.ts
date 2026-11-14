@@ -1,8 +1,8 @@
 import { useState } from 'preact/hooks'
 import { useDebouncer } from './useDebouncer'
-import type { PreactDebouncer, PreactDebouncerOptions } from './useDebouncer'
-import type { Dispatch, StateUpdater } from 'preact/hooks'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { Dispatch, StateUpdater } from 'preact/hooks'
+import type { PreactDebouncer, PreactDebouncerOptions } from './useDebouncer'
 
 /**
  * A Preact hook that creates a debounced state value, combining Preact's useState with debouncing functionality.
@@ -98,9 +98,5 @@ export function useDebouncedState<
       state: DebouncerState<Dispatch<StateUpdater<TValue>>>,
     ) => TSelected,
   )
-  return [
-    debouncedValue,
-    debouncer.maybeExecute as Dispatch<StateUpdater<TValue>>,
-    debouncer,
-  ]
+  return [debouncedValue, debouncer.maybeExecute, debouncer]
 }

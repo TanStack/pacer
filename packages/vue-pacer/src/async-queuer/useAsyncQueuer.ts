@@ -1,13 +1,13 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { bindPacer } from '../utils/bindPacer'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { VuePacerSubscribe } from '../utils/Subscribe'
+import { bindPacer } from '../utils/bindPacer'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 import type { ShallowRef } from 'vue'
 import type { VuePacerOptions } from '../types'
+import type { VuePacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useAsyncQueuer, including owner cleanup. */
 export interface VueAsyncQueuerOptions<

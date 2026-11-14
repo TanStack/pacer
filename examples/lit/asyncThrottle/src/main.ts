@@ -1,8 +1,8 @@
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { asyncThrottle } from '@tanstack/lit-pacer/async-throttler'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { LitElement, html, nothing } from 'lit'
 import { styleMap } from 'lit/directives/style-map.js'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { asyncThrottle } from '@tanstack/lit-pacer/async-throttler'
 
 class Demo extends LitElement {
   static properties = {

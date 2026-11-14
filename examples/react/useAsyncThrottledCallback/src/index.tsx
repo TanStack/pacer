@@ -1,6 +1,6 @@
+import { useAsyncThrottledCallback } from '@tanstack/react-pacer/async-throttler'
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useAsyncThrottledCallback } from '@tanstack/react-pacer/async-throttler'
 
 interface SearchResult {
   id: number

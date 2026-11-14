@@ -1,8 +1,8 @@
 <script lang="ts">
   import { TanStackDevtools } from '@tanstack/svelte-devtools'
   import { pacerDevtoolsPlugin } from '@tanstack/svelte-pacer-devtools'
-  import { onDestroy } from 'svelte'
   import { createAsyncRateLimiter } from '@tanstack/svelte-pacer/async-rate-limiter'
+  import { onDestroy } from 'svelte'
 
   interface SearchResult {
     id: number

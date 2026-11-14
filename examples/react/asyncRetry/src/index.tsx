@@ -1,6 +1,6 @@
+import { asyncRetry } from '@tanstack/react-pacer'
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { asyncRetry } from '@tanstack/react-pacer'
 
 interface UserData {
   id: number

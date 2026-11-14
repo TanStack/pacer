@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@tanstack/alpine-pacer": "workspace:*",
-    "@tanstack/devtools": "^0.15.0",
+    "@tanstack/devtools": "^0.16.0",
     "@tanstack/pacer-devtools": "workspace:*",
-    "alpinejs": "^3.17.4"
+    "alpinejs": "^3.17.5"
   },
   "devDependencies": {
     "@types/alpinejs": "^3.17.0",
-    "vite": "^8.3.2"
+    "vite": "^8.3.8"
   }
 }

@@ -1,9 +1,9 @@
 import { useAsyncQueuer } from './useAsyncQueuer'
+import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
 import type {
   ReactAsyncQueuer,
   ReactAsyncQueuerOptions,
 } from './useAsyncQueuer'
-import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
 
 /**
  * A higher-level React hook that creates an `AsyncQueuer` instance with built-in state management.

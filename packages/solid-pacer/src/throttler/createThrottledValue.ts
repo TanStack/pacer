@@ -1,9 +1,9 @@
 import { createEffect } from 'solid-js'
 import { createThrottledSignal } from './createThrottledSignal'
+import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { Accessor, Setter } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
 import type { SolidThrottler, SolidThrottlerOptions } from './createThrottler'
-import type { Accessor, Setter } from 'solid-js'
-import type { ThrottlerState } from '@tanstack/pacer/throttler'
 
 /**
  * A high-level Solid hook that creates a throttled version of a value that updates at most once within a specified time window.

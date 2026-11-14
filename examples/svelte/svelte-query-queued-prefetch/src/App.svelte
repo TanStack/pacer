@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { createQueuedValue } from '@tanstack/svelte-pacer'
   import {
     QueryClient,
     QueryClientProvider,
     createQuery,
   } from '@tanstack/svelte-query'
   import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools'
-  import { createQueuedValue } from '@tanstack/svelte-pacer'
 
   interface Post {
     id: number

@@ -1,6 +1,6 @@
+import { asyncRateLimit } from '@tanstack/react-pacer/async-rate-limiter'
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { asyncRateLimit } from '@tanstack/react-pacer/async-rate-limiter'
 
 function SearchApp() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')

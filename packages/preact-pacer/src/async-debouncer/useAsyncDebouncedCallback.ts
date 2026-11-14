@@ -1,7 +1,7 @@
 import { useCallback } from 'preact/hooks'
 import { useAsyncDebouncer } from './useAsyncDebouncer'
-import type { PreactAsyncDebouncerOptions } from './useAsyncDebouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { PreactAsyncDebouncerOptions } from './useAsyncDebouncer'
 
 /**
  * A Preact hook that creates a debounced version of an async callback function.

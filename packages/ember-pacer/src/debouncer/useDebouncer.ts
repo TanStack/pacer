@@ -1,4 +1,3 @@
-import { Debouncer } from '@tanstack/pacer/debouncer'
 import Helper from '@ember/component/helper'
 import {
   isDestroyed,
@@ -6,14 +5,15 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { Debouncer } from '@tanstack/pacer/debouncer'
 import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
-import type { EmberPacerSubscribe } from '../utils/Subscribe'
-import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   DebouncerOptions,
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
+import type { AnyFunction } from '@tanstack/pacer/types'
+import type { EmberPacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useDebouncer, including owner cleanup. */
 export interface EmberDebouncerOptions<
@@ -90,7 +90,8 @@ export class UseDebouncer<
 > extends Helper<{
   Args: {
     Positional:
-      [fn: TFn] | [fn: TFn, selector: (state: DebouncerState<TFn>) => TSelected]
+      | [fn: TFn]
+      | [fn: TFn, selector: (state: DebouncerState<TFn>) => TSelected]
     Named: EmberDebouncerOptions<TFn, TSelected>
   }
   Return: EmberDebouncer<TFn, TSelected>

@@ -1,19 +1,24 @@
 <h1>TanStack Pacer injectAsyncBatcher Example</h1>
 <h2>Batch Status</h2>
 <p>Pending Items: {{ pendingItems().length }} / 5</p>
-<p>Wait up to 4000ms, process for 1000ms. Urgent items trigger immediate processing.</p>
-<p>Is Processing: {{ runner.state().isExecuting }}</p>
-<p>Successful Batches: {{ successCount() }}, Failed Batches: {{ errorCount() }}</p>
 <p>
-  Status: {{ runner.state().status }}, Total Items Processed: {{ runner.state().totalItemsProcessed
-  }}
+  Wait up to 4000ms, process for 1000ms. Urgent items trigger immediate
+  processing.
+</p>
+<p>Is Processing: {{ runner.state().isExecuting }}</p>
+<p>
+  Successful Batches: {{ successCount() }}, Failed Batches: {{ errorCount() }}
+</p>
+<p>
+  Status: {{ runner.state().status }}, Total Items Processed:
+  {{ runner.state().totalItemsProcessed }}
 </p>
 <h2>Current Batch Items</h2>
 <ul>
   @for (item of pendingItems(); track item.id) {
-  <li>{{ item.value }}</li>
+    <li>{{ item.value }}</li>
   } @empty {
-  <li>No items pending</li>
+    <li>No items pending</li>
   }
 </ul>
 <button (click)="add()">Add Regular Item</button
@@ -32,10 +37,13 @@
 
 <h2>Processed Batches ({{ processedBatches().length }})</h2>
 @for (batch of processedBatches(); track $index) {
-<p>{{ batch.result }}</p>
-} @if (errors().length) {
-<h2>Errors ({{ errors().length }})</h2>
-@for (error of errors(); track $index) {
-<p role="alert">{{ error }}</p>
-}<button (click)="errors.set([])">Clear Errors</button> }
+  <p>{{ batch.result }}</p>
+}
+@if (errors().length) {
+  <h2>Errors ({{ errors().length }})</h2>
+  @for (error of errors(); track $index) {
+    <p role="alert">{{ error }}</p>
+  }
+  <button (click)="errors.set([])">Clear Errors</button>
+}
 <pre>{{ runner.state() | json }}</pre>

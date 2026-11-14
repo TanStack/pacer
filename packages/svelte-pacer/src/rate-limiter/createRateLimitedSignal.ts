@@ -1,12 +1,12 @@
 import { createCell } from '../utils/cell.svelte'
 import { createRateLimiter } from './createRateLimiter'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { SveltePacerOptions } from '../types'
+import type { CellValue, SetValue } from '../utils/cell.svelte'
 import type {
   SvelteRateLimiter,
   SvelteRateLimiterOptions,
 } from './createRateLimiter'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
-import type { SveltePacerOptions } from '../types'
-import type { CellValue, SetValue } from '../utils/cell.svelte'
 /**
  * Creates rate-limited state with a scheduled setter.
  *

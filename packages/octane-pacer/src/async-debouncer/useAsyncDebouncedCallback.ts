@@ -1,11 +1,11 @@
 import { splitSlot, subSlot } from '../utils/slots'
 import { useAsyncDebouncer } from './useAsyncDebouncer'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { OctanePacerOptions } from '../types'
 import type {
   OctaneAsyncDebouncer,
   OctaneAsyncDebouncerOptions,
 } from './useAsyncDebouncer'
-import type { OctanePacerOptions } from '../types'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 /**
  * Returns a stable debounced callback owned by the Octane lifecycle.
  *

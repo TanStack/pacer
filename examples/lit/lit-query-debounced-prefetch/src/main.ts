@@ -1,12 +1,12 @@
+import { createDebouncedValue } from '@tanstack/lit-pacer'
 import {
   QueryClient,
   createQueryController,
   QueryClientProvider,
   onlineManager,
 } from '@tanstack/lit-query'
-import { LitElement, html, nothing } from 'lit'
-import { createDebouncedValue } from '@tanstack/lit-pacer'
 import { TanstackQueryDevtools } from '@tanstack/query-devtools'
+import { LitElement, html, nothing } from 'lit'
 
 interface Post {
   id: number

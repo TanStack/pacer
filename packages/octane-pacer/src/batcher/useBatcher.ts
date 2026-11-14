@@ -1,12 +1,12 @@
+import { shallow } from '@tanstack/octane-store'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { useLayoutEffect, useRef } from 'octane'
-import { shallow } from '@tanstack/octane-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import { createSubscribe } from '../utils/Subscribe'
 import { select, splitSlot, subSlot } from '../utils/slots'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { OctanePacerSubscribe } from '../utils/Subscribe'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { OctanePacerOptions } from '../types'
+import type { OctanePacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useBatcher, including owner cleanup. */
 export interface OctaneBatcherOptions<

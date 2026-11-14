@@ -7,8 +7,8 @@ import {
   it,
   vi,
 } from 'vitest'
-import { AsyncDebouncer, asyncDebounce } from '../src/async-debouncer'
 import { getPacerDevtoolsInstance } from '../src'
+import { AsyncDebouncer, asyncDebounce } from '../src/async-debouncer'
 
 describe('AsyncDebouncer', () => {
   beforeEach(() => {

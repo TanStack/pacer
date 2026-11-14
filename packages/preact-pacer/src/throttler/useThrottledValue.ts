@@ -1,8 +1,8 @@
 import { useEffect } from 'preact/hooks'
 import { useThrottledState } from './useThrottledState'
+import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { Dispatch, StateUpdater } from 'preact/hooks'
 import type { PreactThrottler, PreactThrottlerOptions } from './useThrottler'
-import type { ThrottlerState } from '@tanstack/pacer/throttler'
 
 /**
  * A high-level Preact hook that creates a throttled version of a value that updates at most once within a specified time window.

@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { shallow, useSelector } from '@tanstack/preact-store'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/preact-store'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
+import type { Store } from '@tanstack/preact-store'
 import type { ComponentChildren } from 'preact'
 
 export interface PreactAsyncBatcherOptions<
@@ -282,11 +282,10 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   const state = useSelector(asyncBatcher.store, selector, { compare: shallow })
 
   return useMemo(
-    () =>
-      ({
-        ...asyncBatcher,
-        state,
-      }) as PreactAsyncBatcher<TValue, TSelected>, // omit `store` in favor of `state`
+    () => ({
+      ...asyncBatcher,
+      state,
+    }), // omit `store` in favor of `state`
     [asyncBatcher, state],
   )
 }

@@ -1,12 +1,12 @@
 import { observe, readSource } from '../utils/cell.svelte'
 import { createRateLimitedSignal } from './createRateLimitedSignal'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { SveltePacerOptions } from '../types'
+import type { CellValue, SetValue, ValueSource } from '../utils/cell.svelte'
 import type {
   SvelteRateLimiter,
   SvelteRateLimiterOptions,
 } from './createRateLimiter'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
-import type { SveltePacerOptions } from '../types'
-import type { CellValue, SetValue, ValueSource } from '../utils/cell.svelte'
 /**
  * Derives a rate-limited value from its current source.
  *

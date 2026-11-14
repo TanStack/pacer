@@ -1,9 +1,9 @@
 import { observe, readSource } from '../utils/cell.svelte'
 import { createDebouncedSignal } from './createDebouncedSignal'
-import type { SvelteDebouncer, SvelteDebouncerOptions } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { SveltePacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell.svelte'
+import type { SvelteDebouncer, SvelteDebouncerOptions } from './createDebouncer'
 /**
  * Derives a debounced value from its current source.
  *

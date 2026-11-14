@@ -2,11 +2,11 @@ import { createRoot, createSignal } from 'solid-js'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createDebouncedSignal } from '../src/debouncer/createDebouncedSignal'
 import { createDebouncedValue } from '../src/debouncer/createDebouncedValue'
-import { createThrottledSignal } from '../src/throttler/createThrottledSignal'
-import { createThrottledValue } from '../src/throttler/createThrottledValue'
+import { createQueuedSignal } from '../src/queuer/createQueuedSignal'
 import { createRateLimitedSignal } from '../src/rate-limiter/createRateLimitedSignal'
 import { createRateLimitedValue } from '../src/rate-limiter/createRateLimitedValue'
-import { createQueuedSignal } from '../src/queuer/createQueuedSignal'
+import { createThrottledSignal } from '../src/throttler/createThrottledSignal'
+import { createThrottledValue } from '../src/throttler/createThrottledValue'
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())

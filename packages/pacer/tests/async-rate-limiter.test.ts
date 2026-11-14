@@ -7,8 +7,8 @@ import {
   it,
   vi,
 } from 'vitest'
-import { AsyncRateLimiter, asyncRateLimit } from '../src/async-rate-limiter'
 import { getPacerDevtoolsInstance } from '../src'
+import { AsyncRateLimiter, asyncRateLimit } from '../src/async-rate-limiter'
 
 describe('AsyncRateLimiter', () => {
   beforeEach(() => {

@@ -1,11 +1,11 @@
 import { splitSlot, subSlot } from '../utils/slots'
 import { useAsyncRateLimiter } from './useAsyncRateLimiter'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { OctanePacerOptions } from '../types'
 import type {
   OctaneAsyncRateLimiter,
   OctaneAsyncRateLimiterOptions,
 } from './useAsyncRateLimiter'
-import type { OctanePacerOptions } from '../types'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 /**
  * Returns a stable rate-limited callback owned by the Octane lifecycle.
  *

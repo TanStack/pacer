@@ -1,10 +1,10 @@
 import { createCell, observe, readSource } from '../utils/cell'
 import { createQueuer } from './createQueuer'
-import type { ReactiveControllerHost } from 'lit'
-import type { LitQueuer, LitQueuerOptions } from './createQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
 import type { CellValue, ValueSource } from '../utils/cell'
+import type { LitQueuer, LitQueuerOptions } from './createQueuer'
 /**
  * Derives a queued value from its current source.
  *

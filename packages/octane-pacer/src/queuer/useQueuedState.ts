@@ -1,8 +1,8 @@
 import { splitSlot, subSlot } from '../utils/slots'
 import { useQueuer } from './useQueuer'
-import type { OctaneQueuer, OctaneQueuerOptions } from './useQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
 import type { OctanePacerOptions } from '../types'
+import type { OctaneQueuer, OctaneQueuerOptions } from './useQueuer'
 /**
  * Exposes pending queue items together with the queue that processes them.
  *
@@ -76,7 +76,8 @@ export function useQueuedState<
   const utility = hook(
     fn,
     args[0] as
-      OctanePacerOptions<OctaneQueuerOptions<TValue, TSelected>> | undefined,
+      | OctanePacerOptions<OctaneQueuerOptions<TValue, TSelected>>
+      | undefined,
     selector,
     subSlot(slot, 'utility'),
   )

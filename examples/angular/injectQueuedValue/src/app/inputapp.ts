@@ -15,7 +15,10 @@ import { injectQueuerItems } from '@tanstack/angular-pacer'
 export class InputApp {
   readonly value = input.required<string>()
   readonly processed = signal('')
-  readonly queued = injectQueuerItems((value: string) => this.processed.set(value), { wait: 500 })
+  readonly queued = injectQueuerItems(
+    (value: string) => this.processed.set(value),
+    { wait: 500 },
+  )
   enqueueRandom(): void {
     this.queued.queuer.addItem(Math.random().toFixed(4))
   }

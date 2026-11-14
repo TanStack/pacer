@@ -1,6 +1,6 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
 import { useAsyncBatchedCallback } from '@tanstack/preact-pacer/async-batcher'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
 
 interface SearchResult {
   id: number

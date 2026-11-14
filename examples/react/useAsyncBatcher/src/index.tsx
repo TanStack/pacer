@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import ReactDOM from 'react-dom/client'
 import { useAsyncBatcher } from '@tanstack/react-pacer/async-batcher'
 import { PacerProvider } from '@tanstack/react-pacer/provider'
+import { useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 const fakeProcessingTime = 1000
 

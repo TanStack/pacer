@@ -1,10 +1,10 @@
 import { observe, readSource } from '../utils/cell'
 import { createThrottledState } from './createThrottledState'
-import type { PacerScope } from '../provider/PacerProvider'
-import type { AlpineThrottler, AlpineThrottlerOptions } from './createThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell'
+import type { AlpineThrottler, AlpineThrottlerOptions } from './createThrottler'
 /**
  * Derives a throttled value from its current source.
  *

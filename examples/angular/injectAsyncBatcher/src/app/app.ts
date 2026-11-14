@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core'
 import { JsonPipe } from '@angular/common'
+import { Component, signal } from '@angular/core'
 import { injectAsyncBatcher } from '@tanstack/angular-pacer'
 
 type Item = { id: number; value: string; timestamp: number }
@@ -24,7 +24,8 @@ export class App {
     {
       maxSize: 5,
       wait: 4000,
-      getShouldExecute: (items) => items.some((item) => item.value.includes('urgent')),
+      getShouldExecute: (items) =>
+        items.some((item) => item.value.includes('urgent')),
       throwOnError: false,
       onItemsChange: (batcher) => this.pendingItems.set(batcher.peekAllItems()),
       onSuccess: (result, items, batcher) => {
@@ -40,7 +41,11 @@ export class App {
         console.error('Batch failed:', error, items)
       },
       onSettled: (items, batcher) =>
-        console.log('Batch settled:', items, batcher.store.state.totalItemsProcessed),
+        console.log(
+          'Batch settled:',
+          items,
+          batcher.store.state.totalItemsProcessed,
+        ),
     },
     (state) => state,
   )

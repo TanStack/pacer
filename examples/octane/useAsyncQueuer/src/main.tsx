@@ -1,9 +1,9 @@
-import { createRoot, useLayoutEffect } from 'octane'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { useState } from 'octane'
 import { useAsyncQueuer } from '@tanstack/octane-pacer/async-queuer'
 import { PacerProvider } from '@tanstack/octane-pacer/provider'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { createRoot, useLayoutEffect } from 'octane'
+import { useState } from 'octane'
 const fakeWaitTime = 500
 type Item = number
 

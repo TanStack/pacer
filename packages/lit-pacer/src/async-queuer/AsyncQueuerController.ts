@@ -1,8 +1,8 @@
 import { createAsyncQueuer } from './createAsyncQueuer'
-import type { LitAsyncQueuer, LitAsyncQueuerOptions } from './createAsyncQueuer'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
 import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
+import type { LitAsyncQueuer, LitAsyncQueuerOptions } from './createAsyncQueuer'
 
 /** Owns a AsyncQueuer for a Lit host. Access core methods and selected state through `pacer`. */
 export class AsyncQueuerController<TValue, TSelected = {}> {

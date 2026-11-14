@@ -1,9 +1,9 @@
+import { TanStackDevtools } from '@tanstack/react-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
+import { useQueuer } from '@tanstack/react-pacer/queuer'
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useQueuer } from '@tanstack/react-pacer/queuer'
-import { PacerProvider } from '@tanstack/react-pacer/provider'
-import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 
 function App1() {
   // The function that we will be queuing

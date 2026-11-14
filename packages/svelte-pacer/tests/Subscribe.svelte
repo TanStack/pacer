@@ -1,8 +1,9 @@
 <script lang="ts">
   import { untrack } from 'svelte'
   import { createDebouncer } from '../src'
-  import type { SvelteDebouncer } from '../src'
   import type { DebouncerState } from '@tanstack/pacer'
+  import type { SvelteDebouncer } from '../src'
+
   let {
     capture,
     report,

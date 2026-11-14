@@ -1,3 +1,4 @@
+import { Header, HeaderLogo, MainPanel } from '@tanstack/devtools-ui'
 import {
   createEffect,
   createMemo,
@@ -5,12 +6,11 @@ import {
   onCleanup,
   onMount,
 } from 'solid-js'
-import { Header, HeaderLogo, MainPanel } from '@tanstack/devtools-ui'
-import { useStyles } from '../styles/use-styles'
 import { usePacerDevtoolsState } from '../PacerContextProvider'
-import { UTIL_GROUPS } from './util-groups'
-import { UtilList } from './UtilList'
+import { useStyles } from '../styles/use-styles'
 import { DetailsPanel } from './DetailsPanel'
+import { UtilList } from './UtilList'
+import { UTIL_GROUPS } from './util-groups'
 import type { StateKey } from './util-groups'
 
 function readResizeObserverBlockSize(entry: ResizeObserverEntry): number {

@@ -9,9 +9,10 @@
   autocomplete="new-password"
 />
 @if (loading()) {
-<p>Loading...</p>
-} @if (error()) {
-<p role="alert">Error: {{ error() }}</p>
+  <p>Loading...</p>
+}
+@if (error()) {
+  <p role="alert">Error: {{ error() }}</p>
 }
 <p>API calls made: {{ runner.state().successCount }}</p>
 <p>Is executing: {{ runner.state().isExecuting }}</p>
@@ -21,6 +22,6 @@
 <h2>Search Results</h2>
 <ul>
   @for (result of results(); track $index) {
-  <li>{{ result }}</li>
+    <li>{{ result }}</li>
   }
 </ul>

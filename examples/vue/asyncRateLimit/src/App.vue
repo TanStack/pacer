@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { TanStackDevtools } from '@tanstack/vue-devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
-import { computed, ref } from 'vue'
 import { asyncRateLimit } from '@tanstack/vue-pacer/async-rate-limiter'
+import { computed, ref } from 'vue'
 
 const dev = import.meta.env.DEV
 const plugins = [pacerDevtoolsPlugin()]

@@ -1,6 +1,6 @@
+import { asyncDebounce } from '@tanstack/octane-pacer/async-debouncer'
 import { useCallback, useState } from 'octane'
 import { createRoot } from 'octane'
-import { asyncDebounce } from '@tanstack/octane-pacer/async-debouncer'
 
 function SearchApp() {
   const [searchText, setSearchText] = useState('')

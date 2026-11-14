@@ -1,10 +1,10 @@
-import { LitElement, html } from 'lit'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import {
   rateLimiterOptions,
   createRateLimiter,
 } from '@tanstack/lit-pacer/rate-limiter'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { LitElement, html } from 'lit'
 
 class Counter extends LitElement {
   static properties = {

@@ -1,6 +1,6 @@
+import { asyncRetry } from '@tanstack/octane-pacer'
 import { useState } from 'octane'
 import { createRoot } from 'octane'
-import { asyncRetry } from '@tanstack/octane-pacer'
 
 interface UserData {
   id: number

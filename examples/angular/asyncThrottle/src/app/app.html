@@ -9,15 +9,16 @@
   autocomplete="new-password"
 />
 @if (loading()) {
-<p>Loading...</p>
-} @if (error()) {
-<p role="alert">Error: {{ error() }}</p>
+  <p>Loading...</p>
+}
+@if (error()) {
+  <p role="alert">Error: {{ error() }}</p>
 }
 <p>Instant Search: {{ searchTerm() }}</p>
 <p>Throttled Search: {{ executedTerm() }}</p>
 <h2>Search Results</h2>
 <ul>
   @for (result of results(); track $index) {
-  <li>{{ result }}</li>
+    <li>{{ result }}</li>
   }
 </ul>

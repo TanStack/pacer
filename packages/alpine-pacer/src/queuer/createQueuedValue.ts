@@ -1,10 +1,10 @@
 import { createCell, observe, readSource } from '../utils/cell'
 import { createQueuer } from './createQueuer'
-import type { PacerScope } from '../provider/PacerProvider'
-import type { AlpineQueuer, AlpineQueuerOptions } from './createQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
 import type { CellValue, ValueSource } from '../utils/cell'
+import type { AlpineQueuer, AlpineQueuerOptions } from './createQueuer'
 /**
  * Derives a queued value from its current source.
  *
