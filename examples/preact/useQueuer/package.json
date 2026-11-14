@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tanstack/preact-devtools": "^0.10.15",
-    "@tanstack/preact-pacer": "^0.24.2",
+    "@tanstack/preact-pacer": "^0.24.3",
     "@tanstack/preact-pacer-devtools": "workspace:*",
     "preact": "^11.2.0"
   },

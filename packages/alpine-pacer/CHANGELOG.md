@@ -1,5 +1,12 @@
 # @tanstack/alpine-pacer
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`9368fd1`](https://github.com/TanStack/pacer/commit/9368fd1dca6ee56ff10c60df45d073c03e85e939)]:
+  - @tanstack/pacer@0.23.2
+
 ## 0.2.0
 
 ### Minor Changes
