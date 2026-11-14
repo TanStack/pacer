@@ -1,11 +1,11 @@
-import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import Alpine from 'alpinejs'
 import type {
   AlpineAsyncBatcher,
   AsyncBatcherState,
 } from '@tanstack/alpine-pacer'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 type Item = {
   id: number
   value: string

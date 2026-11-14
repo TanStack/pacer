@@ -1,12 +1,12 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { bindPacer } from '../utils/bindPacer'
-import type { AlpinePacerSubscribe } from '../utils/subscribe'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
 import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
+import type { AlpinePacerSubscribe } from '../utils/subscribe'
 
 /** Options for createAsyncBatcher, including owner cleanup. */
 export interface AlpineAsyncBatcherOptions<

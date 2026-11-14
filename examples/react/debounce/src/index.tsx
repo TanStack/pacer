@@ -1,6 +1,6 @@
+import { debounce } from '@tanstack/react-pacer/debouncer'
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { debounce } from '@tanstack/react-pacer/debouncer'
 
 function App1() {
   // Use your state management library of choice

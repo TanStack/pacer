@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
 import { Throttler } from '@tanstack/pacer/throttler'
 import { shallow, useSelector } from '@tanstack/react-store'
+import { useEffect, useMemo, useState } from 'react'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/react-store'
-import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
+import type { AnyFunction } from '@tanstack/pacer/types'
+import type { Store } from '@tanstack/react-store'
 import type { FunctionComponent, ReactNode } from 'react'
 
 export interface ReactThrottlerOptions<

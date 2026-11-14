@@ -20,10 +20,13 @@ export class App {
     },
   )
   readonly numberQueue = this.queued.queuer
-  readonly rangeQueued = injectQueuerItems((item: number) => this.rangeValue.set(item), {
-    maxSize: 100,
-    wait: 100,
-  })
+  readonly rangeQueued = injectQueuerItems(
+    (item: number) => this.rangeValue.set(item),
+    {
+      maxSize: 100,
+      wait: 100,
+    },
+  )
   readonly rangeQueue = this.rangeQueued.queuer
   addNumber(): void {
     const items = this.numberQueue.peekAllItems()

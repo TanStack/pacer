@@ -1,9 +1,9 @@
 import { Queuer } from '@tanstack/pacer/queuer'
-import { bindPacer } from '../utils/bindPacer.svelte'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SveltePacerSubscribe } from '../utils/createSubscribe'
+import { bindPacer } from '../utils/bindPacer.svelte'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { SveltePacerOptions } from '../types'
+import type { SveltePacerSubscribe } from '../utils/createSubscribe'
 
 /** Options for createQueuer, including owner cleanup. */
 export interface SvelteQueuerOptions<

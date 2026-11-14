@@ -1,9 +1,9 @@
 import { createCell } from '../utils/cell'
 import { useThrottler } from './useThrottler'
-import type { VueThrottler, VueThrottlerOptions } from './useThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { VuePacerOptions } from '../types'
 import type { CellValue, SetValue } from '../utils/cell'
+import type { VueThrottler, VueThrottlerOptions } from './useThrottler'
 /**
  * Creates throttled state with a scheduled setter.
  *

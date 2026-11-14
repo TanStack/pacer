@@ -6,9 +6,9 @@ import {
 } from 'solid-js'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createDebouncer } from '../src/debouncer/createDebouncer'
-import { createRateLimiter } from '../src/rate-limiter/createRateLimiter'
-import { createQueuer } from '../src/queuer/createQueuer'
 import { PacerProvider } from '../src/provider/PacerProvider'
+import { createQueuer } from '../src/queuer/createQueuer'
+import { createRateLimiter } from '../src/rate-limiter/createRateLimiter'
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())

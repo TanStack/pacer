@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Batcher } from '@tanstack/pacer/batcher'
 import { shallow, useSelector } from '@tanstack/preact-store'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/preact-store'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
+import type { Store } from '@tanstack/preact-store'
 import type { ComponentChildren } from 'preact'
 
 export interface PreactBatcherOptions<
@@ -229,11 +229,10 @@ export function useBatcher<TValue, TSelected = {}>(
   const state = useSelector(batcher.store, selector, { compare: shallow })
 
   return useMemo(
-    () =>
-      ({
-        ...batcher,
-        state,
-      }) as PreactBatcher<TValue, TSelected>, // omit `store` in favor of `state`
+    () => ({
+      ...batcher,
+      state,
+    }), // omit `store` in favor of `state`
     [batcher, state],
   )
 }

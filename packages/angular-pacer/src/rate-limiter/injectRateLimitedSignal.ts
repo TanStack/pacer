@@ -5,14 +5,14 @@ import {
 } from '@angular/core'
 import { toAccessorSignal } from '../utils/maybeAccessor'
 import { injectRateLimiter } from './injectRateLimiter'
+import type { WritableSignal } from '@angular/core'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
-import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { SignalWrite } from '../utils/internalTypes'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
   AngularRateLimiter,
   AngularRateLimiterOptions,
 } from './injectRateLimiter'
-import type { WritableSignal } from '@angular/core'
 
 /**
  * An Angular writable signal whose `set` and `update` writes share a rate limit.

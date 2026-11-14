@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { AsyncRetryer, asyncRetry } from '../src/async-retryer'
 import { getPacerDevtoolsInstance } from '../src'
+import { AsyncRetryer, asyncRetry } from '../src/async-retryer'
 
 describe('AsyncRetryer', () => {
   beforeEach(() => {

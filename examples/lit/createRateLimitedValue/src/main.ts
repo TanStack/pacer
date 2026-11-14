@@ -1,8 +1,8 @@
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { createRateLimitedValue } from '@tanstack/lit-pacer/rate-limiter'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { LitElement, html } from 'lit'
 import { styleMap } from 'lit/directives/style-map.js'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { createRateLimitedValue } from '@tanstack/lit-pacer/rate-limiter'
 
 class Counter extends LitElement {
   static properties = {

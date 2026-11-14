@@ -4,13 +4,13 @@ import {
   isDestroying,
   registerDestructor,
 } from '@ember/destroyable'
-import { scheduleOnce } from '@ember/runloop'
 import { trackedObject } from '@ember/reactive/collections'
+import { scheduleOnce } from '@ember/runloop'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
-import type { SetValue } from '../utils/cell'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { SetValue } from '../utils/cell'
 import type { EmberDebouncer, EmberDebouncerOptions } from './useDebouncer'
 /** Reactive value, update method, and underlying utility returned by useDebouncedState. */
 export interface EmberDebouncedState<TValue, TSelected = {}> {

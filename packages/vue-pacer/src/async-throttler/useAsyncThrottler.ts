@@ -1,14 +1,14 @@
 import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
-import { bindPacer } from '../utils/bindPacer'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { VuePacerSubscribe } from '../utils/Subscribe'
-import type { ShallowRef } from 'vue'
+import { bindPacer } from '../utils/bindPacer'
 import type {
   AsyncThrottlerOptions,
   AsyncThrottlerState,
 } from '@tanstack/pacer/async-throttler'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { ShallowRef } from 'vue'
 import type { VuePacerOptions } from '../types'
+import type { VuePacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useAsyncThrottler, including owner cleanup. */
 export interface VueAsyncThrottlerOptions<

@@ -1,7 +1,7 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
 import { useAsyncBatcher } from '@tanstack/preact-pacer/async-batcher'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
 
 const fakeProcessingTime = 1000
 

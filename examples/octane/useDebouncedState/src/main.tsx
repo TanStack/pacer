@@ -1,6 +1,6 @@
+import { useDebouncedState } from '@tanstack/octane-pacer/debouncer'
 import { useRef, useState } from 'octane'
 import { createRoot } from 'octane'
-import { useDebouncedState } from '@tanstack/octane-pacer/debouncer'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)

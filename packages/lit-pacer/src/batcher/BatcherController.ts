@@ -1,8 +1,8 @@
 import { createBatcher } from './createBatcher'
-import type { LitBatcher, LitBatcherOptions } from './createBatcher'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
 import type { BatcherState } from '@tanstack/pacer/batcher'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
+import type { LitBatcher, LitBatcherOptions } from './createBatcher'
 
 /** Owns a Batcher for a Lit host. Access core methods and selected state through `pacer`. */
 export class BatcherController<TValue, TSelected = {}> {

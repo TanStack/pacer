@@ -1,5 +1,5 @@
-import { vi } from 'vitest'
 import { TestBed } from '@angular/core/testing'
+import { vi } from 'vitest'
 import { App } from './app'
 
 describe('App', () => {
@@ -19,7 +19,9 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App)
     await fixture.whenStable()
     const compiled = fixture.nativeElement as HTMLElement
-    expect(compiled.querySelector('h1')?.textContent).toContain('TanStack Pacer asyncRetry Example')
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'TanStack Pacer asyncRetry Example',
+    )
   })
 })
 

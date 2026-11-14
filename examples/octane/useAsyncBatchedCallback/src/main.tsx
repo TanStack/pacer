@@ -1,6 +1,6 @@
+import { useAsyncBatchedCallback } from '@tanstack/octane-pacer/async-batcher'
 import { useState } from 'octane'
 import { createRoot } from 'octane'
-import { useAsyncBatchedCallback } from '@tanstack/octane-pacer/async-batcher'
 
 interface SearchResult {
   id: number

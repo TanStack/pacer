@@ -1,8 +1,8 @@
 import { splitSlot, subSlot } from '../utils/slots'
 import { useThrottler } from './useThrottler'
-import type { OctaneThrottler, OctaneThrottlerOptions } from './useThrottler'
-import type { OctanePacerOptions } from '../types'
 import type { AnyFunction } from '@tanstack/pacer/types'
+import type { OctanePacerOptions } from '../types'
+import type { OctaneThrottler, OctaneThrottlerOptions } from './useThrottler'
 /**
  * Returns a stable throttled callback owned by the Octane lifecycle.
  *

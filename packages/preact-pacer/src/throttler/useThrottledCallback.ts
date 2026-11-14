@@ -1,7 +1,7 @@
 import { useCallback } from 'preact/hooks'
 import { useThrottler } from './useThrottler'
-import type { PreactThrottlerOptions } from './useThrottler'
 import type { AnyFunction } from '@tanstack/pacer/types'
+import type { PreactThrottlerOptions } from './useThrottler'
 
 /**
  * A Preact hook that creates a throttled version of a callback function.

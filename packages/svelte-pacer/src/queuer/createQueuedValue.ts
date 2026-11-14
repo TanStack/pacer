@@ -1,9 +1,9 @@
 import { createCell, observe, readSource } from '../utils/cell.svelte'
 import { createQueuer } from './createQueuer'
-import type { SvelteQueuer, SvelteQueuerOptions } from './createQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
 import type { SveltePacerOptions } from '../types'
 import type { CellValue, ValueSource } from '../utils/cell.svelte'
+import type { SvelteQueuer, SvelteQueuerOptions } from './createQueuer'
 /**
  * Derives a queued value from its current source.
  *

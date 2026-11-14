@@ -1,6 +1,6 @@
+import { batch } from '@tanstack/solid-pacer/batcher'
 import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { batch } from '@tanstack/solid-pacer/batcher'
 
 function App1() {
   const [batchItems, setBatchItems] = createSignal<Array<number>>([])

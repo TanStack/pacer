@@ -1,7 +1,7 @@
 import { splitSlot, subSlot } from '../utils/slots'
 import { useBatcher } from './useBatcher'
-import type { OctaneBatcher, OctaneBatcherOptions } from './useBatcher'
 import type { OctanePacerOptions } from '../types'
+import type { OctaneBatcher, OctaneBatcherOptions } from './useBatcher'
 /**
  * Returns a stable batched callback owned by the Octane lifecycle.
  *

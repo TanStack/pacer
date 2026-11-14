@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { createQueuer } from '@tanstack/lit-pacer/queuer'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { LitElement, html } from 'lit'
 
 class Counter extends LitElement {
   static properties = {}

@@ -6,7 +6,6 @@ import {
   provide,
 } from 'vue'
 import type { InjectionKey, PropType } from 'vue'
-import type { VuePacerOptions } from '../types'
 import type { VueAsyncBatcherOptions } from '../async-batcher/useAsyncBatcher'
 import type { VueAsyncDebouncerOptions } from '../async-debouncer/useAsyncDebouncer'
 import type { VueAsyncQueuerOptions } from '../async-queuer/useAsyncQueuer'
@@ -17,6 +16,7 @@ import type { VueDebouncerOptions } from '../debouncer/useDebouncer'
 import type { VueQueuerOptions } from '../queuer/useQueuer'
 import type { VueRateLimiterOptions } from '../rate-limiter/useRateLimiter'
 import type { VueThrottlerOptions } from '../throttler/useThrottler'
+import type { VuePacerOptions } from '../types'
 
 export interface PacerProviderOptions {
   asyncBatcher?: Partial<VueAsyncBatcherOptions<any, any>>

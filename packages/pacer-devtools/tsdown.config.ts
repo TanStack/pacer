@@ -1,5 +1,5 @@
-import { defineConfig } from 'tsdown'
 import solid from 'rolldown-plugin-solid'
+import { defineConfig } from 'tsdown'
 
 const makeSolid = (ssr = false) =>
   solid({ solid: { generate: ssr ? 'ssr' : 'dom' } })

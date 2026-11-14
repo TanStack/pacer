@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'preact/hooks'
-import { render } from 'preact'
 import { asyncRateLimit } from '@tanstack/preact-pacer/async-rate-limiter'
+import { render } from 'preact'
+import { useCallback, useState } from 'preact/hooks'
 
 function SearchApp() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')

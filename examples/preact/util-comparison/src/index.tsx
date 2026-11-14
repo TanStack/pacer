@@ -1,13 +1,13 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
-import { useDebouncer } from '@tanstack/preact-pacer/debouncer'
-import { useThrottler } from '@tanstack/preact-pacer/throttler'
-import { useRateLimiter } from '@tanstack/preact-pacer/rate-limiter'
-import { QueuerState, useQueuer } from '@tanstack/preact-pacer/queuer'
-import { BatcherState, useBatcher } from '@tanstack/preact-pacer/batcher'
-import { pacerDevtoolsPlugin } from '@tanstack/preact-pacer-devtools'
 import { TanStackDevtools } from '@tanstack/preact-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/preact-pacer-devtools'
+import { BatcherState, useBatcher } from '@tanstack/preact-pacer/batcher'
+import { useDebouncer } from '@tanstack/preact-pacer/debouncer'
+import { QueuerState, useQueuer } from '@tanstack/preact-pacer/queuer'
+import { useRateLimiter } from '@tanstack/preact-pacer/rate-limiter'
+import { useThrottler } from '@tanstack/preact-pacer/throttler'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 function ComparisonApp() {
   const [currentValue, setCurrentValue] = useState(50)

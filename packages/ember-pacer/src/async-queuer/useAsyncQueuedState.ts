@@ -1,4 +1,3 @@
-import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import Helper from '@ember/component/helper'
 import {
   isDestroyed,
@@ -6,11 +5,11 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { createSubscribe } from '../utils/Subscribe'
 import { initializeQueue } from '../utils/initializeQueue'
 import { select } from '../utils/select'
 import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
-
 import type {
   EmberAsyncQueuer,
   EmberAsyncQueuerOptions,

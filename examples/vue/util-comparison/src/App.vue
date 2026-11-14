@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { TanStackDevtools } from '@tanstack/vue-devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
-import { ref, computed } from 'vue'
-import { useDebouncer } from '@tanstack/vue-pacer/debouncer'
-import { useThrottler } from '@tanstack/vue-pacer/throttler'
-import { useRateLimiter } from '@tanstack/vue-pacer/rate-limiter'
-import { useQueuer } from '@tanstack/vue-pacer/queuer'
 import { useBatcher } from '@tanstack/vue-pacer/batcher'
+import { useDebouncer } from '@tanstack/vue-pacer/debouncer'
+import { useQueuer } from '@tanstack/vue-pacer/queuer'
+import { useRateLimiter } from '@tanstack/vue-pacer/rate-limiter'
+import { useThrottler } from '@tanstack/vue-pacer/throttler'
+import { ref, computed } from 'vue'
 
 const dev = import.meta.env.DEV
 const plugins = [pacerDevtoolsPlugin()]

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'preact/hooks'
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
 import { useAsyncRateLimiter } from '@tanstack/preact-pacer/async-rate-limiter'
 import { PacerProvider } from '@tanstack/preact-pacer/provider'
+import { render } from 'preact'
+import { useEffect, useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 interface SearchResult {
   id: number

@@ -1,12 +1,12 @@
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { createBatcher } from '@tanstack/lit-pacer/batcher'
+import { createDebouncer } from '@tanstack/lit-pacer/debouncer'
+import { createQueuer } from '@tanstack/lit-pacer/queuer'
+import { createRateLimiter } from '@tanstack/lit-pacer/rate-limiter'
+import { createThrottler } from '@tanstack/lit-pacer/throttler'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { LitElement, html, nothing } from 'lit'
 import { styleMap } from 'lit/directives/style-map.js'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { createDebouncer } from '@tanstack/lit-pacer/debouncer'
-import { createThrottler } from '@tanstack/lit-pacer/throttler'
-import { createRateLimiter } from '@tanstack/lit-pacer/rate-limiter'
-import { createQueuer } from '@tanstack/lit-pacer/queuer'
-import { createBatcher } from '@tanstack/lit-pacer/batcher'
 class Demo extends LitElement {
   static properties = {
     currentValue: { state: true },

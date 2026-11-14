@@ -1,13 +1,13 @@
 import { useLayoutEffect } from 'octane'
 import { splitSlot, subSlot } from '../utils/slots'
 import { useRateLimitedState } from './useRateLimitedState'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { OctanePacerOptions } from '../types'
+import type { SetValue } from '../utils/cell'
 import type {
   OctaneRateLimiter,
   OctaneRateLimiterOptions,
 } from './useRateLimiter'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
-import type { OctanePacerOptions } from '../types'
-import type { SetValue } from '../utils/cell'
 /**
  * Derives a rate-limited value from its current source.
  *

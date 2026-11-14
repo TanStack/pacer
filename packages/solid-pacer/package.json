@@ -24,8 +24,9 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
-    "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src ./tests",
+    "lint": "oxlint ./src ./tests",
+    "lint:fix": "oxlint ./src ./tests --fix",
+    "test:oxlint": "oxlint ./src ./tests",
     "test:lib": "vitest --passWithNoTests",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
@@ -63,8 +64,8 @@
     "@tanstack/solid-store": "^0.11.2"
   },
   "devDependencies": {
-    "solid-js": "^1.9.15",
-    "vite-plugin-solid": "^2.11.14"
+    "solid-js": "^1.9.19",
+    "vite-plugin-solid": "^2.11.16"
   },
   "peerDependencies": {
     "solid-js": ">=1.9.5"

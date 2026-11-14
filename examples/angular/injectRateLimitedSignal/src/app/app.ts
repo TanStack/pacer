@@ -17,19 +17,22 @@ export class App {
     limit: 5,
     window: 5000,
     windowType: this.countWindow(),
-    onReject: (limiter) => console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    onReject: (limiter) =>
+      console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
   }))
   readonly controlledSearch = injectRateLimitedSignal('', () => ({
     limit: 5,
     window: 5000,
     windowType: this.searchWindow(),
-    onReject: (limiter) => console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    onReject: (limiter) =>
+      console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
   }))
   readonly controlledValue = injectRateLimitedSignal(50, () => ({
     limit: 20,
     window: 2000,
     windowType: this.rangeWindow(),
-    onReject: (limiter) => console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
+    onReject: (limiter) =>
+      console.log('Rejected; retry in', limiter.getMsUntilNextWindow(), 'ms'),
   }))
   increment(): void {
     const next = this.instantCount() + 1

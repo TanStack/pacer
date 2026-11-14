@@ -1,6 +1,6 @@
+import { createDebouncedValue } from '@tanstack/solid-pacer/debouncer'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createDebouncedValue } from '@tanstack/solid-pacer/debouncer'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)

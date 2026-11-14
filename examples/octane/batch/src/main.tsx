@@ -1,6 +1,6 @@
+import { batch } from '@tanstack/octane-pacer/batcher'
 import { useCallback, useState } from 'octane'
 import { createRoot } from 'octane'
-import { batch } from '@tanstack/octane-pacer/batcher'
 
 function App() {
   const [processedBatches, setProcessedBatches] = useState<

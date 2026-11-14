@@ -1,11 +1,11 @@
 import { splitSlot, subSlot } from '../utils/slots'
 import { useAsyncThrottler } from './useAsyncThrottler'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { OctanePacerOptions } from '../types'
 import type {
   OctaneAsyncThrottler,
   OctaneAsyncThrottlerOptions,
 } from './useAsyncThrottler'
-import type { OctanePacerOptions } from '../types'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 /**
  * Returns a stable throttled callback owned by the Octane lifecycle.
  *

@@ -1,6 +1,6 @@
+import { useThrottledCallback } from '@tanstack/octane-pacer/throttler'
 import { useRef, useState } from 'octane'
 import { createRoot } from 'octane'
-import { useThrottledCallback } from '@tanstack/octane-pacer/throttler'
 
 function App1() {
   // Use your state management library of choice

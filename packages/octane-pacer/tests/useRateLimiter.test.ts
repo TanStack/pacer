@@ -1,5 +1,5 @@
-import { afterEach, expect, it } from 'vitest'
 import { createRoot, drainPassiveEffects, flushSync } from 'octane'
+import { afterEach, expect, it } from 'vitest'
 import { Fixture, capture } from './RateLimiter.tsrx'
 
 let dispose = () => {}

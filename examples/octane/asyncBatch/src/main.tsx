@@ -1,6 +1,6 @@
+import { asyncBatch } from '@tanstack/octane-pacer/async-batcher'
 import { useCallback, useRef, useState } from 'octane'
 import { createRoot } from 'octane'
-import { asyncBatch } from '@tanstack/octane-pacer/async-batcher'
 
 const fakeProcessingTime = 1000
 

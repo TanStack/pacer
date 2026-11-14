@@ -12,12 +12,16 @@
 <h2>Queue Items</h2>
 <ol>
   @for (item of queue(); track $index) {
-  <li>{{ item }}</li>
+    <li>{{ item }}</li>
   }
 </ol>
-<button (click)="add()" [disabled]="queue().length >= 25">Add Async Task</button>
+<button (click)="add()" [disabled]="queue().length >= 25">
+  Add Async Task
+</button>
 <button (click)="runner.getNextItem()">Get Next Item</button>
-<button (click)="runner.clear()" [disabled]="queue().length === 0">Clear Queue</button>
+<button (click)="runner.clear()" [disabled]="queue().length === 0">
+  Clear Queue
+</button>
 <button (click)="start()" [disabled]="running()">Start Processing</button>
 <button (click)="stop()" [disabled]="!running()">Stop Processing</button>
 

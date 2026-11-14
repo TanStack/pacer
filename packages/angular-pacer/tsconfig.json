@@ -4,6 +4,5 @@
     "jsx": "preserve",
     "experimentalDecorators": true
   },
-  "include": ["src", "tests", "*.config.*", "test-setup.ts"],
-  "exclude": ["eslint.config.js"]
+  "include": ["src", "tests", "*.config.*", "test-setup.ts"]
 }

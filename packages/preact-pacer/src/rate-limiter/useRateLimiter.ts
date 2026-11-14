@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { shallow, useSelector } from '@tanstack/preact-store'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/preact-store'
 import type {
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
+import type { Store } from '@tanstack/preact-store'
 import type { ComponentChildren } from 'preact'
 
 export interface PreactRateLimiterOptions<

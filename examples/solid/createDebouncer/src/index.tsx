@@ -1,7 +1,7 @@
+import { createDebouncer } from '@tanstack/solid-pacer/debouncer'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createDebouncer } from '@tanstack/solid-pacer/debouncer'
 
 function App1() {
   // Use your state management library of choice

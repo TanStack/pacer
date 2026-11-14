@@ -24,8 +24,9 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
-    "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src ./tests",
+    "lint": "oxlint ./src ./tests",
+    "lint:fix": "oxlint ./src ./tests --fix",
+    "test:oxlint": "oxlint ./src ./tests",
     "test:lib": "vitest --passWithNoTests",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
@@ -64,9 +65,7 @@
   },
   "devDependencies": {
     "@vue/test-utils": "^2.5.1",
-    "eslint-plugin-vue": "^10.11.1",
-    "vue": "^3.5.43",
-    "vue-eslint-parser": "^10.4.1"
+    "vue": "^3.5.45"
   },
   "peerDependencies": {
     "vue": "^3.3.0"

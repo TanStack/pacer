@@ -1,12 +1,12 @@
-import { createRoot, useLayoutEffect } from 'octane'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { useRef, useState } from 'octane'
+import { PacerProvider } from '@tanstack/octane-pacer/provider'
 import {
   rateLimiterOptions,
   useRateLimiter,
 } from '@tanstack/octane-pacer/rate-limiter'
-import { PacerProvider } from '@tanstack/octane-pacer/provider'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { createRoot, useLayoutEffect } from 'octane'
+import { useRef, useState } from 'octane'
 const commonRateLimiterOptions = rateLimiterOptions({
   limit: 5,
   window: 5000,

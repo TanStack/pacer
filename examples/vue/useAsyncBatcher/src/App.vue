@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { TanStackDevtools } from '@tanstack/vue-devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
-import { ref } from 'vue'
 import { useAsyncBatcher } from '@tanstack/vue-pacer/async-batcher'
+import { ref } from 'vue'
 
 const dev = import.meta.env.DEV
 const plugins = [pacerDevtoolsPlugin()]

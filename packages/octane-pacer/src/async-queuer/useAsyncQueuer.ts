@@ -1,15 +1,15 @@
+import { shallow } from '@tanstack/octane-store'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { useLayoutEffect, useRef } from 'octane'
-import { shallow } from '@tanstack/octane-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import { createSubscribe } from '../utils/Subscribe'
 import { select, splitSlot, subSlot } from '../utils/slots'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { OctanePacerSubscribe } from '../utils/Subscribe'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 import type { OctanePacerOptions } from '../types'
+import type { OctanePacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useAsyncQueuer, including owner cleanup. */
 export interface OctaneAsyncQueuerOptions<

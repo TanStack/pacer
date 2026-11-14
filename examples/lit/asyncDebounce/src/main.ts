@@ -1,8 +1,8 @@
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { asyncDebounce } from '@tanstack/lit-pacer/async-debouncer'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { LitElement, html, nothing } from 'lit'
 import { styleMap } from 'lit/directives/style-map.js'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { asyncDebounce } from '@tanstack/lit-pacer/async-debouncer'
 
 class Demo extends LitElement {
   static properties = {

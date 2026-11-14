@@ -1,7 +1,7 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
 import { useAsyncDebouncedCallback } from '@tanstack/preact-pacer/async-debouncer'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 interface SearchResult {
   id: number

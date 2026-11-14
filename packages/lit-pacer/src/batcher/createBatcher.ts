@@ -1,10 +1,10 @@
 import { Batcher } from '@tanstack/pacer/batcher'
-import { bindPacer } from '../utils/bindPacer'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { LitPacerSubscribe } from '../utils/subscribe'
+import { bindPacer } from '../utils/bindPacer'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
+import type { LitPacerSubscribe } from '../utils/subscribe'
 
 /** Options for createBatcher, including owner cleanup. */
 export interface LitBatcherOptions<

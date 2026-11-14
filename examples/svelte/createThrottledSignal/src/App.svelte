@@ -1,8 +1,8 @@
 <script lang="ts">
   import { TanStackDevtools } from '@tanstack/svelte-devtools'
   import { pacerDevtoolsPlugin } from '@tanstack/svelte-pacer-devtools'
-  import { untrack } from 'svelte'
   import { createThrottledSignal } from '@tanstack/svelte-pacer/throttler'
+  import { untrack } from 'svelte'
 
   let instantCount = $state(0)
 

@@ -1,12 +1,12 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
-import { bindPacer } from '../utils/bindPacer.svelte'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SveltePacerSubscribe } from '../utils/createSubscribe'
+import { bindPacer } from '../utils/bindPacer.svelte'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
 import type { SveltePacerOptions } from '../types'
+import type { SveltePacerSubscribe } from '../utils/createSubscribe'
 
 /** Options for createAsyncBatcher, including owner cleanup. */
 export interface SvelteAsyncBatcherOptions<

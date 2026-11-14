@@ -1,16 +1,16 @@
+import { shallow } from '@tanstack/octane-store'
 import { Debouncer } from '@tanstack/pacer/debouncer'
 import { useLayoutEffect, useRef } from 'octane'
-import { shallow } from '@tanstack/octane-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import { createSubscribe } from '../utils/Subscribe'
 import { select, splitSlot, subSlot } from '../utils/slots'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { OctanePacerSubscribe } from '../utils/Subscribe'
-import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   DebouncerOptions,
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
+import type { AnyFunction } from '@tanstack/pacer/types'
 import type { OctanePacerOptions } from '../types'
+import type { OctanePacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useDebouncer, including owner cleanup. */
 export interface OctaneDebouncerOptions<

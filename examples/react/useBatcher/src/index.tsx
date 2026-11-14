@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import ReactDOM from 'react-dom/client'
 import { useBatcher } from '@tanstack/react-pacer/batcher'
 import { PacerProvider } from '@tanstack/react-pacer/provider'
+import { useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 function App1() {
   // Use your state management library of choice

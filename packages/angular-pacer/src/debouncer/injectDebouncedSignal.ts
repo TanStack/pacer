@@ -5,14 +5,14 @@ import {
 } from '@angular/core'
 import { toAccessorSignal } from '../utils/maybeAccessor'
 import { injectDebouncer } from './injectDebouncer'
+import type { WritableSignal } from '@angular/core'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
-import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { SignalWrite } from '../utils/internalTypes'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
   AngularDebouncer,
   AngularDebouncerOptions,
 } from './injectDebouncer'
-import type { WritableSignal } from '@angular/core'
 
 /**
  * An Angular writable signal whose `set` and `update` writes are debounced.

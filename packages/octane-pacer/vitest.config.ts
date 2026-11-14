@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitest/config'
 import { octane } from 'octane/compiler/vite'
+import { defineConfig } from 'vitest/config'
 export default defineConfig({
   plugins: [octane({ ssr: false })],
   test: {

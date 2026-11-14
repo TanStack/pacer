@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import ReactDOM from 'react-dom/client'
 import { useAsyncDebouncer } from '@tanstack/react-pacer/async-debouncer'
 import { PacerProvider } from '@tanstack/react-pacer/provider'
+import { useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 interface SearchResult {
   id: number

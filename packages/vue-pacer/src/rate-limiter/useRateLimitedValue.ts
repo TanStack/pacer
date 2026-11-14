@@ -1,9 +1,9 @@
 import { observe, readSource } from '../utils/cell'
 import { useRateLimitedState } from './useRateLimitedState'
-import type { VueRateLimiter, VueRateLimiterOptions } from './useRateLimiter'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type { VuePacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell'
+import type { VueRateLimiter, VueRateLimiterOptions } from './useRateLimiter'
 /**
  * Derives a rate-limited value from its current source.
  *

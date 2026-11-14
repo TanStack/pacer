@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useAsyncThrottler } from './useAsyncThrottler'
-import type { ReactAsyncThrottlerOptions } from './useAsyncThrottler'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { ReactAsyncThrottlerOptions } from './useAsyncThrottler'
 
 /**
  * A React hook that creates a throttled version of an async callback function.

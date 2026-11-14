@@ -23,9 +23,9 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src ./tests",
+    "lint": "oxlint ./src ./tests",
+    "lint:fix": "oxlint ./src ./tests --fix",
+    "test:oxlint": "oxlint ./src ./tests",
     "test:lib": "vitest --passWithNoTests",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
@@ -58,15 +58,13 @@
     "svelte": "^5.25.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.7.0",
+    "@tanstack/devtools-utils": "^0.7.2",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
-    "@sveltejs/package": "^3.0.0",
+    "@sveltejs/package": "^3.0.2",
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
-    "@typescript-eslint/parser": "^8.71.0",
-    "eslint-plugin-svelte": "^3.23.0",
-    "svelte": "^5.57.1"
+    "svelte": "^5.57.3"
   },
   "module": "dist/index.js",
   "svelte": "./dist/index.js"

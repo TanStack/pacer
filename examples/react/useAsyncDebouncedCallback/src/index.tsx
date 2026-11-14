@@ -1,6 +1,6 @@
+import { useAsyncDebouncedCallback } from '@tanstack/react-pacer/async-debouncer'
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useAsyncDebouncedCallback } from '@tanstack/react-pacer/async-debouncer'
 
 interface SearchResult {
   id: number

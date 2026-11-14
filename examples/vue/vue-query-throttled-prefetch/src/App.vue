@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useQueryClient, useQuery } from '@tanstack/vue-query'
-import { ref, watch, computed } from 'vue'
-import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import { useThrottledValue } from '@tanstack/vue-pacer'
+import { useQueryClient, useQuery } from '@tanstack/vue-query'
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+import { ref, watch, computed } from 'vue'
 
 interface Post {
   id: number

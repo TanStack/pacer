@@ -1,16 +1,16 @@
+import { shallow } from '@tanstack/octane-store'
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { useLayoutEffect, useRef } from 'octane'
-import { shallow } from '@tanstack/octane-store'
+import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import { createSubscribe } from '../utils/Subscribe'
 import { select, splitSlot, subSlot } from '../utils/slots'
-import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { OctanePacerSubscribe } from '../utils/Subscribe'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { OctanePacerOptions } from '../types'
+import type { OctanePacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useAsyncRateLimiter, including owner cleanup. */
 export interface OctaneAsyncRateLimiterOptions<

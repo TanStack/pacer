@@ -1,6 +1,6 @@
+import { asyncThrottle } from '@tanstack/octane-pacer/async-throttler'
 import { useCallback, useState } from 'octane'
 import { createRoot } from 'octane'
-import { asyncThrottle } from '@tanstack/octane-pacer/async-throttler'
 
 function SearchApp() {
   const [searchText, setSearchText] = useState('')

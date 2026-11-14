@@ -1,7 +1,7 @@
+import { createBatcher } from '@tanstack/solid-pacer/batcher'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createBatcher } from '@tanstack/solid-pacer/batcher'
 
 function App1() {
   const [processedBatches, setProcessedBatches] = createSignal<

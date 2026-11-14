@@ -1,10 +1,10 @@
 import { useState } from 'octane'
 import { splitSlot, subSlot } from '../utils/slots'
 import { useThrottler } from './useThrottler'
-import type { OctaneThrottler, OctaneThrottlerOptions } from './useThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { OctanePacerOptions } from '../types'
 import type { SetValue } from '../utils/cell'
+import type { OctaneThrottler, OctaneThrottlerOptions } from './useThrottler'
 /**
  * Creates throttled state with a scheduled setter.
  *
@@ -70,7 +70,8 @@ export function useThrottledState<TValue, TSelected = {}>(
       OctaneThrottlerOptions<SetValue<TValue>, TSelected>
     >,
     args[1] as
-      ((state: ThrottlerState<SetValue<TValue>>) => TSelected) | undefined,
+      | ((state: ThrottlerState<SetValue<TValue>>) => TSelected)
+      | undefined,
     subSlot(slot, 'utility'),
   )
   return [

@@ -7,8 +7,8 @@ import {
   it,
   vi,
 } from 'vitest'
-import { AsyncThrottler } from '../src/async-throttler'
 import { getPacerDevtoolsInstance } from '../src'
+import { AsyncThrottler } from '../src/async-throttler'
 
 describe('AsyncThrottler', () => {
   beforeEach(() => {

@@ -1,7 +1,7 @@
+import { createAsyncDebouncer } from '@tanstack/solid-pacer/async-debouncer'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, Show, createSignal, onCleanup } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createAsyncDebouncer } from '@tanstack/solid-pacer/async-debouncer'
 
 interface SearchResult {
   id: number

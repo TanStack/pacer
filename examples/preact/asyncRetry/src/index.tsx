@@ -1,6 +1,6 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
 import { asyncRetry } from '@tanstack/preact-pacer'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
 
 interface UserData {
   id: number

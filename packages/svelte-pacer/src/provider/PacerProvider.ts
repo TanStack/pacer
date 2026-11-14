@@ -1,5 +1,4 @@
 import { getContext, setContext } from 'svelte'
-import type { SveltePacerOptions } from '../types'
 import type { SvelteAsyncBatcherOptions } from '../async-batcher/createAsyncBatcher'
 import type { SvelteAsyncDebouncerOptions } from '../async-debouncer/createAsyncDebouncer'
 import type { SvelteAsyncQueuerOptions } from '../async-queuer/createAsyncQueuer'
@@ -10,6 +9,7 @@ import type { SvelteDebouncerOptions } from '../debouncer/createDebouncer'
 import type { SvelteQueuerOptions } from '../queuer/createQueuer'
 import type { SvelteRateLimiterOptions } from '../rate-limiter/createRateLimiter'
 import type { SvelteThrottlerOptions } from '../throttler/createThrottler'
+import type { SveltePacerOptions } from '../types'
 
 export interface PacerProviderOptions {
   asyncBatcher?: Partial<SvelteAsyncBatcherOptions<any, any>>

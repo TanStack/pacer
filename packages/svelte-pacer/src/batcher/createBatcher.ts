@@ -1,9 +1,9 @@
 import { Batcher } from '@tanstack/pacer/batcher'
-import { bindPacer } from '../utils/bindPacer.svelte'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SveltePacerSubscribe } from '../utils/createSubscribe'
+import { bindPacer } from '../utils/bindPacer.svelte'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { SveltePacerOptions } from '../types'
+import type { SveltePacerSubscribe } from '../utils/createSubscribe'
 
 /** Options for createBatcher, including owner cleanup. */
 export interface SvelteBatcherOptions<

@@ -1,6 +1,6 @@
-import ReactDOM from 'react-dom/client'
 import { useQueuedValue } from '@tanstack/react-pacer/queuer'
 import { useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 function App1() {
   const [instantSearchValue, setInstantSearchValue] = useState('')

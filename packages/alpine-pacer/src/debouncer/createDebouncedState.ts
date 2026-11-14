@@ -1,10 +1,10 @@
 import { createCell } from '../utils/cell'
 import { createDebouncer } from './createDebouncer'
-import type { PacerScope } from '../provider/PacerProvider'
-import type { AlpineDebouncer, AlpineDebouncerOptions } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
 import type { CellValue, SetValue } from '../utils/cell'
+import type { AlpineDebouncer, AlpineDebouncerOptions } from './createDebouncer'
 /**
  * Creates debounced state with a scheduled setter.
  *

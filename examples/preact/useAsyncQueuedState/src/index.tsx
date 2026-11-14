@@ -1,6 +1,6 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
 import { useAsyncQueuedState } from '@tanstack/preact-pacer/async-queuer'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
 
 const fakeWaitTime = 500
 

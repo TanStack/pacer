@@ -1,7 +1,7 @@
 import { createQueuer } from './createQueuer'
+import type { QueuerState } from '@tanstack/pacer/queuer'
 import type { SolidPacerOptions } from '../types'
 import type { SolidQueuer, SolidQueuerOptions } from './createQueuer'
-import type { QueuerState } from '@tanstack/pacer/queuer'
 
 /**
  * A Solid primitive that creates a queuer with managed state, combining Solid's signals with queuing functionality.

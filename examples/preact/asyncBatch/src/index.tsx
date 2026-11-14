@@ -1,6 +1,6 @@
-import { useCallback, useRef, useState } from 'preact/hooks'
-import { render } from 'preact'
 import { asyncBatch } from '@tanstack/preact-pacer/async-batcher'
+import { render } from 'preact'
+import { useCallback, useRef, useState } from 'preact/hooks'
 
 const fakeProcessingTime = 1000
 

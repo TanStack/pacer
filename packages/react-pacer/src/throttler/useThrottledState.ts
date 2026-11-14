@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useThrottler } from './useThrottler'
-import type { ReactThrottler, ReactThrottlerOptions } from './useThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { ReactThrottler, ReactThrottlerOptions } from './useThrottler'
 
 /**
  * A React hook that creates a throttled state value that updates at most once within a specified time window.

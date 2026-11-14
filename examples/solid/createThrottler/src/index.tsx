@@ -1,7 +1,7 @@
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
+import { createThrottler } from '@tanstack/solid-pacer/throttler'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
-import { createThrottler } from '@tanstack/solid-pacer/throttler'
 
 function App1() {
   // Use your state management library of choice
