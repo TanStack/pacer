@@ -364,7 +364,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     ...args: Parameters<TFn>
   ): Promise<Awaited<ReturnType<TFn>> | undefined> => {
     if (!this.#getEnabled()) return undefined
-    const currentMaybeExecuteCount = this.store.state.maybeExecuteCount + 1
+    const currentMaybeExecuteCount = this.store.state.maybeExecuteCount
 
     try {
       this.#setState({ isExecuting: true })
@@ -459,8 +459,10 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
    * ```
    */
   getAbortSignal = (maybeExecuteCount?: number): AbortSignal | null => {
-    const count = maybeExecuteCount ?? this.store.state.maybeExecuteCount
-    const retryer = this.asyncRetryers.get(count)
+    const retryer =
+      maybeExecuteCount === undefined
+        ? [...this.asyncRetryers.values()].pop()
+        : this.asyncRetryers.get(maybeExecuteCount)
     return retryer?.getAbortSignal() ?? null
   }
 
