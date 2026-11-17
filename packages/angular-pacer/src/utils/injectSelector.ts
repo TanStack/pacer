@@ -1,7 +1,7 @@
 import { injectExternalStore } from './injectExternalStore'
-import type { ReadonlySelected } from './internalTypes'
-import type { Readable } from '@tanstack/store'
 import type { Signal, ValueEqualityFn } from '@angular/core'
+import type { Readable } from '@tanstack/store'
+import type { ReadonlySelected } from './internalTypes'
 
 export function injectSelector<TState>(
   source: () => Readable<TState>,

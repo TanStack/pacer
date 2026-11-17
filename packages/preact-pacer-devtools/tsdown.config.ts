@@ -1,5 +1,5 @@
-import { defineConfig } from 'tsdown'
 import preact from '@preact/preset-vite'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   // Prefresh pulls @prefresh/* into dist under node_modules/.pnpm, which breaks

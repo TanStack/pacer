@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
 import { shallow, useSelector } from '@tanstack/react-store'
+import { useEffect, useMemo, useState } from 'react'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/react-store'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
+import type { Store } from '@tanstack/react-store'
 import type { FunctionComponent, ReactNode } from 'react'
 
 export interface ReactAsyncQueuerOptions<
@@ -283,11 +283,10 @@ export function useAsyncQueuer<TValue, TSelected = {}>(
   const state = useSelector(asyncQueuer.store, selector, { compare: shallow })
 
   return useMemo(
-    () =>
-      ({
-        ...asyncQueuer,
-        state,
-      }) as ReactAsyncQueuer<TValue, TSelected>, // omit `store` in favor of `state`
+    () => ({
+      ...asyncQueuer,
+      state,
+    }), // omit `store` in favor of `state`
     [asyncQueuer, state],
   )
 }

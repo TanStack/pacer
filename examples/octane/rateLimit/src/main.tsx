@@ -1,6 +1,6 @@
+import { rateLimit } from '@tanstack/octane-pacer/rate-limiter'
 import { useCallback, useState } from 'octane'
 import { createRoot } from 'octane'
-import { rateLimit } from '@tanstack/octane-pacer/rate-limiter'
 
 function App1() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')

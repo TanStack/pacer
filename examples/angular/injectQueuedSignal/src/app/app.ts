@@ -9,9 +9,17 @@ export class App {
   readonly source = signal('')
   readonly currentValue = signal(50)
   readonly instantExecutions = signal(0)
-  readonly queued = injectQueuedSignal('', { maxSize: 25, wait: 500 }, (state) => state)
+  readonly queued = injectQueuedSignal(
+    '',
+    { maxSize: 25, wait: 500 },
+    (state) => state,
+  )
   readonly queuer = this.queued.queuer
-  readonly rangeQueued = injectQueuedSignal(50, { maxSize: 100, wait: 100 }, (state) => state)
+  readonly rangeQueued = injectQueuedSignal(
+    50,
+    { maxSize: 100, wait: 100 },
+    (state) => state,
+  )
   readonly rangeQueue = this.rangeQueued.queuer
   onSearch(value: string): void {
     this.source.set(value)

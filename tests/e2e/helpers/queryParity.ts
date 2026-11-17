@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { expect, test } from './fixtures'
-import { startExampleServer } from './startExampleServer'
 import { expectMatchingExampleLayout } from './parity'
+import { startExampleServer } from './startExampleServer'
 
 /** Compare loaded post lists without relying on the external demo API. */
 export function testQueryLayout(reactExample: URL, root: string) {

@@ -1,9 +1,9 @@
 import { createCell } from '../utils/cell'
 import { useRateLimiter } from './useRateLimiter'
-import type { VueRateLimiter, VueRateLimiterOptions } from './useRateLimiter'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type { VuePacerOptions } from '../types'
 import type { CellValue, SetValue } from '../utils/cell'
+import type { VueRateLimiter, VueRateLimiterOptions } from './useRateLimiter'
 /**
  * Creates rate-limited state with a scheduled setter.
  *

@@ -1,8 +1,8 @@
-import { createElement } from 'react'
 import { createReactPanel } from '@tanstack/devtools-utils/react'
 import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
-import type { JSX } from 'react'
+import { createElement } from 'react'
 import type { DevtoolsPanelProps } from '@tanstack/devtools-utils/react'
+import type { JSX } from 'react'
 
 export interface PacerDevtoolsReactInit extends Partial<DevtoolsPanelProps> {}
 

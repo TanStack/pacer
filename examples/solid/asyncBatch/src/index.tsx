@@ -1,6 +1,6 @@
-import { For, createSignal } from 'solid-js'
 import { render } from '@solidjs/web'
 import { asyncBatch } from '@tanstack/solid-pacer/async-batcher'
+import { For, createSignal } from 'solid-js'
 
 const fakeProcessingTime = 1000
 

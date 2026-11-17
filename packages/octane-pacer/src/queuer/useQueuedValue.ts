@@ -1,9 +1,9 @@
 import { useLayoutEffect, useState } from 'octane'
 import { splitSlot, subSlot } from '../utils/slots'
 import { useQueuer } from './useQueuer'
-import type { OctaneQueuer, OctaneQueuerOptions } from './useQueuer'
-import type { OctanePacerOptions } from '../types'
 import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { OctanePacerOptions } from '../types'
+import type { OctaneQueuer, OctaneQueuerOptions } from './useQueuer'
 
 /**
  * Derives a queued value from its current source.

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { TanStackDevtools } from '@tanstack/vue-devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
-import { ref } from 'vue'
 import { debounce } from '@tanstack/vue-pacer/debouncer'
+import { ref } from 'vue'
 
 const dev = import.meta.env.DEV
 const plugins = [pacerDevtoolsPlugin()]

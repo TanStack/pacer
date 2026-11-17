@@ -1,6 +1,6 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
 import { useBatchedCallback } from '@tanstack/preact-pacer/batcher'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
 
 interface LogEntry {
   id: number

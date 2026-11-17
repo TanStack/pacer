@@ -1,5 +1,5 @@
-import { expect, it } from 'vitest'
 import { createRoot, drainPassiveEffects, flushSync } from 'octane'
+import { expect, it } from 'vitest'
 import { Fixture, capture } from './Provider.tsrx'
 
 it('applies changing provider defaults without replacing instances or local overrides', () => {

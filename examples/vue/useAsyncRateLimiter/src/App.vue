@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { TanStackDevtools } from '@tanstack/vue-devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
-import { ref, onUnmounted } from 'vue'
 import { useAsyncRateLimiter } from '@tanstack/vue-pacer/async-rate-limiter'
+import { ref, onUnmounted } from 'vue'
 const dev = import.meta.env.DEV
 const plugins = [pacerDevtoolsPlugin()]
 
@@ -106,8 +106,7 @@ async function onSearchChange(e: Event) {
         autocomplete="new-password"
       />
     </div>
-    <template v-if="error"
-      ><div>Error: {{ error.message }}</div></template
+    <template v-if="error"><div>Error: {{ error.message }}</div></template
     ><setSearchAsyncRateLimiter.Subscribe
       :selector="
         (state) => ({

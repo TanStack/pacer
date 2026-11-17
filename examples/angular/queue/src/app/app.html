@@ -1,12 +1,16 @@
 <h1>TanStack Pacer queue Example</h1>
 <section>
   <h2>Number queue</h2>
-  <button type="button" (click)="addNumber()" [disabled]="numberItems().length >= 25">
+  <button
+    type="button"
+    (click)="addNumber()"
+    [disabled]="numberItems().length >= 25"
+  >
     Add Number
   </button>
   <p>Queue Size: {{ numberItems().length }}</p>
   <p>Items Processed: {{ numberProcessed() }}</p>
-  <p>Queue Items: {{ numberItems().join(", ") }}</p>
+  <p>Queue Items: {{ numberItems().join(', ') }}</p>
 </section>
 <section>
   <h2>Text changes</h2>
@@ -21,7 +25,7 @@
   <p>Current Value: {{ queuedText() }}</p>
   <p>Queue Size: {{ textItems().length }}</p>
   <p>Items Processed: {{ textProcessed() }}</p>
-  <p>Queue Items: {{ textItems().join(", ") }}</p>
+  <p>Queue Items: {{ textItems().join(', ') }}</p>
 </section>
 <section>
   <h2>Queued range</h2>
@@ -36,11 +40,12 @@
   /></label>
   <p>Instant Value: {{ currentValue() }}</p>
   <label
-    >Queued Range <input type="range" min="0" max="100" [value]="rangeValue()" disabled
+    >Queued Range
+    <input type="range" min="0" max="100" [value]="rangeValue()" disabled
   /></label>
   <p>Queued Value: {{ rangeValue() }}</p>
   <p>Values Submitted: {{ instantExecutions() }}</p>
   <p>Queue Size: {{ rangeItems().length }}</p>
   <p>Items Processed: {{ rangeProcessed() }}</p>
-  <p>Queue Items: {{ rangeItems().join(", ") }}</p>
+  <p>Queue Items: {{ rangeItems().join(', ') }}</p>
 </section>

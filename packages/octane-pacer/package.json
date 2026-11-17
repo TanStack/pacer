@@ -24,8 +24,9 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
-    "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src ./tests",
+    "lint": "oxlint ./src ./tests",
+    "lint:fix": "oxlint ./src ./tests --fix",
+    "test:oxlint": "oxlint ./src ./tests",
     "test:lib": "vitest --passWithNoTests",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsrx-tsc --noEmit",
@@ -63,10 +64,11 @@
     "@tanstack/pacer": "workspace:*"
   },
   "devDependencies": {
-    "@tsrx/oxc": "0.20.0",
-    "@tsrx/typescript-plugin": "^0.6.1",
-    "octane": "0.12.1",
-    "vite": "^8.3.2"
+    "@tsrx/oxc": "0.23.0",
+    "@tsrx/typescript-plugin": "^0.7.0",
+    "octane": "0.17.0",
+    "oxlint": "^1.93.0",
+    "vite": "^8.3.8"
   },
   "peerDependencies": {
     "octane": ">=0.12.0"

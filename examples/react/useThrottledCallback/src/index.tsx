@@ -1,6 +1,6 @@
+import { useThrottledCallback } from '@tanstack/react-pacer/throttler'
 import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useThrottledCallback } from '@tanstack/react-pacer/throttler'
 
 function App1() {
   // Use your state management library of choice

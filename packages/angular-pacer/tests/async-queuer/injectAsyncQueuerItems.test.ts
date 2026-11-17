@@ -1,6 +1,5 @@
 import { isSignal, signal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
-
 import { expect, expectTypeOf, it } from 'vitest'
 import { injectAsyncQueuerItems } from '../../src/async-queuer/injectAsyncQueuerItems'
 

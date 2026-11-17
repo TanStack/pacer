@@ -1,10 +1,10 @@
 import { Queuer } from '@tanstack/pacer/queuer'
-import { bindPacer } from '../utils/bindPacer'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { LitPacerSubscribe } from '../utils/subscribe'
+import { bindPacer } from '../utils/bindPacer'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
+import type { LitPacerSubscribe } from '../utils/subscribe'
 
 /** Options for createQueuer, including owner cleanup. */
 export interface LitQueuerOptions<

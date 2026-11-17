@@ -1,6 +1,6 @@
+import { asyncBatch } from '@tanstack/react-pacer/async-batcher'
 import { useCallback, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { asyncBatch } from '@tanstack/react-pacer/async-batcher'
 
 const fakeProcessingTime = 1000
 

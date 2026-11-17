@@ -4,8 +4,8 @@ import {
   isDestroying,
   registerDestructor,
 } from '@ember/destroyable'
-import { scheduleOnce } from '@ember/runloop'
 import { trackedObject } from '@ember/reactive/collections'
+import { scheduleOnce } from '@ember/runloop'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { createSubscribe } from '../utils/Subscribe'
 import { initializeQueue } from '../utils/initializeQueue'

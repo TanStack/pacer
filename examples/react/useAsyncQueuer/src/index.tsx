@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import ReactDOM from 'react-dom/client'
 import { useAsyncQueuer } from '@tanstack/react-pacer/async-queuer'
 import { PacerProvider } from '@tanstack/react-pacer/provider'
+import { useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 const fakeWaitTime = 500
 

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import ReactDOM from 'react-dom/client'
 import { useAsyncRateLimiter } from '@tanstack/react-pacer/async-rate-limiter'
 import { PacerProvider } from '@tanstack/react-pacer/provider'
+import { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 interface SearchResult {
   id: number

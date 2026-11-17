@@ -1,5 +1,5 @@
-import { vi } from 'vitest'
 import { TestBed } from '@angular/core/testing'
+import { vi } from 'vitest'
 import { App } from './app'
 
 describe('App', () => {
@@ -42,7 +42,9 @@ describe('example behavior', () => {
     const app = fixture.componentInstance
     fixture.detectChanges()
     TestBed.tick()
-    expect(app.numberQueue.state().items).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    expect(app.numberQueue.state().items).toEqual([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+    ])
     expect(app.numberQueue.state().isRunning).toBe(false)
     app.numberQueue.execute()
     expect(app.numberQueue.state().executionCount).toBe(1)

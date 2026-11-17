@@ -1,7 +1,7 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
 import { useDebouncedValue } from '@tanstack/preact-pacer/debouncer'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)

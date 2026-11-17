@@ -1,12 +1,12 @@
 import { createSignal } from 'solid-js'
 import { createRateLimiter } from './createRateLimiter'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { Accessor, Setter } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
 import type {
   SolidRateLimiter,
   SolidRateLimiterOptions,
 } from './createRateLimiter'
-import type { Accessor, Setter } from 'solid-js'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 
 /**
  * A Solid hook that creates a rate-limited state value that enforces a hard limit on state updates within a time window.

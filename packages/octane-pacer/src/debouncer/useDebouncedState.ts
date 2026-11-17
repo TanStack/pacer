@@ -1,10 +1,10 @@
 import { useState } from 'octane'
 import { splitSlot, subSlot } from '../utils/slots'
 import { useDebouncer } from './useDebouncer'
-import type { OctaneDebouncer, OctaneDebouncerOptions } from './useDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { OctanePacerOptions } from '../types'
 import type { SetValue } from '../utils/cell'
+import type { OctaneDebouncer, OctaneDebouncerOptions } from './useDebouncer'
 /**
  * Creates debounced state with a scheduled setter.
  *
@@ -70,7 +70,8 @@ export function useDebouncedState<TValue, TSelected = {}>(
       OctaneDebouncerOptions<SetValue<TValue>, TSelected>
     >,
     args[1] as
-      ((state: DebouncerState<SetValue<TValue>>) => TSelected) | undefined,
+      | ((state: DebouncerState<SetValue<TValue>>) => TSelected)
+      | undefined,
     subSlot(slot, 'utility'),
   )
   return [

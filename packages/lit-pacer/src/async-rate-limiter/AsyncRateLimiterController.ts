@@ -1,12 +1,12 @@
 import { createAsyncRateLimiter } from './createAsyncRateLimiter'
+import type { AsyncRateLimiterState } from '@tanstack/pacer/async-rate-limiter'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
 import type {
   LitAsyncRateLimiter,
   LitAsyncRateLimiterOptions,
 } from './createAsyncRateLimiter'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
-import type { AsyncRateLimiterState } from '@tanstack/pacer/async-rate-limiter'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
 /** Owns a AsyncRateLimiter for a Lit host. Access core methods and selected state through `pacer`. */
 export class AsyncRateLimiterController<

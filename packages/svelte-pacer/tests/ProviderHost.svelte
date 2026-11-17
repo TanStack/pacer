@@ -2,6 +2,7 @@
   import { providePacerOptions } from '../src/provider/PacerProvider'
   import Host from './Host.svelte'
   import type { PacerProviderOptions } from '../src/provider/PacerProvider'
+
   let {
     defaults,
     setup,

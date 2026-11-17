@@ -1,7 +1,7 @@
 import { useQueuer } from './useQueuer'
-import type { VueQueuer, VueQueuerOptions } from './useQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
 import type { VuePacerOptions } from '../types'
+import type { VueQueuer, VueQueuerOptions } from './useQueuer'
 /**
  * Exposes pending queue items together with the queue that processes them.
  *

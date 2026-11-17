@@ -1,8 +1,8 @@
+import { TanStackDevtools } from '@tanstack/react-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
+import { queue } from '@tanstack/react-pacer/queuer'
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-import { queue } from '@tanstack/react-pacer/queuer'
 
 function App1() {
   const [queueItems, setQueueItems] = useState<Array<number>>([])

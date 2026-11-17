@@ -1,7 +1,11 @@
 <h1>TanStack Pacer injectQueuer Example</h1>
 <section>
   <h2>Number queue</h2>
-  <button type="button" (click)="addNumber()" [disabled]="numberQueue.state().isFull">
+  <button
+    type="button"
+    (click)="addNumber()"
+    [disabled]="numberQueue.state().isFull"
+  >
     Add Number
   </button>
   <p>Queue Size: {{ numberQueue.state().size }}</p>
@@ -10,24 +14,48 @@
   <p>Queue Idle: {{ numberQueue.state().isIdle }}</p>
   <p>Status: {{ numberQueue.state().status }}</p>
   <p>Items Processed: {{ numberQueue.state().executionCount }}</p>
-  <p>Queue Items: {{ numberQueue.state().items.join(", ") }}</p>
-  <p>Queue Peek: {{ numberQueue.peekNextItem() ?? "None" }}</p>
-  <button type="button" (click)="numberQueue.execute()" [disabled]="numberQueue.state().isEmpty">
+  <p>Queue Items: {{ numberQueue.state().items.join(', ') }}</p>
+  <p>Queue Peek: {{ numberQueue.peekNextItem() ?? 'None' }}</p>
+  <button
+    type="button"
+    (click)="numberQueue.execute()"
+    [disabled]="numberQueue.state().isEmpty"
+  >
     Process Next
   </button>
-  <button type="button" (click)="numberQueue.clear()" [disabled]="numberQueue.state().isEmpty">
+  <button
+    type="button"
+    (click)="numberQueue.clear()"
+    [disabled]="numberQueue.state().isEmpty"
+  >
     Clear Queue
   </button>
-  <button type="button" (click)="numberQueue.reset()" [disabled]="numberQueue.state().isEmpty">
+  <button
+    type="button"
+    (click)="numberQueue.reset()"
+    [disabled]="numberQueue.state().isEmpty"
+  >
     Reset Queue
   </button>
-  <button type="button" (click)="numberQueue.start()" [disabled]="numberQueue.state().isRunning">
+  <button
+    type="button"
+    (click)="numberQueue.start()"
+    [disabled]="numberQueue.state().isRunning"
+  >
     Start Processing
   </button>
-  <button type="button" (click)="numberQueue.stop()" [disabled]="!numberQueue.state().isRunning">
+  <button
+    type="button"
+    (click)="numberQueue.stop()"
+    [disabled]="!numberQueue.state().isRunning"
+  >
     Stop Processing
   </button>
-  <button type="button" (click)="numberQueue.flush()" [disabled]="numberQueue.state().isEmpty">
+  <button
+    type="button"
+    (click)="numberQueue.flush()"
+    [disabled]="numberQueue.state().isEmpty"
+  >
     Flush Queue
   </button>
   <pre>{{ numberQueue.state() | json }}</pre>
@@ -45,7 +73,8 @@
   /></label>
   <p>Instant Value: {{ currentValue() }}</p>
   <label
-    >Queued Range <input type="range" min="0" max="100" [value]="rangeValue()" disabled
+    >Queued Range
+    <input type="range" min="0" max="100" [value]="rangeValue()" disabled
   /></label>
   <p>Queued Value: {{ rangeValue() }}</p>
   <p>Values Submitted: {{ instantExecutions() }}</p>
@@ -55,9 +84,13 @@
   <p>Queue Idle: {{ rangeQueue.state().isIdle }}</p>
   <p>Status: {{ rangeQueue.state().status }}</p>
   <p>Items Processed: {{ rangeQueue.state().executionCount }}</p>
-  <p>Queue Items: {{ rangeQueue.state().items.join(", ") }}</p>
-  <p>Queue Peek: {{ rangeQueue.peekNextItem() ?? "None" }}</p>
-  <button type="button" (click)="rangeQueue.flush()" [disabled]="rangeQueue.state().isEmpty">
+  <p>Queue Items: {{ rangeQueue.state().items.join(', ') }}</p>
+  <p>Queue Peek: {{ rangeQueue.peekNextItem() ?? 'None' }}</p>
+  <button
+    type="button"
+    (click)="rangeQueue.flush()"
+    [disabled]="rangeQueue.state().isEmpty"
+  >
     Flush Queue
   </button>
   <pre>{{ rangeQueue.state() | json }}</pre>

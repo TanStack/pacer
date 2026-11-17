@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core'
 import { JsonPipe } from '@angular/common'
+import { Component, signal } from '@angular/core'
 import { injectQueuedValue } from '@tanstack/angular-pacer'
 import { InputApp } from './inputapp'
 
@@ -12,7 +12,11 @@ export class App {
   readonly source = signal('')
   readonly currentValue = signal(50)
   readonly instantExecutions = signal(1)
-  readonly queued = injectQueuedValue(this.source, { maxSize: 25, wait: 500 }, (state) => state)
+  readonly queued = injectQueuedValue(
+    this.source,
+    { maxSize: 25, wait: 500 },
+    (state) => state,
+  )
   readonly queuer = this.queued.queuer
   readonly rangeQueued = injectQueuedValue(
     this.currentValue,

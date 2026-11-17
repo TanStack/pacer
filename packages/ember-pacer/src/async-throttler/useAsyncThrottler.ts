@@ -1,4 +1,3 @@
-import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import Helper from '@ember/component/helper'
 import {
   isDestroyed,
@@ -6,14 +5,15 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { AsyncThrottler } from '@tanstack/pacer/async-throttler'
 import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
-import type { EmberPacerSubscribe } from '../utils/Subscribe'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncThrottlerOptions,
   AsyncThrottlerState,
 } from '@tanstack/pacer/async-throttler'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { EmberPacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useAsyncThrottler, including owner cleanup. */
 export interface EmberAsyncThrottlerOptions<

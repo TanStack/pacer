@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useQueuedState } from './useQueuedState'
-import type { ReactQueuer, ReactQueuerOptions } from './useQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { ReactQueuer, ReactQueuerOptions } from './useQueuer'
 
 /**
  * A React hook that creates a queued value that processes state changes in order with an optional delay.

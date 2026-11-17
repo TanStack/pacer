@@ -1,10 +1,10 @@
 import { createCell } from '../utils/cell'
 import { createThrottler } from './createThrottler'
-import type { ReactiveControllerHost } from 'lit'
-import type { LitThrottler, LitThrottlerOptions } from './createThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
 import type { CellValue, SetValue } from '../utils/cell'
+import type { LitThrottler, LitThrottlerOptions } from './createThrottler'
 /**
  * Creates throttled state with a scheduled setter.
  *

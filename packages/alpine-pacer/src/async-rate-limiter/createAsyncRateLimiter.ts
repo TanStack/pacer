@@ -1,6 +1,5 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { bindPacer } from '../utils/bindPacer'
-import type { AlpinePacerSubscribe } from '../utils/subscribe'
 import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
@@ -8,6 +7,7 @@ import type {
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
+import type { AlpinePacerSubscribe } from '../utils/subscribe'
 
 /** Options for createAsyncRateLimiter, including owner cleanup. */
 export interface AlpineAsyncRateLimiterOptions<

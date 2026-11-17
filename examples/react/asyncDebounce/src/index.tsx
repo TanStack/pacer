@@ -1,6 +1,6 @@
+import { asyncDebounce } from '@tanstack/react-pacer/async-debouncer'
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { asyncDebounce } from '@tanstack/react-pacer/async-debouncer'
 
 function SearchApp() {
   const [searchText, setSearchText] = useState('')

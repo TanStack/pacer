@@ -1,9 +1,9 @@
 import { observe, readSource } from '../utils/cell.svelte'
 import { createThrottledSignal } from './createThrottledSignal'
-import type { SvelteThrottler, SvelteThrottlerOptions } from './createThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { SveltePacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell.svelte'
+import type { SvelteThrottler, SvelteThrottlerOptions } from './createThrottler'
 /**
  * Derives a throttled value from its current source.
  *

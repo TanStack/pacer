@@ -1,6 +1,6 @@
+import { useAsyncDebouncedCallback } from '@tanstack/octane-pacer/async-debouncer'
 import { useState } from 'octane'
 import { createRoot } from 'octane'
-import { useAsyncDebouncedCallback } from '@tanstack/octane-pacer/async-debouncer'
 
 interface SearchResult {
   id: number

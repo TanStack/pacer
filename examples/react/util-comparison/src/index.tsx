@@ -1,12 +1,12 @@
+import { TanStackDevtools } from '@tanstack/react-devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
+import { BatcherState, useBatcher } from '@tanstack/react-pacer/batcher'
+import { useDebouncer } from '@tanstack/react-pacer/debouncer'
+import { QueuerState, useQueuer } from '@tanstack/react-pacer/queuer'
+import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
+import { useThrottler } from '@tanstack/react-pacer/throttler'
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useDebouncer } from '@tanstack/react-pacer/debouncer'
-import { useThrottler } from '@tanstack/react-pacer/throttler'
-import { useRateLimiter } from '@tanstack/react-pacer/rate-limiter'
-import { QueuerState, useQueuer } from '@tanstack/react-pacer/queuer'
-import { BatcherState, useBatcher } from '@tanstack/react-pacer/batcher'
-import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 
 function ComparisonApp() {
   const [currentValue, setCurrentValue] = useState(50)

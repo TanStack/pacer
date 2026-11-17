@@ -1,7 +1,7 @@
 import { debounce } from '@tanstack/alpine-pacer'
-import Alpine from 'alpinejs'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import Alpine from 'alpinejs'
 
 class Counter {
   instantCount = 0

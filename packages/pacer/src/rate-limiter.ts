@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
-import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import { parseFunctionOrValue } from './utils'
 import type { AnyFunction } from './types'
 
 export interface RateLimiterState {

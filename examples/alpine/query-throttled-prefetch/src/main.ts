@@ -1,7 +1,7 @@
-import { QueryClient, QueryObserver, onlineManager } from '@tanstack/query-core'
-import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
+import { QueryClient, QueryObserver, onlineManager } from '@tanstack/query-core'
 import { TanstackQueryDevtools } from '@tanstack/query-devtools'
+import Alpine from 'alpinejs'
 import type { QueryObserverResult } from '@tanstack/query-core'
 
 interface Post {

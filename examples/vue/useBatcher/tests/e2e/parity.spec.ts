@@ -1,8 +1,8 @@
 import { fileURLToPath } from 'node:url'
 import { expectPacerDevtools } from '../../../../../tests/e2e/helpers/devtools'
 import { expect, test } from '../../../../../tests/e2e/helpers/fixtures'
-import { startExampleServer } from '../../../../../tests/e2e/helpers/startExampleServer'
 import { expectMatchingExampleLayout } from '../../../../../tests/e2e/helpers/parity'
+import { startExampleServer } from '../../../../../tests/e2e/helpers/startExampleServer'
 
 test('layout comparison tolerates subpixel positioning across frameworks', async ({
   page,

@@ -1,10 +1,10 @@
 import { createAsyncQueuer } from './createAsyncQueuer'
+import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
+import type { SveltePacerOptions } from '../types'
 import type {
   SvelteAsyncQueuer,
   SvelteAsyncQueuerOptions,
 } from './createAsyncQueuer'
-import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
-import type { SveltePacerOptions } from '../types'
 /**
  * Exposes pending queue items together with the queue that processes them.
  *

@@ -1,13 +1,13 @@
 import { useState } from 'octane'
 import { splitSlot, subSlot } from '../utils/slots'
 import { useRateLimiter } from './useRateLimiter'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { OctanePacerOptions } from '../types'
+import type { SetValue } from '../utils/cell'
 import type {
   OctaneRateLimiter,
   OctaneRateLimiterOptions,
 } from './useRateLimiter'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
-import type { OctanePacerOptions } from '../types'
-import type { SetValue } from '../utils/cell'
 /**
  * Creates rate-limited state with a scheduled setter.
  *

@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'preact/hooks'
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
 import { debounce } from '@tanstack/preact-pacer/debouncer'
+import { render } from 'preact'
+import { useCallback, useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 function App1() {
   // Use your state management library of choice

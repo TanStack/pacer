@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useMemo } from 'react'
-import type { ReactNode } from 'react'
 import type {
   AnyAsyncFunction,
   AnyFunction,
@@ -14,6 +13,7 @@ import type {
   RateLimiterOptions,
   ThrottlerOptions,
 } from '@tanstack/pacer'
+import type { ReactNode } from 'react'
 
 /* eslint-disable @eslint-react/no-context-provider, @eslint-react/no-use-context --
  * React <19: keep Context.Provider and useContext; `use` and `<Context>` as provider need React 19+.

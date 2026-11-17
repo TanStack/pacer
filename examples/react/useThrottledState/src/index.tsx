@@ -1,6 +1,6 @@
+import { useThrottledState } from '@tanstack/react-pacer/throttler'
 import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useThrottledState } from '@tanstack/react-pacer/throttler'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)

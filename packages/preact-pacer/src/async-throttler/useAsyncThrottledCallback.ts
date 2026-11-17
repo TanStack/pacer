@@ -1,7 +1,7 @@
 import { useCallback } from 'preact/hooks'
 import { useAsyncThrottler } from './useAsyncThrottler'
-import type { PreactAsyncThrottlerOptions } from './useAsyncThrottler'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { PreactAsyncThrottlerOptions } from './useAsyncThrottler'
 
 /**
  * A Preact hook that creates a throttled version of an async callback function.

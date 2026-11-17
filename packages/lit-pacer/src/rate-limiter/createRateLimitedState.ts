@@ -1,10 +1,10 @@
 import { createCell } from '../utils/cell'
 import { createRateLimiter } from './createRateLimiter'
-import type { ReactiveControllerHost } from 'lit'
-import type { LitRateLimiter, LitRateLimiterOptions } from './createRateLimiter'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
+import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
 import type { CellValue, SetValue } from '../utils/cell'
+import type { LitRateLimiter, LitRateLimiterOptions } from './createRateLimiter'
 /**
  * Creates rate-limited state with a scheduled setter.
  *

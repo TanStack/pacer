@@ -1,10 +1,10 @@
 import { useLayoutEffect } from 'octane'
 import { splitSlot, subSlot } from '../utils/slots'
 import { useDebouncedState } from './useDebouncedState'
-import type { OctaneDebouncer, OctaneDebouncerOptions } from './useDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { OctanePacerOptions } from '../types'
 import type { SetValue } from '../utils/cell'
+import type { OctaneDebouncer, OctaneDebouncerOptions } from './useDebouncer'
 /**
  * Derives a debounced value from its current source.
  *
@@ -64,7 +64,8 @@ export function useDebouncedValue<TValue, TSelected = {}>(
       OctaneDebouncerOptions<SetValue<TValue>, TSelected>
     >,
     args[1] as
-      ((state: DebouncerState<SetValue<TValue>>) => TSelected) | undefined,
+      | ((state: DebouncerState<SetValue<TValue>>) => TSelected)
+      | undefined,
     subSlot(slot, 'state'),
   )
   useLayoutEffect(

@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Throttler } from '@tanstack/pacer/throttler'
 import { shallow, useSelector } from '@tanstack/preact-store'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/preact-store'
-import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer/throttler'
+import type { AnyFunction } from '@tanstack/pacer/types'
+import type { Store } from '@tanstack/preact-store'
 import type { ComponentChildren } from 'preact'
 
 export interface PreactThrottlerOptions<

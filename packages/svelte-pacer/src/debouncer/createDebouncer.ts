@@ -1,13 +1,13 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { bindPacer } from '../utils/bindPacer.svelte'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SveltePacerSubscribe } from '../utils/createSubscribe'
+import { bindPacer } from '../utils/bindPacer.svelte'
 import type {
   DebouncerOptions,
   DebouncerState,
 } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { SveltePacerOptions } from '../types'
+import type { SveltePacerSubscribe } from '../utils/createSubscribe'
 
 /** Options for createDebouncer, including owner cleanup. */
 export interface SvelteDebouncerOptions<

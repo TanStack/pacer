@@ -1,6 +1,6 @@
 import { shallow } from '@tanstack/store'
-import type { ReactiveControllerHost } from 'lit'
 import type { ReadonlyStore } from '@tanstack/store'
+import type { ReactiveControllerHost } from 'lit'
 
 /** Selects state for a child host and releases its subscription on disconnection. */
 export type LitPacerSubscribe<TState> = <TSelected>(

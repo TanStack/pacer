@@ -1,6 +1,6 @@
+import { asyncRateLimit } from '@tanstack/octane-pacer/async-rate-limiter'
 import { useCallback, useState } from 'octane'
 import { createRoot } from 'octane'
-import { asyncRateLimit } from '@tanstack/octane-pacer/async-rate-limiter'
 
 function SearchApp() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')

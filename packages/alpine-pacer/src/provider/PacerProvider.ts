@@ -1,5 +1,4 @@
 import Alpine from 'alpinejs'
-import type { AlpinePacerOptions } from '../types'
 import type { AlpineAsyncBatcherOptions } from '../async-batcher/createAsyncBatcher'
 import type { AlpineAsyncDebouncerOptions } from '../async-debouncer/createAsyncDebouncer'
 import type { AlpineAsyncQueuerOptions } from '../async-queuer/createAsyncQueuer'
@@ -10,6 +9,7 @@ import type { AlpineDebouncerOptions } from '../debouncer/createDebouncer'
 import type { AlpineQueuerOptions } from '../queuer/createQueuer'
 import type { AlpineRateLimiterOptions } from '../rate-limiter/createRateLimiter'
 import type { AlpineThrottlerOptions } from '../throttler/createThrottler'
+import type { AlpinePacerOptions } from '../types'
 
 export interface PacerProviderOptions {
   asyncBatcher?: Partial<AlpineAsyncBatcherOptions<any, any>>

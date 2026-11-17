@@ -1,9 +1,9 @@
-import { createRoot, useLayoutEffect } from 'octane'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { useRef, useState } from 'octane'
-import { useThrottler } from '@tanstack/octane-pacer/throttler'
 import { PacerProvider } from '@tanstack/octane-pacer/provider'
+import { useThrottler } from '@tanstack/octane-pacer/throttler'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { createRoot, useLayoutEffect } from 'octane'
+import { useRef, useState } from 'octane'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)

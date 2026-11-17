@@ -1,7 +1,7 @@
-import { useState } from 'preact/hooks'
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
 import { useQueuedState } from '@tanstack/preact-pacer/queuer'
+import { render } from 'preact'
+import { useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 function App1() {
   // Queuer that uses Preact.useState under the hood

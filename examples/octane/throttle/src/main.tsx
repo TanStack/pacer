@@ -1,6 +1,6 @@
+import { throttle } from '@tanstack/octane-pacer/throttler'
 import { useCallback, useState } from 'octane'
 import { createRoot } from 'octane'
-import { throttle } from '@tanstack/octane-pacer/throttler'
 
 function App1() {
   // Use your state management library of choice

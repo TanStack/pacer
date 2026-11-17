@@ -7,7 +7,7 @@ export function isPacerUtilTanStackStore(x: unknown): x is {
     typeof x === 'object' &&
     x !== null &&
     'subscribe' in x &&
-    typeof (x as { subscribe: unknown }).subscribe === 'function' &&
+    typeof x.subscribe === 'function' &&
     'get' in x &&
     typeof (x as { get: unknown }).get === 'function'
   )

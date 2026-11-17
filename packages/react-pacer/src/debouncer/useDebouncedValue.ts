@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDebouncedState } from './useDebouncedState'
-import type { ReactDebouncer, ReactDebouncerOptions } from './useDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { ReactDebouncer, ReactDebouncerOptions } from './useDebouncer'
 
 /**
  * A React hook that creates a debounced value that updates only after a specified delay.

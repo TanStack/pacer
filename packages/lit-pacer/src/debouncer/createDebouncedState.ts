@@ -1,10 +1,10 @@
 import { createCell } from '../utils/cell'
 import { createDebouncer } from './createDebouncer'
-import type { ReactiveControllerHost } from 'lit'
-import type { LitDebouncer, LitDebouncerOptions } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
 import type { CellValue, SetValue } from '../utils/cell'
+import type { LitDebouncer, LitDebouncerOptions } from './createDebouncer'
 /**
  * Creates debounced state with a scheduled setter.
  *

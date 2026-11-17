@@ -1,6 +1,6 @@
+import { useAsyncThrottledCallback } from '@tanstack/octane-pacer/async-throttler'
 import { useState } from 'octane'
 import { createRoot } from 'octane'
-import { useAsyncThrottledCallback } from '@tanstack/octane-pacer/async-throttler'
 
 interface SearchResult {
   id: number

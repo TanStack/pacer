@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDebouncer } from './useDebouncer'
-import type { ReactDebouncer, ReactDebouncerOptions } from './useDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { ReactDebouncer, ReactDebouncerOptions } from './useDebouncer'
 
 /**
  * A React hook that creates a debounced state value, combining React's useState with debouncing functionality.

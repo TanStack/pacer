@@ -1,8 +1,8 @@
 import { useEffect } from 'preact/hooks'
 import { useDebouncedState } from './useDebouncedState'
-import type { PreactDebouncer, PreactDebouncerOptions } from './useDebouncer'
-import type { Dispatch, StateUpdater } from 'preact/hooks'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { Dispatch, StateUpdater } from 'preact/hooks'
+import type { PreactDebouncer, PreactDebouncerOptions } from './useDebouncer'
 
 /**
  * A Preact hook that creates a debounced value that updates only after a specified delay.

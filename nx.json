@@ -31,10 +31,24 @@
       "inputs": ["default", "^production"],
       "outputs": ["{projectRoot}/coverage"]
     },
+    "test:oxlint": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^production", "{workspaceRoot}/oxlint.config.ts"]
+    },
+    "lint": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^production", "{workspaceRoot}/oxlint.config.ts"]
+    },
+    "lint:fix": {
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/oxlint.config.ts"]
+    },
     "test:eslint": {
       "cache": true,
       "dependsOn": ["^build"],
-      "inputs": ["default", "^production", "{workspaceRoot}/eslint.config.js"]
+      "inputs": ["default", "^production"]
     },
     "test:types": {
       "cache": true,

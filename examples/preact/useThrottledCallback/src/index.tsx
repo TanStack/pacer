@@ -1,7 +1,7 @@
-import { useRef, useState } from 'preact/hooks'
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
 import { useThrottledCallback } from '@tanstack/preact-pacer/throttler'
+import { render } from 'preact'
+import { useRef, useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 function App1() {
   // Use your state management library of choice

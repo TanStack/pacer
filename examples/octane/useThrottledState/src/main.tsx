@@ -1,6 +1,6 @@
+import { useThrottledState } from '@tanstack/octane-pacer/throttler'
 import { useRef, useState } from 'octane'
 import { createRoot } from 'octane'
-import { useThrottledState } from '@tanstack/octane-pacer/throttler'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)

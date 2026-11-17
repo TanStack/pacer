@@ -1,8 +1,8 @@
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { asyncRetry } from '@tanstack/lit-pacer'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { LitElement, html, nothing } from 'lit'
 import { styleMap } from 'lit/directives/style-map.js'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { asyncRetry } from '@tanstack/lit-pacer'
 interface UserData {
   id: number
   name: string
@@ -229,26 +229,22 @@ class Demo extends LitElement {
             <h4>Current Options:</h4>
             <pre style=${styleMap({ fontSize: '12px', margin: 0 })}>
 ${(() => {
-                const opts = this.getOptions()
-                return JSON.stringify(
-                  {
-                    maxAttempts: opts.maxAttempts,
-                    backoff: opts.backoff,
-                    baseWait: opts.baseWait,
-                    jitter: opts.jitter,
-                    maxExecutionTime:
-                      'maxExecutionTime' in opts
-                        ? opts.maxExecutionTime
-                        : Infinity,
-                    maxTotalExecutionTime:
-                      'maxTotalExecutionTime' in opts
-                        ? opts.maxTotalExecutionTime
-                        : Infinity,
-                  },
-                  null,
-                  2,
-                )
-              })()}</pre>
+  const opts = this.getOptions()
+  return JSON.stringify(
+    {
+      maxAttempts: opts.maxAttempts,
+      backoff: opts.backoff,
+      baseWait: opts.baseWait,
+      jitter: opts.jitter,
+      maxExecutionTime:
+        'maxExecutionTime' in opts ? opts.maxExecutionTime : Infinity,
+      maxTotalExecutionTime:
+        'maxTotalExecutionTime' in opts ? opts.maxTotalExecutionTime : Infinity,
+    },
+    null,
+    2,
+  )
+})()}</pre>
           </div>
         </div>
         <div>

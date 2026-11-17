@@ -1,6 +1,5 @@
-import { useContext, useMemo } from 'preact/hooks'
 import { createContext } from 'preact'
-import type { ComponentChildren } from 'preact'
+import { useContext, useMemo } from 'preact/hooks'
 import type {
   AnyAsyncFunction,
   AnyFunction,
@@ -15,6 +14,7 @@ import type {
   RateLimiterOptions,
   ThrottlerOptions,
 } from '@tanstack/pacer'
+import type { ComponentChildren } from 'preact'
 
 export interface PacerProviderOptions {
   asyncBatcher?: Partial<AsyncBatcherOptions<any>>

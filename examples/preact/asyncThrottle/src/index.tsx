@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'preact/hooks'
-import { render } from 'preact'
 import { asyncThrottle } from '@tanstack/preact-pacer/async-throttler'
+import { render } from 'preact'
+import { useCallback, useState } from 'preact/hooks'
 
 function SearchApp() {
   const [searchText, setSearchText] = useState('')

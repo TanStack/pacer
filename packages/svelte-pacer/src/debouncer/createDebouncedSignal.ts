@@ -1,9 +1,9 @@
 import { createCell } from '../utils/cell.svelte'
 import { createDebouncer } from './createDebouncer'
-import type { SvelteDebouncer, SvelteDebouncerOptions } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { SveltePacerOptions } from '../types'
 import type { CellValue, SetValue } from '../utils/cell.svelte'
+import type { SvelteDebouncer, SvelteDebouncerOptions } from './createDebouncer'
 /**
  * Creates debounced state with a scheduled setter.
  *

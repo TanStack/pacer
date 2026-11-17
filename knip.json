@@ -19,11 +19,7 @@
       "entry": ["tests/e2e/helpers/*.ts"]
     },
     "packages/ember-pacer": {
-      "entry": [
-        "testem.cjs",
-        "tests/test-helper.ts",
-        "tests/integration/*.gts"
-      ],
+      "entry": ["testem.cjs", "tests/integration/*.gts"],
       "ignoreDependencies": [
         "@ember/component",
         "@ember/destroyable",

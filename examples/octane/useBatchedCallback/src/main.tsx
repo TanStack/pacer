@@ -1,6 +1,6 @@
+import { useBatchedCallback } from '@tanstack/octane-pacer/batcher'
 import { useState } from 'octane'
 import { createRoot } from 'octane'
-import { useBatchedCallback } from '@tanstack/octane-pacer/batcher'
 
 interface LogEntry {
   id: number

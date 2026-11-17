@@ -64,7 +64,8 @@ it('keeps shared state names consistent across utilities', () => {
   assertType<'executionCount' extends keyof ExecutionState ? true : false>(true)
   assertType<
     BatcherKeys extends keyof (
-      BatcherState<unknown> | AsyncBatcherState<unknown>
+      | BatcherState<unknown>
+      | AsyncBatcherState<unknown>
     )
       ? true
       : false

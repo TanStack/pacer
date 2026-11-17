@@ -1,5 +1,5 @@
-import { createRoot } from 'octane'
 import { useQueuedValue } from '@tanstack/octane-pacer/queuer'
+import { createRoot } from 'octane'
 import { useState } from 'octane'
 
 function App1() {

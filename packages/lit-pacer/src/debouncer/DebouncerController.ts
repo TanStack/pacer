@@ -1,9 +1,9 @@
 import { createDebouncer } from './createDebouncer'
-import type { LitDebouncer, LitDebouncerOptions } from './createDebouncer'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { AnyFunction } from '@tanstack/pacer/types'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
+import type { LitDebouncer, LitDebouncerOptions } from './createDebouncer'
 
 /** Owns a Debouncer for a Lit host. Access core methods and selected state through `pacer`. */
 export class DebouncerController<TFn extends AnyFunction, TSelected = {}> {

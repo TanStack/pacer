@@ -1,5 +1,4 @@
 import { computed } from '@angular/core'
-
 import type { NonCallable } from './internalTypes'
 
 export type MaybeAccessor<T> = NonCallable<T> | (() => T)

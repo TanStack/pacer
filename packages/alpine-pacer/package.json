@@ -24,8 +24,9 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
-    "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src ./tests",
+    "lint": "oxlint ./src ./tests",
+    "lint:fix": "oxlint ./src ./tests --fix",
+    "test:oxlint": "oxlint ./src ./tests",
     "test:lib": "vitest --passWithNoTests",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
@@ -64,7 +65,7 @@
   },
   "devDependencies": {
     "@types/alpinejs": "^3.17.0",
-    "alpinejs": "^3.17.4"
+    "alpinejs": "^3.17.5"
   },
   "peerDependencies": {
     "alpinejs": "^3.15.12"

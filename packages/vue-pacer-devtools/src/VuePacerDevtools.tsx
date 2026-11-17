@@ -1,3 +1,4 @@
+import { PacerDevtoolsCore } from '@tanstack/pacer-devtools/production'
 import {
   computed,
   defineComponent,
@@ -7,9 +8,8 @@ import {
   ref,
   watch,
 } from 'vue'
-import { PacerDevtoolsCore } from '@tanstack/pacer-devtools/production'
-import type { DefineComponent, PropType } from 'vue'
 import type { DevtoolsPanelProps } from '@tanstack/devtools-utils/vue'
+import type { DefineComponent, PropType } from 'vue'
 
 export interface PacerDevtoolsVueInit extends Partial<
   Omit<DevtoolsPanelProps, 'theme'>

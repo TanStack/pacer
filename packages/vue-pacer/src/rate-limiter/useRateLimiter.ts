@@ -1,14 +1,14 @@
 import { RateLimiter } from '@tanstack/pacer/rate-limiter'
-import { bindPacer } from '../utils/bindPacer'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { VuePacerSubscribe } from '../utils/Subscribe'
-import type { ShallowRef } from 'vue'
+import { bindPacer } from '../utils/bindPacer'
 import type {
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
 import type { AnyFunction } from '@tanstack/pacer/types'
+import type { ShallowRef } from 'vue'
 import type { VuePacerOptions } from '../types'
+import type { VuePacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useRateLimiter, including owner cleanup. */
 export interface VueRateLimiterOptions<

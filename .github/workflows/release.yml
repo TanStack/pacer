@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup Tools
-        uses: TanStack/config/.github/setup@466151b2d479656b38942cd84a0a3dce29d48de3
+        uses: TanStack/config/.github/setup@a041f4eeb8e4d595aee89f8992b20c669288a741 # main
       - name: Run Tests
         run: pnpm run test:ci
       - name: Run Changesets (version or publish)

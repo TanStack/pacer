@@ -1,11 +1,11 @@
 import { createAsyncQueuer } from './createAsyncQueuer'
+import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
 import type { PacerScope } from '../provider/PacerProvider'
+import type { AlpinePacerOptions } from '../types'
 import type {
   AlpineAsyncQueuer,
   AlpineAsyncQueuerOptions,
 } from './createAsyncQueuer'
-import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
-import type { AlpinePacerOptions } from '../types'
 /**
  * Exposes pending queue items together with the queue that processes them.
  *

@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { shallow, useSelector } from '@tanstack/react-store'
+import { useEffect, useMemo, useState } from 'react'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
 import type {
   AsyncBatcherOptions,
@@ -282,11 +282,10 @@ export function useAsyncBatcher<TValue, TSelected = {}>(
   const state = useSelector(asyncBatcher.store, selector, { compare: shallow })
 
   return useMemo(
-    () =>
-      ({
-        ...asyncBatcher,
-        state,
-      }) as ReactAsyncBatcher<TValue, TSelected>, // omit `store` in favor of `state`
+    () => ({
+      ...asyncBatcher,
+      state,
+    }), // omit `store` in favor of `state`
     [asyncBatcher, state],
   )
 }

@@ -6,13 +6,13 @@ import {
   untracked,
 } from '@angular/core'
 import { injectDebouncer } from './injectDebouncer'
+import type { Signal } from '@angular/core'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
   AngularDebouncer,
   AngularDebouncerOptions,
 } from './injectDebouncer'
-import type { Signal } from '@angular/core'
 
 /**
  * A readonly Angular value signal with its underlying utility ref.

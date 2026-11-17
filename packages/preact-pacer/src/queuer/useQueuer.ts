@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
 import { Queuer } from '@tanstack/pacer/queuer'
 import { shallow, useSelector } from '@tanstack/preact-store'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { Store } from '@tanstack/preact-store'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
+import type { Store } from '@tanstack/preact-store'
 import type { ComponentChildren } from 'preact'
 
 export interface PreactQueuerOptions<
@@ -241,11 +241,10 @@ export function useQueuer<TValue, TSelected = {}>(
   const state = useSelector(queuer.store, selector, { compare: shallow })
 
   return useMemo(
-    () =>
-      ({
-        ...queuer,
-        state,
-      }) as PreactQueuer<TValue, TSelected>, // omit `store` in favor of `state`
+    () => ({
+      ...queuer,
+      state,
+    }), // omit `store` in favor of `state`
     [queuer, state],
   )
 }

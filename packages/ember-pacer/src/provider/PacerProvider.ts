@@ -1,21 +1,21 @@
-import { UseDebouncedValue } from '../debouncer/useDebouncedValue'
-import { UseDebouncedState } from '../debouncer/useDebouncedState'
-import { UseRateLimitedValue } from '../rate-limiter/useRateLimitedValue'
-import { UseRateLimitedState } from '../rate-limiter/useRateLimitedState'
-import { UseQueuedValue } from '../queuer/useQueuedValue'
-import { UseQueuedState } from '../queuer/useQueuedState'
-import { UseAsyncQueuedState } from '../async-queuer/useAsyncQueuedState'
-import { UseThrottledValue } from '../throttler/useThrottledValue'
-import { UseThrottledState } from '../throttler/useThrottledState'
 import { UseAsyncBatcher } from '../async-batcher/useAsyncBatcher'
 import { UseAsyncDebouncer } from '../async-debouncer/useAsyncDebouncer'
+import { UseAsyncQueuedState } from '../async-queuer/useAsyncQueuedState'
 import { UseAsyncQueuer } from '../async-queuer/useAsyncQueuer'
 import { UseAsyncRateLimiter } from '../async-rate-limiter/useAsyncRateLimiter'
 import { UseAsyncThrottler } from '../async-throttler/useAsyncThrottler'
 import { UseBatcher } from '../batcher/useBatcher'
+import { UseDebouncedState } from '../debouncer/useDebouncedState'
+import { UseDebouncedValue } from '../debouncer/useDebouncedValue'
 import { UseDebouncer } from '../debouncer/useDebouncer'
+import { UseQueuedState } from '../queuer/useQueuedState'
+import { UseQueuedValue } from '../queuer/useQueuedValue'
 import { UseQueuer } from '../queuer/useQueuer'
+import { UseRateLimitedState } from '../rate-limiter/useRateLimitedState'
+import { UseRateLimitedValue } from '../rate-limiter/useRateLimitedValue'
 import { UseRateLimiter } from '../rate-limiter/useRateLimiter'
+import { UseThrottledState } from '../throttler/useThrottledState'
+import { UseThrottledValue } from '../throttler/useThrottledValue'
 import { UseThrottler } from '../throttler/useThrottler'
 import type {
   AnyAsyncFunction,
@@ -23,7 +23,6 @@ import type {
   AsyncQueuerState,
   QueuerState,
 } from '@tanstack/pacer'
-import type { EmberPacerOptions } from '../types'
 import type { EmberAsyncBatcherOptions } from '../async-batcher/useAsyncBatcher'
 import type { EmberAsyncDebouncerOptions } from '../async-debouncer/useAsyncDebouncer'
 import type { EmberAsyncQueuerOptions } from '../async-queuer/useAsyncQueuer'
@@ -34,6 +33,7 @@ import type { EmberDebouncerOptions } from '../debouncer/useDebouncer'
 import type { EmberQueuerOptions } from '../queuer/useQueuer'
 import type { EmberRateLimiterOptions } from '../rate-limiter/useRateLimiter'
 import type { EmberThrottlerOptions } from '../throttler/useThrottler'
+import type { EmberPacerOptions } from '../types'
 
 export interface PacerProviderOptions {
   asyncBatcher?: Partial<EmberAsyncBatcherOptions<any, any>>

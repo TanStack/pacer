@@ -1,9 +1,9 @@
 import { observe, readSource } from '../utils/cell'
 import { useThrottledState } from './useThrottledState'
-import type { VueThrottler, VueThrottlerOptions } from './useThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { VuePacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell'
+import type { VueThrottler, VueThrottlerOptions } from './useThrottler'
 /**
  * Derives a throttled value from its current source.
  *

@@ -1,6 +1,6 @@
+import { useAsyncQueuedState } from '@tanstack/octane-pacer/async-queuer'
 import { useState } from 'octane'
 import { createRoot } from 'octane'
-import { useAsyncQueuedState } from '@tanstack/octane-pacer/async-queuer'
 
 const fakeWaitTime = 500
 

@@ -1,8 +1,8 @@
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { createQueuedValue } from '@tanstack/lit-pacer/queuer'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { LitElement, html } from 'lit'
 import { styleMap } from 'lit/directives/style-map.js'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { createQueuedValue } from '@tanstack/lit-pacer/queuer'
 
 class Counter extends LitElement {
   static properties = { instantSearchValue: { state: true } }

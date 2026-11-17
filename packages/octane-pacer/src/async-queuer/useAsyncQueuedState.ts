@@ -1,11 +1,11 @@
 import { splitSlot, subSlot } from '../utils/slots'
 import { useAsyncQueuer } from './useAsyncQueuer'
+import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
+import type { OctanePacerOptions } from '../types'
 import type {
   OctaneAsyncQueuer,
   OctaneAsyncQueuerOptions,
 } from './useAsyncQueuer'
-import type { AsyncQueuerState } from '@tanstack/pacer/async-queuer'
-import type { OctanePacerOptions } from '../types'
 /**
  * Exposes pending queue items together with the queue that processes them.
  *

@@ -1,4 +1,3 @@
-import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import Helper from '@ember/component/helper'
 import {
   isDestroyed,
@@ -6,14 +5,15 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { RateLimiter } from '@tanstack/pacer/rate-limiter'
 import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
-import type { EmberPacerSubscribe } from '../utils/Subscribe'
-import type { AnyFunction } from '@tanstack/pacer/types'
 import type {
   RateLimiterOptions,
   RateLimiterState,
 } from '@tanstack/pacer/rate-limiter'
+import type { AnyFunction } from '@tanstack/pacer/types'
+import type { EmberPacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useRateLimiter, including owner cleanup. */
 export interface EmberRateLimiterOptions<
@@ -92,7 +92,8 @@ export class UseRateLimiter<
 > extends Helper<{
   Args: {
     Positional:
-      [fn: TFn] | [fn: TFn, selector: (state: RateLimiterState) => TSelected]
+      | [fn: TFn]
+      | [fn: TFn, selector: (state: RateLimiterState) => TSelected]
     Named: EmberRateLimiterOptions<TFn, TSelected>
   }
   Return: EmberRateLimiter<TFn, TSelected>

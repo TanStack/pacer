@@ -1,13 +1,13 @@
 import { observe, readSource } from '../utils/cell'
 import { createRateLimitedState } from './createRateLimitedState'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type { PacerScope } from '../provider/PacerProvider'
+import type { AlpinePacerOptions } from '../types'
+import type { CellValue, SetValue, ValueSource } from '../utils/cell'
 import type {
   AlpineRateLimiter,
   AlpineRateLimiterOptions,
 } from './createRateLimiter'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
-import type { AlpinePacerOptions } from '../types'
-import type { CellValue, SetValue, ValueSource } from '../utils/cell'
 /**
  * Derives a rate-limited value from its current source.
  *

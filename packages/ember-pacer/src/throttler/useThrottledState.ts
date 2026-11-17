@@ -4,13 +4,13 @@ import {
   isDestroying,
   registerDestructor,
 } from '@ember/destroyable'
-import { scheduleOnce } from '@ember/runloop'
 import { trackedObject } from '@ember/reactive/collections'
+import { scheduleOnce } from '@ember/runloop'
 import { Throttler } from '@tanstack/pacer/throttler'
 import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
-import type { SetValue } from '../utils/cell'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { SetValue } from '../utils/cell'
 import type { EmberThrottler, EmberThrottlerOptions } from './useThrottler'
 /** Reactive value, update method, and underlying utility returned by useThrottledState. */
 export interface EmberThrottledState<TValue, TSelected = {}> {

@@ -1,12 +1,12 @@
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { BatcherState, useBatcher } from '@tanstack/octane-pacer/batcher'
+import { useDebouncer } from '@tanstack/octane-pacer/debouncer'
+import { QueuerState, useQueuer } from '@tanstack/octane-pacer/queuer'
+import { useRateLimiter } from '@tanstack/octane-pacer/rate-limiter'
+import { useThrottler } from '@tanstack/octane-pacer/throttler'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { useState } from 'octane'
 import { createRoot, useLayoutEffect } from 'octane'
-import { useDebouncer } from '@tanstack/octane-pacer/debouncer'
-import { useThrottler } from '@tanstack/octane-pacer/throttler'
-import { useRateLimiter } from '@tanstack/octane-pacer/rate-limiter'
-import { QueuerState, useQueuer } from '@tanstack/octane-pacer/queuer'
-import { BatcherState, useBatcher } from '@tanstack/octane-pacer/batcher'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
 
 function ComparisonApp() {
   const [currentValue, setCurrentValue] = useState(50)

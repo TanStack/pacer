@@ -6,13 +6,13 @@ import {
   untracked,
 } from '@angular/core'
 import { injectThrottler } from './injectThrottler'
+import type { Signal } from '@angular/core'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type {
   AngularThrottler,
   AngularThrottlerOptions,
 } from './injectThrottler'
-import type { Signal } from '@angular/core'
 
 /**
  * A readonly Angular value signal with its underlying utility ref.

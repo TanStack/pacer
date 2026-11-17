@@ -1,6 +1,6 @@
-import { createSignal, untrack } from 'solid-js'
 import { render } from '@solidjs/web'
 import { createRateLimitedSignal } from '@tanstack/solid-pacer/rate-limiter'
+import { createSignal, untrack } from 'solid-js'
 
 function App1() {
   const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')

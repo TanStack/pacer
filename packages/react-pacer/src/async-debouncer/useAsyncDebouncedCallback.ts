@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useAsyncDebouncer } from './useAsyncDebouncer'
-import type { ReactAsyncDebouncerOptions } from './useAsyncDebouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { ReactAsyncDebouncerOptions } from './useAsyncDebouncer'
 
 /**
  * A React hook that creates a debounced version of an async callback function.

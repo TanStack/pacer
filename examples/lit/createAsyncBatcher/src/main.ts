@@ -1,7 +1,7 @@
-import { LitElement, html, nothing } from 'lit'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { createAsyncBatcher } from '@tanstack/lit-pacer/async-batcher'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { LitElement, html, nothing } from 'lit'
 type Item = {
   id: number
   value: string

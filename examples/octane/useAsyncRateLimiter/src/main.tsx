@@ -1,9 +1,9 @@
-import { createRoot, useLayoutEffect } from 'octane'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { useEffect, useState } from 'octane'
 import { useAsyncRateLimiter } from '@tanstack/octane-pacer/async-rate-limiter'
 import { PacerProvider } from '@tanstack/octane-pacer/provider'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { createRoot, useLayoutEffect } from 'octane'
+import { useEffect, useState } from 'octane'
 interface SearchResult {
   id: number
   title: string

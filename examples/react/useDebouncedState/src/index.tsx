@@ -1,6 +1,6 @@
+import { useDebouncedState } from '@tanstack/react-pacer/debouncer'
 import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useDebouncedState } from '@tanstack/react-pacer/debouncer'
 
 function App1() {
   const [instantCount, setInstantCount] = useState(0)

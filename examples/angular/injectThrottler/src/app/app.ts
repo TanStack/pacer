@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core'
 import { JsonPipe } from '@angular/common'
+import { Component, signal } from '@angular/core'
 import { injectThrottler } from '@tanstack/angular-pacer'
 
 @Component({
@@ -51,6 +51,10 @@ export class App {
   }
   reduction(): number {
     const count = this.instantExecutions()
-    return count ? Math.round(((count - this.rangeRunner.state().executionCount) / count) * 100) : 0
+    return count
+      ? Math.round(
+          ((count - this.rangeRunner.state().executionCount) / count) * 100,
+        )
+      : 0
   }
 }

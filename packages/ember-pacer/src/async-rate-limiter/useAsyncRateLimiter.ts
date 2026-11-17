@@ -1,4 +1,3 @@
-import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import Helper from '@ember/component/helper'
 import {
   isDestroyed,
@@ -6,14 +5,15 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
 import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
-import type { EmberPacerSubscribe } from '../utils/Subscribe'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { EmberPacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useAsyncRateLimiter, including owner cleanup. */
 export interface EmberAsyncRateLimiterOptions<

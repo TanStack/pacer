@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react'
-import ReactDOM from 'react-dom/client'
+import { PacerProvider } from '@tanstack/react-pacer/provider'
 import {
   rateLimiterOptions,
   useRateLimiter,
 } from '@tanstack/react-pacer/rate-limiter'
-import { PacerProvider } from '@tanstack/react-pacer/provider'
+import { useRef, useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 const commonRateLimiterOptions = rateLimiterOptions({
   limit: 5,

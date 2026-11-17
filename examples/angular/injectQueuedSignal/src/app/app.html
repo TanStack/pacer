@@ -16,19 +16,39 @@
   <p>Queue Idle: {{ queuer.state().isIdle }}</p>
   <p>Status: {{ queuer.state().status }}</p>
   <p>Items Processed: {{ queuer.state().executionCount }}</p>
-  <button type="button" (click)="queuer.execute()" [disabled]="queuer.state().isEmpty">
+  <button
+    type="button"
+    (click)="queuer.execute()"
+    [disabled]="queuer.state().isEmpty"
+  >
     Process Next
   </button>
-  <button type="button" (click)="queuer.clear()" [disabled]="queuer.state().isEmpty">
+  <button
+    type="button"
+    (click)="queuer.clear()"
+    [disabled]="queuer.state().isEmpty"
+  >
     Clear Queue
   </button>
-  <button type="button" (click)="queuer.reset()" [disabled]="queuer.state().isEmpty">
+  <button
+    type="button"
+    (click)="queuer.reset()"
+    [disabled]="queuer.state().isEmpty"
+  >
     Reset Queue
   </button>
-  <button type="button" (click)="queuer.start()" [disabled]="queuer.state().isRunning">
+  <button
+    type="button"
+    (click)="queuer.start()"
+    [disabled]="queuer.state().isRunning"
+  >
     Start Processing
   </button>
-  <button type="button" (click)="queuer.stop()" [disabled]="!queuer.state().isRunning">
+  <button
+    type="button"
+    (click)="queuer.stop()"
+    [disabled]="!queuer.state().isRunning"
+  >
     Stop Processing
   </button>
 </section>
@@ -45,7 +65,8 @@
   /></label>
   <p>Instant Value: {{ currentValue() }}</p>
   <label
-    >Queued Range <input type="range" min="0" max="100" [value]="rangeQueued()" disabled
+    >Queued Range
+    <input type="range" min="0" max="100" [value]="rangeQueued()" disabled
   /></label>
   <p>Queued Value: {{ rangeQueued() }}</p>
   <p>Values Submitted: {{ instantExecutions() }}</p>

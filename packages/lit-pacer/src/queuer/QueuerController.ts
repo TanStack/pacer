@@ -1,8 +1,8 @@
 import { createQueuer } from './createQueuer'
-import type { LitQueuer, LitQueuerOptions } from './createQueuer'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
 import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
+import type { LitQueuer, LitQueuerOptions } from './createQueuer'
 
 /** Owns a Queuer for a Lit host. Access core methods and selected state through `pacer`. */
 export class QueuerController<TValue, TSelected = {}> {

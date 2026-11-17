@@ -39,8 +39,9 @@
   ],
   "scripts": {
     "clean": "premove ./build ./dist",
-    "lint:fix": "eslint ./src --fix",
-    "test:eslint": "eslint ./src ./tests",
+    "lint": "oxlint ./src ./tests",
+    "lint:fix": "oxlint ./src ./tests --fix",
+    "test:oxlint": "oxlint ./src ./tests",
     "test:lib": "vitest",
     "test:lib:dev": "pnpm test:lib --watch",
     "test:types": "tsc",
@@ -51,13 +52,13 @@
     "preact": ">=10.0.0"
   },
   "dependencies": {
-    "@tanstack/devtools-utils": "^0.7.0",
+    "@tanstack/devtools-utils": "^0.7.2",
     "@tanstack/pacer-devtools": "workspace:*"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.6",
-    "@testing-library/preact": "^3.2.4",
+    "@testing-library/preact": "^3.2.6",
     "csstype": "^3.2.3",
-    "preact": "^11.0.1"
+    "preact": "^11.2.0"
   }
 }

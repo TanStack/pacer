@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react'
-import ReactDOM from 'react-dom/client'
+import { useQueuedValue } from '@tanstack/react-pacer'
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { useQueuedValue } from '@tanstack/react-pacer'
+import React, { useEffect } from 'react'
+import ReactDOM from 'react-dom/client'
 
 // Fetch all posts
 const fetchPosts = async () => {

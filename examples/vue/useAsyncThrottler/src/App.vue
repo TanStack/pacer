@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { TanStackDevtools } from '@tanstack/vue-devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
-import { ref } from 'vue'
 import { useAsyncThrottler } from '@tanstack/vue-pacer/async-throttler'
+import { ref } from 'vue'
 
 const dev = import.meta.env.DEV
 const plugins = [pacerDevtoolsPlugin()]
@@ -82,8 +82,7 @@ async function onSearchChange(e: Event) {
     <div :style="{ marginTop: '10px' }">
       <button @click="() => setSearchAsyncThrottler.flush()">Flush</button>
     </div>
-    <template v-if="error"
-      ><div>Error: {{ error.message }}</div></template
+    <template v-if="error"><div>Error: {{ error.message }}</div></template
     ><setSearchAsyncThrottler.Subscribe
       :selector="
         (state) => ({

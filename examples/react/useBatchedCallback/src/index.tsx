@@ -1,6 +1,6 @@
+import { useBatchedCallback } from '@tanstack/react-pacer/batcher'
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useBatchedCallback } from '@tanstack/react-pacer/batcher'
 
 interface LogEntry {
   id: number

@@ -1,10 +1,10 @@
-import { shallow } from '@tanstack/store'
 import { assertInInjectionContext, computed } from '@angular/core'
+import { shallow } from '@tanstack/store'
 import { injectQueuer } from './injectQueuer'
-import type { MaybeAccessor } from '../utils/maybeAccessor'
-import type { ReadonlySelected } from '../utils/internalTypes'
-import type { QueuerState } from '@tanstack/pacer/queuer'
 import type { Signal } from '@angular/core'
+import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { ReadonlySelected } from '../utils/internalTypes'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
 
 /**

@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core'
 import { JsonPipe } from '@angular/common'
+import { Component, signal } from '@angular/core'
 import { injectBatcher } from '@tanstack/angular-pacer'
 
 @Component({

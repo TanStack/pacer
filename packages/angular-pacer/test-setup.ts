@@ -5,7 +5,6 @@ import {
   BrowserTestingModule,
   platformBrowserTesting,
 } from '@angular/platform-browser/testing'
-
 import { afterEach, vi } from 'vitest'
 
 getTestBed().initTestEnvironment(BrowserTestingModule, platformBrowserTesting())

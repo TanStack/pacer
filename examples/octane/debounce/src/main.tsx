@@ -1,6 +1,6 @@
+import { debounce } from '@tanstack/octane-pacer/debouncer'
 import { useCallback, useState } from 'octane'
 import { createRoot } from 'octane'
-import { debounce } from '@tanstack/octane-pacer/debouncer'
 
 function App1() {
   // Use your state management library of choice

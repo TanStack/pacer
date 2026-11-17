@@ -1,6 +1,6 @@
+import { batch } from '@tanstack/react-pacer/batcher'
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { batch } from '@tanstack/react-pacer/batcher'
 
 function App() {
   const [processedBatches, setProcessedBatches] = useState<

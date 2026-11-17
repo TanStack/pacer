@@ -1,5 +1,5 @@
-import { expect, it } from 'vitest'
 import { createRoot, drainPassiveEffects, flushSync } from 'octane'
+import { expect, it } from 'vitest'
 import { Fixture, capture } from './Selection.tsrx'
 
 it('refreshes a selection when component inputs change without a store update', () => {

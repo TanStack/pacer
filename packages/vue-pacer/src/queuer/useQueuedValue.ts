@@ -1,9 +1,9 @@
 import { createCell, observe, readSource } from '../utils/cell'
 import { useQueuer } from './useQueuer'
-import type { VueQueuer, VueQueuerOptions } from './useQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
 import type { VuePacerOptions } from '../types'
 import type { CellValue, ValueSource } from '../utils/cell'
+import type { VueQueuer, VueQueuerOptions } from './useQueuer'
 /**
  * Derives a queued value from its current source.
  *

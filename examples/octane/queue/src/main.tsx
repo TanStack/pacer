@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'octane'
-import { createRoot, useLayoutEffect } from 'octane'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
 import { queue } from '@tanstack/octane-pacer/queuer'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { useCallback, useState } from 'octane'
+import { createRoot, useLayoutEffect } from 'octane'
 
 function App1() {
   const [queueItems, setQueueItems] = useState<Array<number>>([])

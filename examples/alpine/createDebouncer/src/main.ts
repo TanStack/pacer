@@ -1,8 +1,8 @@
-import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
-import type { AlpineDebouncer, DebouncerState } from '@tanstack/alpine-pacer'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import Alpine from 'alpinejs'
+import type { AlpineDebouncer, DebouncerState } from '@tanstack/alpine-pacer'
 
 type SelectedDebouncer<T> = AlpineDebouncer<
   (value: T) => void,

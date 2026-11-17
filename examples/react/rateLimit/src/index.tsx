@@ -1,6 +1,6 @@
+import { rateLimit } from '@tanstack/react-pacer/rate-limiter'
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { rateLimit } from '@tanstack/react-pacer/rate-limiter'
 
 function App1() {
   const [windowType, setWindowType] = useState<'fixed' | 'sliding'>('fixed')

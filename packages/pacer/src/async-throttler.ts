@@ -1,7 +1,7 @@
 import { Store } from '@tanstack/store'
 import { AsyncRetryer } from './async-retryer'
-import { parseFunctionOrValue } from './utils'
 import { emitChange, pacerEventClient } from './event-client'
+import { parseFunctionOrValue } from './utils'
 import type { AsyncRetryerOptions } from './async-retryer'
 import type { AnyAsyncFunction, OptionalKeys } from './types'
 
@@ -236,7 +236,8 @@ export class AsyncThrottler<TFn extends AnyAsyncFunction> {
   asyncRetryers = new Map<number, AsyncRetryer<TFn>>()
   #timeoutId: ReturnType<typeof setTimeout> | null = null
   #resolvePreviousPromise:
-    ((value?: Awaited<ReturnType<TFn>> | undefined) => void) | null = null
+    | ((value?: Awaited<ReturnType<TFn>> | undefined) => void)
+    | null = null
 
   constructor(
     public fn: TFn,

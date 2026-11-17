@@ -1,12 +1,12 @@
 import { createAsyncDebouncer } from './createAsyncDebouncer'
+import type { AsyncDebouncerState } from '@tanstack/pacer/async-debouncer'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
 import type {
   LitAsyncDebouncer,
   LitAsyncDebouncerOptions,
 } from './createAsyncDebouncer'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
-import type { AsyncDebouncerState } from '@tanstack/pacer/async-debouncer'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
 /** Owns a AsyncDebouncer for a Lit host. Access core methods and selected state through `pacer`. */
 export class AsyncDebouncerController<

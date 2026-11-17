@@ -1,8 +1,8 @@
 <script lang="ts">
   import { TanStackDevtools } from '@tanstack/svelte-devtools'
   import { pacerDevtoolsPlugin } from '@tanstack/svelte-pacer-devtools'
-  import { untrack } from 'svelte'
   import { createRateLimitedSignal } from '@tanstack/svelte-pacer/rate-limiter'
+  import { untrack } from 'svelte'
 
   const counterAlert = window.alert.bind(window)
 

@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitest/config'
 import solid from '@solidjs/vite-plugin'
+import { defineConfig } from 'vitest/config'
 import packageJson from './package.json' with { type: 'json' }
 
 export default defineConfig({

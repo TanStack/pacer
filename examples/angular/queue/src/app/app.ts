@@ -22,7 +22,8 @@ export class App {
       maxSize: 25,
       wait: 1000,
       onItemsChange: (queuer) => this.numberItems.set(queuer.peekAllItems()),
-      onExecute: (_item, queuer) => this.numberProcessed.set(queuer.store.state.executionCount),
+      onExecute: (_item, queuer) =>
+        this.numberProcessed.set(queuer.store.state.executionCount),
     },
   )
   private readonly textRunner = queue<string>(
@@ -33,7 +34,8 @@ export class App {
       maxSize: 100,
       wait: 500,
       onItemsChange: (queuer) => this.textItems.set(queuer.peekAllItems()),
-      onExecute: (_item, queuer) => this.textProcessed.set(queuer.store.state.executionCount),
+      onExecute: (_item, queuer) =>
+        this.textProcessed.set(queuer.store.state.executionCount),
     },
   )
   private readonly rangeRunner = queue<number>(
@@ -44,7 +46,8 @@ export class App {
       maxSize: 100,
       wait: 100,
       onItemsChange: (queuer) => this.rangeItems.set(queuer.peekAllItems()),
-      onExecute: (_item, queuer) => this.rangeProcessed.set(queuer.store.state.executionCount),
+      onExecute: (_item, queuer) =>
+        this.rangeProcessed.set(queuer.store.state.executionCount),
     },
   )
   addNumber(): void {

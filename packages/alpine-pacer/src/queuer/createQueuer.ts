@@ -1,9 +1,9 @@
 import { Queuer } from '@tanstack/pacer/queuer'
 import { bindPacer } from '../utils/bindPacer'
-import type { AlpinePacerSubscribe } from '../utils/subscribe'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
+import type { AlpinePacerSubscribe } from '../utils/subscribe'
 
 /** Options for createQueuer, including owner cleanup. */
 export interface AlpineQueuerOptions<

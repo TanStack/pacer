@@ -1,11 +1,11 @@
 import { createAsyncBatcher } from './createAsyncBatcher'
+import type { AsyncBatcherState } from '@tanstack/pacer/async-batcher'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
 import type {
   LitAsyncBatcher,
   LitAsyncBatcherOptions,
 } from './createAsyncBatcher'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
-import type { AsyncBatcherState } from '@tanstack/pacer/async-batcher'
 
 /** Owns a AsyncBatcher for a Lit host. Access core methods and selected state through `pacer`. */
 export class AsyncBatcherController<TValue, TSelected = {}> {

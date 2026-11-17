@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useRateLimitedState } from './useRateLimitedState'
+import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type {
   ReactRateLimiter,
   ReactRateLimiterOptions,
 } from './useRateLimiter'
-import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 
 /**
  * A high-level React hook that creates a rate-limited version of a value that updates at most a certain number of times within a time window.

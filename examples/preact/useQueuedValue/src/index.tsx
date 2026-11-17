@@ -1,7 +1,7 @@
-import { render } from 'preact'
-import type { TargetedEvent } from 'preact'
 import { useQueuedValue } from '@tanstack/preact-pacer/queuer'
+import { render } from 'preact'
 import { useState } from 'preact/hooks'
+import type { TargetedEvent } from 'preact'
 
 function App1() {
   const [instantSearchValue, setInstantSearchValue] = useState('')

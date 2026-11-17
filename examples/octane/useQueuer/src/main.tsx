@@ -1,9 +1,9 @@
-import { createRoot, useLayoutEffect } from 'octane'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { useState } from 'octane'
-import { useQueuer } from '@tanstack/octane-pacer/queuer'
 import { PacerProvider } from '@tanstack/octane-pacer/provider'
+import { useQueuer } from '@tanstack/octane-pacer/queuer'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { createRoot, useLayoutEffect } from 'octane'
+import { useState } from 'octane'
 
 function App1() {
   function processItem(item: number) {

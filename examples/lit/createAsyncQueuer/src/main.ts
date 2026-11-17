@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { createAsyncQueuer } from '@tanstack/lit-pacer/async-queuer'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { LitElement, html } from 'lit'
 type Item = number
 class Demo extends LitElement {
   static properties = { concurrency: { state: true } }

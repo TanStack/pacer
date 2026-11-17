@@ -1,7 +1,8 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte'
   import { providePacerOptions } from './PacerProvider'
+  import type { Snippet } from 'svelte'
   import type { PacerProviderOptions } from './PacerProvider'
+
   let {
     defaultOptions = {},
     children,

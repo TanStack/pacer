@@ -1,10 +1,10 @@
 import { observe, readSource } from '../utils/cell'
 import { createDebouncedState } from './createDebouncedState'
-import type { PacerScope } from '../provider/PacerProvider'
-import type { AlpineDebouncer, AlpineDebouncerOptions } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
+import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
 import type { CellValue, SetValue, ValueSource } from '../utils/cell'
+import type { AlpineDebouncer, AlpineDebouncerOptions } from './createDebouncer'
 /**
  * Derives a debounced value from its current source.
  *

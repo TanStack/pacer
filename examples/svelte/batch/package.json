@@ -10,14 +10,14 @@
     "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
   },
   "dependencies": {
-    "@tanstack/svelte-devtools": "^0.1.7",
+    "@tanstack/svelte-devtools": "^0.1.8",
     "@tanstack/svelte-pacer": "workspace:*",
     "@tanstack/svelte-pacer-devtools": "workspace:*",
-    "svelte": "^5.57.1"
+    "svelte": "^5.57.3"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
-    "svelte-check": "^4.7.6",
-    "vite": "^8.3.2"
+    "svelte-check": "^4.7.8",
+    "vite": "^8.3.8"
   }
 }

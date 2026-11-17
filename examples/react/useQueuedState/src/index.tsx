@@ -1,6 +1,6 @@
-import ReactDOM from 'react-dom/client'
 import { useQueuedState } from '@tanstack/react-pacer/queuer'
 import { useState } from 'react'
+import ReactDOM from 'react-dom/client'
 
 function App1() {
   // Queuer that uses React.useState under the hood

@@ -1,8 +1,8 @@
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { createThrottledValue } from '@tanstack/lit-pacer/throttler'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { LitElement, html } from 'lit'
 import { styleMap } from 'lit/directives/style-map.js'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
-import { createThrottledValue } from '@tanstack/lit-pacer/throttler'
 
 class Counter extends LitElement {
   static properties = { instantCount: { state: true } }

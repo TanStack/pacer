@@ -1,6 +1,6 @@
 import { useQueuer } from './useQueuer'
-import type { ReactQueuer, ReactQueuerOptions } from './useQueuer'
 import type { Queuer, QueuerState } from '@tanstack/pacer/queuer'
+import type { ReactQueuer, ReactQueuerOptions } from './useQueuer'
 
 /**
  * A React hook that creates a queuer with managed state, combining React's useState with queuing functionality.

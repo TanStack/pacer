@@ -1,7 +1,7 @@
-import { For, Show, createSignal, onCleanup, onSettled } from 'solid-js'
 import { render } from '@solidjs/web'
 import { createAsyncRateLimiter } from '@tanstack/solid-pacer/async-rate-limiter'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
+import { For, Show, createSignal, onCleanup, onSettled } from 'solid-js'
 
 interface SearchResult {
   id: number

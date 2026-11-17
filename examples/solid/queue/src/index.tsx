@@ -1,6 +1,6 @@
-import { createSignal } from 'solid-js'
 import { render } from '@solidjs/web'
 import { queue } from '@tanstack/solid-pacer/queuer'
+import { createSignal } from 'solid-js'
 
 function App1() {
   const [queueItems, setQueueItems] = createSignal<Array<number>>([])

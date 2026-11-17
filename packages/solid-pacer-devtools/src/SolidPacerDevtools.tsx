@@ -1,7 +1,7 @@
 import { createSolidPanel } from '@tanstack/devtools-utils/solid'
 import { PacerDevtoolsCore } from '@tanstack/pacer-devtools'
-import type { JSX } from 'solid-js'
 import type { DevtoolsPanelProps } from '@tanstack/devtools-utils/solid'
+import type { JSX } from 'solid-js'
 
 const pacerDevtoolsPanels: readonly [
   (props: DevtoolsPanelProps) => JSX.Element,

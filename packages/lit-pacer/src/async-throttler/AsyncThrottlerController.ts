@@ -1,12 +1,12 @@
 import { createAsyncThrottler } from './createAsyncThrottler'
+import type { AsyncThrottlerState } from '@tanstack/pacer/async-throttler'
+import type { AnyAsyncFunction } from '@tanstack/pacer/types'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
 import type {
   LitAsyncThrottler,
   LitAsyncThrottlerOptions,
 } from './createAsyncThrottler'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
-import type { AsyncThrottlerState } from '@tanstack/pacer/async-throttler'
-import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 
 /** Owns a AsyncThrottler for a Lit host. Access core methods and selected state through `pacer`. */
 export class AsyncThrottlerController<

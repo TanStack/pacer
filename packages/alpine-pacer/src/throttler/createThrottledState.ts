@@ -1,10 +1,10 @@
 import { createCell } from '../utils/cell'
 import { createThrottler } from './createThrottler'
-import type { PacerScope } from '../provider/PacerProvider'
-import type { AlpineThrottler, AlpineThrottlerOptions } from './createThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
+import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
 import type { CellValue, SetValue } from '../utils/cell'
+import type { AlpineThrottler, AlpineThrottlerOptions } from './createThrottler'
 /**
  * Creates throttled state with a scheduled setter.
  *

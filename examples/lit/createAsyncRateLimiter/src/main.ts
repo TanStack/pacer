@@ -1,7 +1,7 @@
-import { LitElement, html, nothing } from 'lit'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 import { createAsyncRateLimiter } from '@tanstack/lit-pacer/async-rate-limiter'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import { LitElement, html, nothing } from 'lit'
 interface SearchResult {
   id: number
   title: string

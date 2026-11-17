@@ -1,15 +1,15 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { shallow, useSelector } from '@tanstack/solid-store'
 import { createRenderEffect, onCleanup, untrack } from 'solid-js'
-import { createPacerOptions } from '../utils/createPacerOptions'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SolidPacerOptions } from '../types'
-import type { Store } from '@tanstack/solid-store'
-import type { Accessor, Element } from 'solid-js'
+import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
+import type { Store } from '@tanstack/solid-store'
+import type { Accessor, Element } from 'solid-js'
+import type { SolidPacerOptions } from '../types'
 
 export interface SolidAsyncBatcherOptions<
   TValue,

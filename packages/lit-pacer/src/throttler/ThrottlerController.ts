@@ -1,9 +1,9 @@
 import { createThrottler } from './createThrottler'
-import type { LitThrottler, LitThrottlerOptions } from './createThrottler'
-import type { LitPacerOptions } from '../types'
-import type { ReactiveControllerHost } from 'lit'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { AnyFunction } from '@tanstack/pacer/types'
+import type { ReactiveControllerHost } from 'lit'
+import type { LitPacerOptions } from '../types'
+import type { LitThrottler, LitThrottlerOptions } from './createThrottler'
 
 /** Owns a Throttler for a Lit host. Access core methods and selected state through `pacer`. */
 export class ThrottlerController<TFn extends AnyFunction, TSelected = {}> {

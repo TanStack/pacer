@@ -1,6 +1,6 @@
+import { mount } from '@vue/test-utils'
 import { expect, it, vi } from 'vitest'
 import { defineComponent, h, nextTick, ref } from 'vue'
-import { mount } from '@vue/test-utils'
 import { PacerProvider, useDebouncer } from '../src'
 import type { VueDebouncer } from '../src'
 

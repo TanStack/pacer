@@ -1,6 +1,5 @@
 import { ContextConsumer, ContextProvider, createContext } from '@lit/context'
 import type { ReactiveControllerHost } from 'lit'
-import type { LitPacerOptions } from '../types'
 import type { LitAsyncBatcherOptions } from '../async-batcher/createAsyncBatcher'
 import type { LitAsyncDebouncerOptions } from '../async-debouncer/createAsyncDebouncer'
 import type { LitAsyncQueuerOptions } from '../async-queuer/createAsyncQueuer'
@@ -11,6 +10,7 @@ import type { LitDebouncerOptions } from '../debouncer/createDebouncer'
 import type { LitQueuerOptions } from '../queuer/createQueuer'
 import type { LitRateLimiterOptions } from '../rate-limiter/createRateLimiter'
 import type { LitThrottlerOptions } from '../throttler/createThrottler'
+import type { LitPacerOptions } from '../types'
 
 export interface PacerProviderOptions {
   asyncBatcher?: Partial<LitAsyncBatcherOptions<any, any>>

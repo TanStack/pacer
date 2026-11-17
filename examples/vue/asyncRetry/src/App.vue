@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { TanStackDevtools } from '@tanstack/vue-devtools'
+import { asyncRetry } from '@tanstack/vue-pacer'
 import { pacerDevtoolsPlugin } from '@tanstack/vue-pacer-devtools'
 import { ref } from 'vue'
-import { asyncRetry } from '@tanstack/vue-pacer'
 
 const dev = import.meta.env.DEV
 const plugins = [pacerDevtoolsPlugin()]

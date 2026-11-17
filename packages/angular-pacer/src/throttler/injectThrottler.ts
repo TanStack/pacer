@@ -7,24 +7,24 @@ import {
 import { Throttler } from '@tanstack/pacer/throttler'
 import { shallow } from '@tanstack/store'
 import { injectPacerOptions } from '../provider/providePacerOptions'
-import { toAccessorSignal } from '../utils/maybeAccessor'
 import {
   injectForwardMethods,
   methodNames,
 } from '../utils/injectForwardMethods'
 import { injectLazy } from '../utils/injectLazy'
-import { injectInsideZone } from '../utils/zoneCompatibility'
-import { injectSelector } from '../utils/injectSelector'
 import { injectPendingTasksLifecycle } from '../utils/injectPendingTasksLifecycle'
-import type { MaybeAccessor } from '../utils/maybeAccessor'
-import type { MethodMap } from '../utils/injectForwardMethods'
-import type { ReadonlySelected } from '../utils/internalTypes'
+import { injectSelector } from '../utils/injectSelector'
+import { toAccessorSignal } from '../utils/maybeAccessor'
+import { injectInsideZone } from '../utils/zoneCompatibility'
 import type { Signal } from '@angular/core'
 import type {
   AnyFunction,
   ThrottlerOptions,
   ThrottlerState,
 } from '@tanstack/pacer'
+import type { MethodMap } from '../utils/injectForwardMethods'
+import type { ReadonlySelected } from '../utils/internalTypes'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 
 /**
  * Options for {@link injectThrottler}, including core configuration and Angular cleanup.

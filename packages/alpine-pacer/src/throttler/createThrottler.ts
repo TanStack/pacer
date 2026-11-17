@@ -1,6 +1,5 @@
 import { Throttler } from '@tanstack/pacer/throttler'
 import { bindPacer } from '../utils/bindPacer'
-import type { AlpinePacerSubscribe } from '../utils/subscribe'
 import type {
   ThrottlerOptions,
   ThrottlerState,
@@ -8,6 +7,7 @@ import type {
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { PacerScope } from '../provider/PacerProvider'
 import type { AlpinePacerOptions } from '../types'
+import type { AlpinePacerSubscribe } from '../utils/subscribe'
 
 /** Options for createThrottler, including owner cleanup. */
 export interface AlpineThrottlerOptions<

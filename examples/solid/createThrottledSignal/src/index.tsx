@@ -1,6 +1,6 @@
-import { createSignal, untrack } from 'solid-js'
 import { render } from '@solidjs/web'
 import { createThrottledSignal } from '@tanstack/solid-pacer/throttler'
+import { createSignal, untrack } from 'solid-js'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)

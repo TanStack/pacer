@@ -1,4 +1,3 @@
-import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import Helper from '@ember/component/helper'
 import {
   isDestroyed,
@@ -6,13 +5,14 @@ import {
   registerDestructor,
 } from '@ember/destroyable'
 import { scheduleOnce } from '@ember/runloop'
+import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
 import { createSubscribe } from '../utils/Subscribe'
 import { select } from '../utils/select'
-import type { EmberPacerSubscribe } from '../utils/Subscribe'
 import type {
   AsyncBatcherOptions,
   AsyncBatcherState,
 } from '@tanstack/pacer/async-batcher'
+import type { EmberPacerSubscribe } from '../utils/Subscribe'
 
 /** Options for useAsyncBatcher, including owner cleanup. */
 export interface EmberAsyncBatcherOptions<

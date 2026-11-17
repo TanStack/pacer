@@ -1,13 +1,13 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { bindPacer } from '../utils/bindPacer.svelte'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { SveltePacerSubscribe } from '../utils/createSubscribe'
+import { bindPacer } from '../utils/bindPacer.svelte'
 import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
 } from '@tanstack/pacer/async-rate-limiter'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { SveltePacerOptions } from '../types'
+import type { SveltePacerSubscribe } from '../utils/createSubscribe'
 
 /** Options for createAsyncRateLimiter, including owner cleanup. */
 export interface SvelteAsyncRateLimiterOptions<

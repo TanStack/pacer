@@ -7,8 +7,8 @@ import { toAccessorSignal } from '../utils/maybeAccessor'
 import { injectQueuer } from './injectQueuer'
 import type { WritableSignal } from '@angular/core'
 import type { QueuerState } from '@tanstack/pacer/queuer'
-import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { SignalWrite } from '../utils/internalTypes'
+import type { MaybeAccessor } from '../utils/maybeAccessor'
 import type { AngularQueuer, AngularQueuerOptions } from './injectQueuer'
 
 /**

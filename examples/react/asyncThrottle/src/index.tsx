@@ -1,6 +1,6 @@
+import { asyncThrottle } from '@tanstack/react-pacer/async-throttler'
 import { useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { asyncThrottle } from '@tanstack/react-pacer/async-throttler'
 
 function SearchApp() {
   const [searchText, setSearchText] = useState('')

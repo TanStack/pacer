@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 import { useQueuedState } from './useQueuedState'
-import type { PreactQueuer, PreactQueuerOptions } from './useQueuer'
 import type { QueuerState } from '@tanstack/pacer/queuer'
+import type { PreactQueuer, PreactQueuerOptions } from './useQueuer'
 
 /**
  * A Preact hook that creates a queued value that processes state changes in order with an optional delay.

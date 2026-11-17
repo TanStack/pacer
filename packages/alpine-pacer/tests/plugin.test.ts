@@ -1,5 +1,5 @@
-import { expect, it, vi } from 'vitest'
 import Alpine from 'alpinejs'
+import { expect, it, vi } from 'vitest'
 import { pacerPlugin } from '../src'
 
 it('owns magic-created callbacks until the Alpine element is destroyed', async () => {

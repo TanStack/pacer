@@ -1,7 +1,7 @@
-import { QueryClient, QueryObserver, onlineManager } from '@tanstack/query-core'
-import { useLayoutEffect, useState, createRoot } from 'octane'
 import { useThrottledValue } from '@tanstack/octane-pacer'
+import { QueryClient, QueryObserver, onlineManager } from '@tanstack/query-core'
 import { TanstackQueryDevtools } from '@tanstack/query-devtools'
+import { useLayoutEffect, useState, createRoot } from 'octane'
 
 interface Post {
   id: number

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { TanStackDevtools } from '@tanstack/svelte-devtools'
   import { pacerDevtoolsPlugin } from '@tanstack/svelte-pacer-devtools'
-  import { createDebouncer } from '@tanstack/svelte-pacer/debouncer'
-  import { createThrottler } from '@tanstack/svelte-pacer/throttler'
-  import { createRateLimiter } from '@tanstack/svelte-pacer/rate-limiter'
-  import { createQueuer } from '@tanstack/svelte-pacer/queuer'
   import { createBatcher } from '@tanstack/svelte-pacer/batcher'
+  import { createDebouncer } from '@tanstack/svelte-pacer/debouncer'
+  import { createQueuer } from '@tanstack/svelte-pacer/queuer'
+  import { createRateLimiter } from '@tanstack/svelte-pacer/rate-limiter'
+  import { createThrottler } from '@tanstack/svelte-pacer/throttler'
 
   interface ComparisonState {
     executionCount: number

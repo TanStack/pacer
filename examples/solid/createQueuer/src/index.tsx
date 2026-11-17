@@ -1,7 +1,7 @@
-import { createSignal, untrack } from 'solid-js'
 import { render } from '@solidjs/web'
-import { createQueuer } from '@tanstack/solid-pacer/queuer'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
+import { createQueuer } from '@tanstack/solid-pacer/queuer'
+import { createSignal, untrack } from 'solid-js'
 
 function App1() {
   // The function that we will be queuing

@@ -1,7 +1,6 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { bindPacer } from '../utils/bindPacer'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
-import type { LitPacerSubscribe } from '../utils/subscribe'
+import { bindPacer } from '../utils/bindPacer'
 import type {
   AsyncRateLimiterOptions,
   AsyncRateLimiterState,
@@ -9,6 +8,7 @@ import type {
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { ReactiveControllerHost } from 'lit'
 import type { LitPacerOptions } from '../types'
+import type { LitPacerSubscribe } from '../utils/subscribe'
 
 /** Options for createAsyncRateLimiter, including owner cleanup. */
 export interface LitAsyncRateLimiterOptions<

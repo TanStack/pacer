@@ -1,5 +1,5 @@
-import { readFile } from 'node:fs/promises'
 import { spawn } from 'node:child_process'
+import { readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { stripVTControlCharacters } from 'node:util'

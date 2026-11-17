@@ -1,6 +1,6 @@
+import { useAsyncBatchedCallback } from '@tanstack/react-pacer/async-batcher'
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { useAsyncBatchedCallback } from '@tanstack/react-pacer/async-batcher'
 
 interface SearchResult {
   id: number

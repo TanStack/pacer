@@ -1,11 +1,11 @@
-import Alpine from 'alpinejs'
 import { createPacerScope } from '@tanstack/alpine-pacer'
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
+import Alpine from 'alpinejs'
 import type {
   AlpineAsyncRateLimiter,
   AsyncRateLimiterState,
 } from '@tanstack/alpine-pacer'
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/pacer-devtools'
 interface SearchResult {
   id: number
   title: string
