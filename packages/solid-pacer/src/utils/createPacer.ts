@@ -56,10 +56,13 @@ export function createPacer<
   }
 
   const result: object = new Proxy(extras, {
-    get: (target, key) =>
-      key in target
-        ? target[key as keyof typeof extras]
-        : Reflect.get(current(), key),
+    // Solid checks whether a computed value is a promise or an async iterable
+    // with an untracked read, which gives no instance while it is pending.
+    get: (target, key) => {
+      if (key in target) return target[key as keyof typeof extras]
+      const instance = current() as object | undefined
+      return instance && Reflect.get(instance, key)
+    },
     set: (target, key, value) =>
       Reflect.set(key in target ? target : current(), key, value),
     has: (target, key) => key in target || key in current(),
