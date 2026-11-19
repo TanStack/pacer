@@ -367,7 +367,7 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
     const currentMaybeExecuteCount = this.store.state.maybeExecuteCount + 1
 
     try {
-      this.#setState({ isExecuting: true })
+      this.#setState({ isExecuting: true, lastArgs: undefined })
       const currentAsyncRetryer = new AsyncRetryer(
         this.fn,
         this.options.asyncRetryerOptions,
@@ -392,7 +392,6 @@ export class AsyncDebouncer<TFn extends AnyAsyncFunction> {
       this.#setState({
         isExecuting: false,
         isPending: false,
-        lastArgs: undefined,
         settleCount: this.store.state.settleCount + 1,
       })
       this.options.onSettled?.(args, this)
