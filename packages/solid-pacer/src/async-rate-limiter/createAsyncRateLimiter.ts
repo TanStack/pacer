@@ -249,9 +249,13 @@ export function createAsyncRateLimiter<
     selector: (state: AsyncRateLimiterState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
-    const selected = useSelector(asyncRateLimiter.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      asyncRateLimiter.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
     return typeof props.children === 'function'
       ? props.children(selected)

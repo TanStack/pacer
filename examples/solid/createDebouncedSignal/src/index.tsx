@@ -1,6 +1,6 @@
 import { render } from '@solidjs/web'
 import { createDebouncedSignal } from '@tanstack/solid-pacer/debouncer'
-import { createSignal, untrack, flush } from 'solid-js'
+import { createSignal, flush } from 'solid-js'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
@@ -8,7 +8,7 @@ function App1() {
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
   // optionally, grab the debouncer from the last index of the returned array
   const [debouncedCount, setDebouncedCount, debouncer] = createDebouncedSignal(
-    untrack(instantCount),
+    0,
     {
       wait: 500,
       // get enabled() {
@@ -80,7 +80,7 @@ function App2() {
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
   const [debouncedSearch, setDebouncedSearch, debouncer] =
     createDebouncedSignal(
-      untrack(instantSearch),
+      '',
       {
         wait: 500,
         get enabled() {
@@ -161,7 +161,7 @@ function App3() {
 
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
   const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
-    untrack(currentValue),
+    50,
     {
       wait: 250,
     },

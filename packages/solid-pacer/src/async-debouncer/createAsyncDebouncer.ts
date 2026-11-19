@@ -203,9 +203,13 @@ export function createAsyncDebouncer<
     selector: (state: AsyncDebouncerState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
-    const selected = useSelector(asyncDebouncer.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      asyncDebouncer.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
     return typeof props.children === 'function'
       ? props.children(selected)

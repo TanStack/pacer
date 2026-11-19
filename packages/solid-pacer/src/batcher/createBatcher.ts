@@ -177,9 +177,13 @@ export function createBatcher<TValue, TSelected = {}>(
     selector: (state: BatcherState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
-    const selected = useSelector(batcher.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      batcher.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
     return typeof props.children === 'function'
       ? props.children(selected)

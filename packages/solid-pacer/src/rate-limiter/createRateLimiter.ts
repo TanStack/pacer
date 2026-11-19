@@ -210,9 +210,13 @@ export function createRateLimiter<TFn extends AnyFunction, TSelected = {}>(
     selector: (state: RateLimiterState) => TSelected
     children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
-    const selected = useSelector(rateLimiter.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      rateLimiter.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
     return typeof props.children === 'function'
       ? props.children(selected)

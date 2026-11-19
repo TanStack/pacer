@@ -1,6 +1,6 @@
 import { render } from '@solidjs/web'
 import { createRateLimitedSignal } from '@tanstack/solid-pacer/rate-limiter'
-import { createSignal, untrack } from 'solid-js'
+import { createSignal } from 'solid-js'
 
 function App1() {
   const [windowType, setWindowType] = createSignal<'fixed' | 'sliding'>('fixed')
@@ -8,7 +8,7 @@ function App1() {
 
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
   const [limitedCount, setLimitedCount, rateLimiter] = createRateLimitedSignal(
-    untrack(instantCount),
+    0,
     {
       limit: 5,
       window: 5000,
@@ -115,7 +115,7 @@ function App2() {
   // Using createRateLimiter with a rate limit of 5 executions per 5 seconds
   const [limitedSearch, setLimitedSearch, rateLimiter] =
     createRateLimitedSignal(
-      untrack(instantSearch),
+      '',
       {
         limit: 5,
         window: 5000,
@@ -232,7 +232,7 @@ function App3() {
 
   // Using createRateLimiter with a rate limit of 20 executions per 2 seconds
   const [limitedValue, setLimitedValue, rateLimiter] = createRateLimitedSignal(
-    untrack(currentValue),
+    50,
     {
       limit: 20,
       window: 2000,

@@ -179,9 +179,13 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
     selector: (state: ThrottlerState<TFn>) => TSelected
     children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
-    const selected = useSelector(asyncThrottler.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      asyncThrottler.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
     return typeof props.children === 'function'
       ? props.children(selected)

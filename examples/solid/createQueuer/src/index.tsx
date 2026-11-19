@@ -1,7 +1,7 @@
 import { render } from '@solidjs/web'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { createQueuer } from '@tanstack/solid-pacer/queuer'
-import { createSignal, untrack } from 'solid-js'
+import { createSignal } from 'solid-js'
 
 function App1() {
   // The function that we will be queuing
@@ -129,7 +129,7 @@ function App2() {
     {
       key: 'Range Queue',
       maxSize: 100,
-      initialItems: [untrack(currentValue)],
+      initialItems: [50],
       wait: 100,
     },
     // Alternative to queuer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates

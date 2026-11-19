@@ -178,9 +178,13 @@ export function createQueuer<TValue, TSelected = {}>(
     selector: (state: QueuerState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
-    const selected = useSelector(queuer.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      queuer.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
     return typeof props.children === 'function'
       ? props.children(selected)

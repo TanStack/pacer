@@ -18,6 +18,7 @@ import { PacerProvider } from '../src/provider/PacerProvider'
 import { createQueuer } from '../src/queuer/createQueuer'
 import { createRateLimiter } from '../src/rate-limiter/createRateLimiter'
 import { createThrottler } from '../src/throttler/createThrottler'
+import type { DebouncerState } from '@tanstack/pacer/debouncer'
 
 it('updates accessor options while retaining the limiter and store', () => {
   let dispose = () => {}
@@ -293,5 +294,31 @@ it('merges provider defaults on each factory update', () => {
     leading: true,
     trailing: false,
   })
+  dispose()
+})
+
+it('follows a Subscribe selector prop that changes', () => {
+  let dispose = () => {}
+  let read = () => undefined as unknown
+  const [byPending, setByPending] = createSignal(false)
+  createRoot((cleanup) => {
+    dispose = cleanup
+    const debouncer = createDebouncer(() => {}, { wait: 100 })
+    createComponent(debouncer.Subscribe, {
+      get selector() {
+        return byPending()
+          ? (state: DebouncerState<() => void>) => state.isPending
+          : (state: DebouncerState<() => void>) => state.executionCount
+      },
+      children: (selected: () => unknown) => {
+        read = selected
+        return null
+      },
+    } as never)
+  })
+  expect(read()).toBe(0)
+  setByPending(true)
+  flush()
+  expect(read()).toBe(false)
   dispose()
 })

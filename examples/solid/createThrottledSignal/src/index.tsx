@@ -1,6 +1,6 @@
 import { render } from '@solidjs/web'
 import { createThrottledSignal } from '@tanstack/solid-pacer/throttler'
-import { createSignal, untrack } from 'solid-js'
+import { createSignal } from 'solid-js'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
@@ -8,7 +8,7 @@ function App1() {
   // higher-level hook that uses Solid.createSignal with the state setter automatically throttled
   // optionally, grab the throttler from the last index of the returned array
   const [throttledCount, setThrottledCount, throttler] = createThrottledSignal(
-    untrack(instantCount),
+    0,
     {
       wait: 1000,
       // get enabled() {
@@ -67,7 +67,7 @@ function App2() {
   // higher-level hook that uses Solid.createSignal with the state setter automatically throttled
   const [throttledSearch, setThrottledSearch, throttler] =
     createThrottledSignal(
-      untrack(instantSearch),
+      '',
       {
         wait: 1000,
         // get enabled() {
@@ -134,7 +134,7 @@ function App3() {
 
   // higher-level hook that uses Solid.createSignal with the state setter automatically throttled
   const [throttledValue, setThrottledValue, throttler] = createThrottledSignal(
-    untrack(currentValue),
+    50,
     {
       wait: 250,
     },

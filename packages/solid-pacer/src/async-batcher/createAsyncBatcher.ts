@@ -213,9 +213,13 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
     selector: (state: AsyncBatcherState<TValue>) => TSelected
     children: ((state: Accessor<TSelected>) => Element) | Element
   }) {
-    const selected = useSelector(asyncBatcher.store, props.selector, {
-      compare: shallow,
-    })
+    const selected = useSelector(
+      asyncBatcher.store,
+      (state) => props.selector(state),
+      {
+        compare: shallow,
+      },
+    )
 
     return typeof props.children === 'function'
       ? props.children(selected)
