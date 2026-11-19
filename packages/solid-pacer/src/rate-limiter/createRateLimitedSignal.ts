@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createPacedSignal } from '../utils/createPacedSignal'
 import { createRateLimiter } from './createRateLimiter'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type { Accessor, Setter } from 'solid-js'
@@ -105,23 +105,8 @@ export function createRateLimitedSignal<TValue, TSelected = {}>(
   Setter<TValue>,
   SolidRateLimiter<Setter<TValue>, TSelected>,
 ] {
-  const [rateLimitedValue, setRateLimitedValue] = createSignal<TValue>(
-    // Solid 2 reads a function passed to `createSignal` as a compute
-    // function, so a function value is wrapped to stay a plain value.
-    (typeof value === 'function' ? () => value : value) as any,
-    // Written from timers and from effects (the *Value primitives).
-    { ownedWrite: true },
+  return createPacedSignal(
+    () => value,
+    (set) => createRateLimiter(set, initialOptions, selector),
   )
-
-  const rateLimiter = createRateLimiter(
-    setRateLimitedValue,
-    initialOptions,
-    selector,
-  )
-
-  return [
-    rateLimitedValue,
-    rateLimiter.maybeExecute as Setter<TValue>,
-    rateLimiter,
-  ]
 }

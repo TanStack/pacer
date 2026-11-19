@@ -1,5 +1,6 @@
-import { createEffect, untrack } from 'solid-js'
-import { createThrottledSignal } from './createThrottledSignal'
+import { createEffect } from 'solid-js'
+import { createPacedSignal } from '../utils/createPacedSignal'
+import { createThrottler } from './createThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { Accessor, Setter } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
@@ -69,10 +70,9 @@ export function createThrottledValue<TValue, TSelected = {}>(
   >,
   selector?: (state: ThrottlerState<Setter<TValue>>) => TSelected,
 ): [Accessor<TValue>, SolidThrottler<Setter<TValue>, TSelected>] {
-  const [throttledValue, setThrottledValue, throttler] = createThrottledSignal(
-    untrack(value),
-    initialOptions,
-    selector,
+  const [throttledValue, setThrottledValue, throttler] = createPacedSignal(
+    value,
+    (set) => createThrottler(set, initialOptions, selector),
   )
 
   createEffect(value, (latest) => {

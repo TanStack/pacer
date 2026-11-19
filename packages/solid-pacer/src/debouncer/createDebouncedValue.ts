@@ -1,5 +1,6 @@
-import { createEffect, untrack } from 'solid-js'
-import { createDebouncedSignal } from './createDebouncedSignal'
+import { createEffect } from 'solid-js'
+import { createPacedSignal } from '../utils/createPacedSignal'
+import { createDebouncer } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { Accessor, Setter } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
@@ -74,10 +75,9 @@ export function createDebouncedValue<TValue, TSelected = {}>(
   >,
   selector?: (state: DebouncerState<Setter<TValue>>) => TSelected,
 ): [Accessor<TValue>, SolidDebouncer<Setter<TValue>, TSelected>] {
-  const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
-    untrack(value),
-    initialOptions,
-    selector,
+  const [debouncedValue, setDebouncedValue, debouncer] = createPacedSignal(
+    value,
+    (set) => createDebouncer(set, initialOptions, selector),
   )
 
   createEffect(value, (latest) => {

@@ -1,7 +1,6 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   AsyncDebouncerOptions,
@@ -191,55 +190,10 @@ export function createAsyncDebouncer<
   const mergedOptions = createPacerOptions<
     SolidAsyncDebouncerOptions<TFn, TSelected>
   >(options, () => useDefaultPacerOptions().asyncDebouncer)
-  const asyncDebouncer = untrack(
-    () => new AsyncDebouncer<TFn>(fn, mergedOptions()),
-  ) as unknown as SolidAsyncDebouncer<TFn, TSelected>
-
-  createRenderEffect(mergedOptions, (latest) => {
-    asyncDebouncer.setOptions(latest)
-  })
-
-  asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: AsyncDebouncerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => Element) | Element
-  }) {
-    const selected = useSelector(
-      asyncDebouncer.store,
-      (state) => props.selector(state),
-      {
-        compare: shallow,
-      },
-    )
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncDebouncer.store, selector, {
-    compare: shallow,
-  })
-
-  onCleanup(() => {
-    const onUnmount = asyncDebouncer.options.onUnmount
-    if (onUnmount) {
-      onUnmount(result)
-    } else {
-      asyncDebouncer.cancel()
-      asyncDebouncer.abort()
-    }
-  })
-
-  const result = {
-    ...asyncDebouncer,
-    get options() {
-      return asyncDebouncer.options
-    },
-    set options(value) {
-      asyncDebouncer.options = value
-    },
-    state,
-  } as SolidAsyncDebouncer<TFn, TSelected> // omit `store` in favor of `state`
-
-  return result
+  return createPacer(
+    (options) => new AsyncDebouncer<TFn>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.cancel(),
+  ) as SolidAsyncDebouncer<TFn, TSelected>
 }

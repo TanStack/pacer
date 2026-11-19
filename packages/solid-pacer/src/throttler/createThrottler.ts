@@ -1,7 +1,6 @@
 import { Throttler } from '@tanstack/pacer/throttler'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   ThrottlerOptions,
@@ -167,54 +166,10 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
   const mergedOptions = createPacerOptions<
     SolidThrottlerOptions<TFn, TSelected>
   >(options, () => useDefaultPacerOptions().throttler)
-  const asyncThrottler = untrack(
-    () => new Throttler<TFn>(fn, mergedOptions()),
-  ) as unknown as SolidThrottler<TFn, TSelected>
-
-  createRenderEffect(mergedOptions, (latest) => {
-    asyncThrottler.setOptions(latest)
-  })
-
-  asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: ThrottlerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => Element) | Element
-  }) {
-    const selected = useSelector(
-      asyncThrottler.store,
-      (state) => props.selector(state),
-      {
-        compare: shallow,
-      },
-    )
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncThrottler.store, selector, {
-    compare: shallow,
-  })
-
-  onCleanup(() => {
-    const onUnmount = asyncThrottler.options.onUnmount
-    if (onUnmount) {
-      onUnmount(result)
-    } else {
-      asyncThrottler.cancel()
-    }
-  })
-
-  const result = {
-    ...asyncThrottler,
-    get options() {
-      return asyncThrottler.options
-    },
-    set options(value) {
-      asyncThrottler.options = value
-    },
-    state,
-  } as SolidThrottler<TFn, TSelected> // omit `store` in favor of `state`
-
-  return result
+  return createPacer(
+    (options) => new Throttler<TFn>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.cancel(),
+  ) as SolidThrottler<TFn, TSelected>
 }

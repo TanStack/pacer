@@ -1,7 +1,6 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   DebouncerOptions,
@@ -166,54 +165,10 @@ export function createDebouncer<TFn extends AnyFunction, TSelected = {}>(
   const mergedOptions = createPacerOptions<
     SolidDebouncerOptions<TFn, TSelected>
   >(options, () => useDefaultPacerOptions().debouncer)
-  const asyncDebouncer = untrack(
-    () => new Debouncer<TFn>(fn, mergedOptions()),
-  ) as unknown as SolidDebouncer<TFn, TSelected>
-
-  createRenderEffect(mergedOptions, (latest) => {
-    asyncDebouncer.setOptions(latest)
-  })
-
-  asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: DebouncerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => Element) | Element
-  }) {
-    const selected = useSelector(
-      asyncDebouncer.store,
-      (state) => props.selector(state),
-      {
-        compare: shallow,
-      },
-    )
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncDebouncer.store, selector, {
-    compare: shallow,
-  })
-
-  onCleanup(() => {
-    const onUnmount = asyncDebouncer.options.onUnmount
-    if (onUnmount) {
-      onUnmount(result)
-    } else {
-      asyncDebouncer.cancel()
-    }
-  })
-
-  const result = {
-    ...asyncDebouncer,
-    get options() {
-      return asyncDebouncer.options
-    },
-    set options(value) {
-      asyncDebouncer.options = value
-    },
-    state,
-  } as SolidDebouncer<TFn, TSelected> // omit `store` in favor of `state`
-
-  return result
+  return createPacer(
+    (options) => new Debouncer<TFn>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.cancel(),
+  ) as SolidDebouncer<TFn, TSelected>
 }

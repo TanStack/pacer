@@ -1,7 +1,6 @@
 import { AsyncBatcher } from '@tanstack/pacer/async-batcher'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   AsyncBatcherOptions,
@@ -201,53 +200,10 @@ export function createAsyncBatcher<TValue, TSelected = {}>(
   const mergedOptions = createPacerOptions<
     SolidAsyncBatcherOptions<TValue, TSelected>
   >(options, () => useDefaultPacerOptions().asyncBatcher)
-  const asyncBatcher = untrack(
-    () => new AsyncBatcher<TValue>(fn, mergedOptions()),
-  ) as unknown as SolidAsyncBatcher<TValue, TSelected>
-
-  createRenderEffect(mergedOptions, (latest) => {
-    asyncBatcher.setOptions(latest)
-  })
-
-  asyncBatcher.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: AsyncBatcherState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => Element) | Element
-  }) {
-    const selected = useSelector(
-      asyncBatcher.store,
-      (state) => props.selector(state),
-      {
-        compare: shallow,
-      },
-    )
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncBatcher.store, selector, { compare: shallow })
-
-  onCleanup(() => {
-    const onUnmount = asyncBatcher.options.onUnmount
-    if (onUnmount) {
-      onUnmount(result)
-    } else {
-      asyncBatcher.cancel()
-      asyncBatcher.abort()
-    }
-  })
-
-  const result = {
-    ...asyncBatcher,
-    get options() {
-      return asyncBatcher.options
-    },
-    set options(value) {
-      asyncBatcher.options = value
-    },
-    state,
-  } as SolidAsyncBatcher<TValue, TSelected> // omit `store` in favor of `state`
-
-  return result
+  return createPacer(
+    (options) => new AsyncBatcher<TValue>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.cancel(),
+  ) as SolidAsyncBatcher<TValue, TSelected>
 }

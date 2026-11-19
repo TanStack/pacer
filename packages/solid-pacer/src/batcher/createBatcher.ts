@@ -1,7 +1,6 @@
 import { Batcher } from '@tanstack/pacer/batcher'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { Store } from '@tanstack/solid-store'
@@ -165,52 +164,10 @@ export function createBatcher<TValue, TSelected = {}>(
   const mergedOptions = createPacerOptions<
     SolidBatcherOptions<TValue, TSelected>
   >(options, () => useDefaultPacerOptions().batcher)
-  const batcher = untrack(
-    () => new Batcher(fn, mergedOptions()),
-  ) as unknown as SolidBatcher<TValue, TSelected>
-
-  createRenderEffect(mergedOptions, (latest) => {
-    batcher.setOptions(latest)
-  })
-
-  batcher.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: BatcherState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => Element) | Element
-  }) {
-    const selected = useSelector(
-      batcher.store,
-      (state) => props.selector(state),
-      {
-        compare: shallow,
-      },
-    )
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(batcher.store, selector, { compare: shallow })
-
-  onCleanup(() => {
-    const onUnmount = batcher.options.onUnmount
-    if (onUnmount) {
-      onUnmount(result)
-    } else {
-      batcher.cancel()
-    }
-  })
-
-  const result = {
-    ...batcher,
-    get options() {
-      return batcher.options
-    },
-    set options(value) {
-      batcher.options = value
-    },
-    state,
-  } as SolidBatcher<TValue, TSelected>
-
-  return result
+  return createPacer(
+    (options) => new Batcher(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.cancel(),
+  ) as SolidBatcher<TValue, TSelected>
 }

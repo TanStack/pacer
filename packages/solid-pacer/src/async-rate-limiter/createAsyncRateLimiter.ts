@@ -1,7 +1,6 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   AsyncRateLimiterOptions,
@@ -237,54 +236,10 @@ export function createAsyncRateLimiter<
   const mergedOptions = createPacerOptions<
     SolidAsyncRateLimiterOptions<TFn, TSelected>
   >(options, () => useDefaultPacerOptions().asyncRateLimiter)
-  const asyncRateLimiter = untrack(
-    () => new AsyncRateLimiter<TFn>(fn, mergedOptions()),
-  ) as unknown as SolidAsyncRateLimiter<TFn, TSelected>
-
-  createRenderEffect(mergedOptions, (latest) => {
-    asyncRateLimiter.setOptions(latest)
-  })
-
-  asyncRateLimiter.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: AsyncRateLimiterState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => Element) | Element
-  }) {
-    const selected = useSelector(
-      asyncRateLimiter.store,
-      (state) => props.selector(state),
-      {
-        compare: shallow,
-      },
-    )
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncRateLimiter.store, selector, {
-    compare: shallow,
-  })
-
-  onCleanup(() => {
-    const onUnmount = asyncRateLimiter.options.onUnmount
-    if (onUnmount) {
-      onUnmount(result)
-    } else {
-      asyncRateLimiter.abort()
-    }
-  })
-
-  const result = {
-    ...asyncRateLimiter,
-    get options() {
-      return asyncRateLimiter.options
-    },
-    set options(value) {
-      asyncRateLimiter.options = value
-    },
-    state,
-  } as SolidAsyncRateLimiter<TFn, TSelected>
-
-  return result
+  return createPacer(
+    (options) => new AsyncRateLimiter<TFn>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.abort(),
+  ) as SolidAsyncRateLimiter<TFn, TSelected>
 }

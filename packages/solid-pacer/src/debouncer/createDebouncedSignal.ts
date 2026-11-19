@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createPacedSignal } from '../utils/createPacedSignal'
 import { createDebouncer } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { Accessor, Setter } from 'solid-js'
@@ -87,15 +87,8 @@ export function createDebouncedSignal<TValue, TSelected = {}>(
   Setter<TValue>,
   SolidDebouncer<Setter<TValue>, TSelected>,
 ] {
-  const [debouncedValue, setDebouncedValue] = createSignal<TValue>(
-    // Solid 2 reads a function passed to `createSignal` as a compute
-    // function, so a function value is wrapped to stay a plain value.
-    (typeof value === 'function' ? () => value : value) as any,
-    // Written from timers and from effects (the *Value primitives).
-    { ownedWrite: true },
+  return createPacedSignal(
+    () => value,
+    (set) => createDebouncer(set, initialOptions, selector),
   )
-
-  const debouncer = createDebouncer(setDebouncedValue, initialOptions, selector)
-
-  return [debouncedValue, debouncer.maybeExecute as Setter<TValue>, debouncer]
 }

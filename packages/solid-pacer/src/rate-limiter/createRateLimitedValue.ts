@@ -1,5 +1,6 @@
-import { createEffect, untrack } from 'solid-js'
-import { createRateLimitedSignal } from './createRateLimitedSignal'
+import { createEffect } from 'solid-js'
+import { createPacedSignal } from '../utils/createPacedSignal'
+import { createRateLimiter } from './createRateLimiter'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type { Accessor, Setter } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
@@ -103,7 +104,9 @@ export function createRateLimitedValue<TValue, TSelected = {}>(
   selector?: (state: RateLimiterState) => TSelected,
 ): [Accessor<TValue>, SolidRateLimiter<Setter<TValue>, TSelected>] {
   const [rateLimitedValue, setRateLimitedValue, rateLimiter] =
-    createRateLimitedSignal(untrack(value), initialOptions, selector)
+    createPacedSignal(value, (set) =>
+      createRateLimiter(set, initialOptions, selector),
+    )
 
   createEffect(value, (latest) => {
     setRateLimitedValue(latest as any)

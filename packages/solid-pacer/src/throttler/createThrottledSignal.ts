@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createPacedSignal } from '../utils/createPacedSignal'
 import { createThrottler } from './createThrottler'
 import type { ThrottlerState } from '@tanstack/pacer/throttler'
 import type { Accessor, Setter } from 'solid-js'
@@ -76,13 +76,8 @@ export function createThrottledSignal<TValue, TSelected = {}>(
   Setter<TValue>,
   SolidThrottler<Setter<TValue>, TSelected>,
 ] {
-  const [throttledValue, setThrottledValue] = createSignal<TValue>(
-    // Solid 2 reads a function passed to `createSignal` as a compute
-    // function, so a function value is wrapped to stay a plain value.
-    (typeof value === 'function' ? () => value : value) as any,
-    // Written from timers and from effects (the *Value primitives).
-    { ownedWrite: true },
+  return createPacedSignal(
+    () => value,
+    (set) => createThrottler(set, initialOptions, selector),
   )
-  const throttler = createThrottler(setThrottledValue, initialOptions, selector)
-  return [throttledValue, throttler.maybeExecute as Setter<TValue>, throttler]
 }
