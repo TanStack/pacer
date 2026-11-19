@@ -1,7 +1,6 @@
 import { Throttler } from '@tanstack/pacer/throttler'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   ThrottlerOptions,
@@ -9,7 +8,7 @@ import type {
 } from '@tanstack/pacer/throttler'
 import type { AnyFunction } from '@tanstack/pacer/types'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
 
 export interface SolidThrottlerOptions<
@@ -45,8 +44,8 @@ export interface SolidThrottler<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: ThrottlerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the throttler state changes
    *
@@ -167,53 +166,10 @@ export function createThrottler<TFn extends AnyFunction, TSelected = {}>(
   const mergedOptions = createPacerOptions<
     SolidThrottlerOptions<TFn, TSelected>
   >(options, () => useDefaultPacerOptions().throttler)
-  const asyncThrottler = untrack(
-    () => new Throttler<TFn>(fn, mergedOptions()),
-  ) as unknown as SolidThrottler<TFn, TSelected>
-
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => asyncThrottler.setOptions(latest))
-  })
-
-  asyncThrottler.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: ThrottlerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) {
-    const selected = useSelector(asyncThrottler.store, props.selector, {
-      compare: shallow,
-    })
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncThrottler.store, selector, {
-    compare: shallow,
-  })
-
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = asyncThrottler.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        asyncThrottler.cancel()
-      }
-    })
-  })
-
-  const result = {
-    ...asyncThrottler,
-    get options() {
-      return asyncThrottler.options
-    },
-    set options(value) {
-      asyncThrottler.options = value
-    },
-    state,
-  } as SolidThrottler<TFn, TSelected> // omit `store` in favor of `state`
-
-  return result
+  return createPacer(
+    (options) => new Throttler<TFn>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.cancel(),
+  ) as SolidThrottler<TFn, TSelected>
 }

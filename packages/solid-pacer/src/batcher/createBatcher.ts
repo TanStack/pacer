@@ -1,11 +1,10 @@
 import { Batcher } from '@tanstack/pacer/batcher'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type { BatcherOptions, BatcherState } from '@tanstack/pacer/batcher'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
 
 export interface SolidBatcherOptions<
@@ -41,8 +40,8 @@ export interface SolidBatcher<TValue, TSelected = {}> extends Omit<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: BatcherState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the batcher state changes
    *
@@ -165,51 +164,10 @@ export function createBatcher<TValue, TSelected = {}>(
   const mergedOptions = createPacerOptions<
     SolidBatcherOptions<TValue, TSelected>
   >(options, () => useDefaultPacerOptions().batcher)
-  const batcher = untrack(
-    () => new Batcher(fn, mergedOptions()),
-  ) as unknown as SolidBatcher<TValue, TSelected>
-
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => batcher.setOptions(latest))
-  })
-
-  batcher.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: BatcherState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) {
-    const selected = useSelector(batcher.store, props.selector, {
-      compare: shallow,
-    })
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(batcher.store, selector, { compare: shallow })
-
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = batcher.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        batcher.cancel()
-      }
-    })
-  })
-
-  const result = {
-    ...batcher,
-    get options() {
-      return batcher.options
-    },
-    set options(value) {
-      batcher.options = value
-    },
-    state,
-  } as SolidBatcher<TValue, TSelected>
-
-  return result
+  return createPacer(
+    (options) => new Batcher(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.cancel(),
+  ) as SolidBatcher<TValue, TSelected>
 }

@@ -1,11 +1,10 @@
 import { Queuer } from '@tanstack/pacer/queuer'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type { QueuerOptions, QueuerState } from '@tanstack/pacer/queuer'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
 
 export interface SolidQueuerOptions<
@@ -41,8 +40,8 @@ export interface SolidQueuer<TValue, TSelected = {}> extends Omit<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: QueuerState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the queuer state changes
    *
@@ -166,51 +165,10 @@ export function createQueuer<TValue, TSelected = {}>(
   const mergedOptions = createPacerOptions<
     SolidQueuerOptions<TValue, TSelected>
   >(options, () => useDefaultPacerOptions().queuer)
-  const queuer = untrack(
-    () => new Queuer(fn, mergedOptions()),
-  ) as unknown as SolidQueuer<TValue, TSelected>
-
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => queuer.setOptions(latest))
-  })
-
-  queuer.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: QueuerState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) {
-    const selected = useSelector(queuer.store, props.selector, {
-      compare: shallow,
-    })
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(queuer.store, selector, { compare: shallow })
-
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = queuer.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        queuer.stop()
-      }
-    })
-  })
-
-  const result = {
-    ...queuer,
-    get options() {
-      return queuer.options
-    },
-    set options(value) {
-      queuer.options = value
-    },
-    state,
-  } as SolidQueuer<TValue, TSelected> // omit `store` in favor of `state`
-
-  return result
+  return createPacer(
+    (options) => new Queuer(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.stop(),
+  ) as SolidQueuer<TValue, TSelected>
 }

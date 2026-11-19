@@ -1,5 +1,11 @@
 import { Debouncer } from '@tanstack/pacer/debouncer'
-import { createComponent, createRoot, createSignal } from 'solid-js'
+import {
+  createComponent,
+  createRenderEffect,
+  createRoot,
+  createSignal,
+  flush,
+} from 'solid-js'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { createAsyncBatcher } from '../src/async-batcher/createAsyncBatcher'
 import { createAsyncDebouncer } from '../src/async-debouncer/createAsyncDebouncer'
@@ -12,6 +18,7 @@ import { PacerProvider } from '../src/provider/PacerProvider'
 import { createQueuer } from '../src/queuer/createQueuer'
 import { createRateLimiter } from '../src/rate-limiter/createRateLimiter'
 import { createThrottler } from '../src/throttler/createThrottler'
+import type { DebouncerState } from '@tanstack/pacer/debouncer'
 
 it('updates accessor options while retaining the limiter and store', () => {
   let dispose = () => {}
@@ -30,11 +37,24 @@ it('updates accessor options while retaining the limiter and store', () => {
   expect(limiter.maybeExecute()).toBe(true)
   expect(limiter.maybeExecute()).toBe(false)
   setLimit(2)
+  flush()
   expect(limiter.store).toBe(store)
   expect(limiter.options.limit).toBe(2)
   expect(limiter.maybeExecute()).toBe(true)
   dispose()
 })
+
+// Observes the rendered result the way a renderer would, so children run
+// and their computations stay live.
+const mount = (element: unknown) =>
+  createRenderEffect(
+    () => {
+      let resolved = element
+      while (typeof resolved === 'function') resolved = resolved()
+      return resolved
+    },
+    () => {},
+  )
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
@@ -138,6 +158,7 @@ for (const entry of cases) {
       const initial = utility
       expect(utility.options).toMatchObject({ wait: 1, limit: 1, maxSize: 1 })
       update(2)
+      flush()
       expect(utility).toBe(initial)
       expect(utility.store).toBe(store)
       expect(utility.options).toMatchObject({ wait: 2, limit: 2, maxSize: 2 })
@@ -165,6 +186,7 @@ it('keeps object options snapshots and cancels pending work on disposal', () => 
   })
   dispose()
   vi.advanceTimersByTime(100)
+  flush()
   expect(callback).not.toHaveBeenCalled()
 })
 
@@ -193,8 +215,11 @@ it.each(['factory', 'getters'] as const)(
     expect(Object.getPrototypeOf(utility)).toBe(Object.prototype)
     expect(utility).not.toBeInstanceOf(Debouncer)
     vi.advanceTimersByTime(50)
+    flush()
     update(200)
+    flush()
     vi.advanceTimersByTime(50)
+    flush()
     expect(callback).toHaveBeenCalledExactlyOnceWith('value')
     dispose()
   },
@@ -224,8 +249,10 @@ it.each(['factory', 'getters'] as const)(
       utility.maybeExecute()
     })
     removeCallback()
+    flush()
     dispose()
     vi.advanceTimersByTime(100)
+    flush()
     expect(callback).not.toHaveBeenCalled()
     expect(onUnmount).not.toHaveBeenCalled()
   },
@@ -239,19 +266,21 @@ it('merges provider defaults on each factory update', () => {
     dispose = cleanup
     const [wait, setWait] = createSignal(100)
     update = setWait
-    createComponent(PacerProvider, {
-      defaultOptions: { debouncer: { leading: true, trailing: false } },
-      get children() {
-        utility = createDebouncer(
-          () => {},
-          () => ({
-            wait: wait(),
-            ...(wait() === 100 ? { leading: false } : {}),
-          }),
-        )
-        return null
-      },
-    })
+    mount(
+      createComponent(PacerProvider, {
+        defaultOptions: { debouncer: { leading: true, trailing: false } },
+        get children() {
+          utility = createDebouncer(
+            () => {},
+            () => ({
+              wait: wait(),
+              ...(wait() === 100 ? { leading: false } : {}),
+            }),
+          )
+          return null
+        },
+      }),
+    )
   })
   expect(utility.options).toMatchObject({
     wait: 100,
@@ -259,10 +288,37 @@ it('merges provider defaults on each factory update', () => {
     trailing: false,
   })
   update(200)
+  flush()
   expect(utility.options).toMatchObject({
     wait: 200,
     leading: true,
     trailing: false,
   })
+  dispose()
+})
+
+it('follows a Subscribe selector prop that changes', () => {
+  let dispose = () => {}
+  let read = () => undefined as unknown
+  const [byPending, setByPending] = createSignal(false)
+  createRoot((cleanup) => {
+    dispose = cleanup
+    const debouncer = createDebouncer(() => {}, { wait: 100 })
+    createComponent(debouncer.Subscribe, {
+      get selector() {
+        return byPending()
+          ? (state: DebouncerState<() => void>) => state.isPending
+          : (state: DebouncerState<() => void>) => state.executionCount
+      },
+      children: (selected: () => unknown) => {
+        read = selected
+        return null
+      },
+    } as never)
+  })
+  expect(read()).toBe(0)
+  setByPending(true)
+  flush()
+  expect(read()).toBe(false)
   dispose()
 })

@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createPacedSignal } from '../utils/createPacedSignal'
 import { createDebouncer } from './createDebouncer'
 import type { DebouncerState } from '@tanstack/pacer/debouncer'
 import type { Accessor, Setter } from 'solid-js'
@@ -87,9 +87,8 @@ export function createDebouncedSignal<TValue, TSelected = {}>(
   Setter<TValue>,
   SolidDebouncer<Setter<TValue>, TSelected>,
 ] {
-  const [debouncedValue, setDebouncedValue] = createSignal<TValue>(value)
-
-  const debouncer = createDebouncer(setDebouncedValue, initialOptions, selector)
-
-  return [debouncedValue, debouncer.maybeExecute as Setter<TValue>, debouncer]
+  return createPacedSignal(
+    () => value,
+    (set) => createDebouncer(set, initialOptions, selector),
+  )
 }

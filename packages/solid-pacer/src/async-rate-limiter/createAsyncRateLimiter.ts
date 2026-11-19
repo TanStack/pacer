@@ -1,7 +1,6 @@
 import { AsyncRateLimiter } from '@tanstack/pacer/async-rate-limiter'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   AsyncRateLimiterOptions,
@@ -9,7 +8,7 @@ import type {
 } from '@tanstack/pacer/async-rate-limiter'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
 
 export interface SolidAsyncRateLimiterOptions<
@@ -48,8 +47,8 @@ export interface SolidAsyncRateLimiter<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: AsyncRateLimiterState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the rate limiter state changes
    *
@@ -237,53 +236,10 @@ export function createAsyncRateLimiter<
   const mergedOptions = createPacerOptions<
     SolidAsyncRateLimiterOptions<TFn, TSelected>
   >(options, () => useDefaultPacerOptions().asyncRateLimiter)
-  const asyncRateLimiter = untrack(
-    () => new AsyncRateLimiter<TFn>(fn, mergedOptions()),
-  ) as unknown as SolidAsyncRateLimiter<TFn, TSelected>
-
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => asyncRateLimiter.setOptions(latest))
-  })
-
-  asyncRateLimiter.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: AsyncRateLimiterState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) {
-    const selected = useSelector(asyncRateLimiter.store, props.selector, {
-      compare: shallow,
-    })
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncRateLimiter.store, selector, {
-    compare: shallow,
-  })
-
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = asyncRateLimiter.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        asyncRateLimiter.abort()
-      }
-    })
-  })
-
-  const result = {
-    ...asyncRateLimiter,
-    get options() {
-      return asyncRateLimiter.options
-    },
-    set options(value) {
-      asyncRateLimiter.options = value
-    },
-    state,
-  } as SolidAsyncRateLimiter<TFn, TSelected>
-
-  return result
+  return createPacer(
+    (options) => new AsyncRateLimiter<TFn>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.abort(),
+  ) as SolidAsyncRateLimiter<TFn, TSelected>
 }

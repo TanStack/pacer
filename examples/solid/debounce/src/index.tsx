@@ -1,6 +1,6 @@
+import { render } from '@solidjs/web'
 import { debounce } from '@tanstack/solid-pacer/debouncer'
 import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
 
 function App1() {
   // Use your state management library of choice
