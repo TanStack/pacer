@@ -261,6 +261,24 @@ describe('Debouncer', () => {
       expect(mockFn).toHaveBeenLastCalledWith('second')
     })
 
+    it('should not re-execute stale args after a single leading execution', () => {
+      const mockFn = vi.fn()
+      const debouncer = new Debouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      debouncer.maybeExecute('only-call')
+      expect(mockFn).toBeCalledTimes(1)
+      vi.advanceTimersByTime(1000)
+
+      // The single call was fully handled by the leading edge, so there is
+      // nothing pending for flush to execute
+      debouncer.flush()
+      expect(mockFn).toBeCalledTimes(1)
+    })
+
     it('should not work with leading-only execution because there would be no trailing execution to flush', () => {
       const mockFn = vi.fn()
       const debouncer = new Debouncer(mockFn, {
@@ -478,6 +496,27 @@ describe('Debouncer', () => {
 
       vi.advanceTimersByTime(100)
       expect(debouncer.store.state.isPending).toBe(false)
+    })
+
+    it('should not be pending after a single leading-only execution', () => {
+      const mockFn = vi.fn()
+      const debouncer = new Debouncer(mockFn, {
+        wait: 1000,
+        leading: true,
+        trailing: true,
+      })
+
+      // A single call executes on the leading edge; no trailing execution
+      // is owed, so the debouncer should not report itself as pending
+      debouncer.maybeExecute('only-call')
+      expect(mockFn).toBeCalledTimes(1)
+      expect(debouncer.store.state.isPending).toBe(false)
+      expect(debouncer.store.state.lastArgs).toBeUndefined()
+
+      vi.advanceTimersByTime(1000)
+      expect(mockFn).toBeCalledTimes(1)
+      expect(debouncer.store.state.isPending).toBe(false)
+      expect(debouncer.store.state.status).toBe('idle')
     })
 
     it('should not be pending when leading and trailing are both false', () => {
