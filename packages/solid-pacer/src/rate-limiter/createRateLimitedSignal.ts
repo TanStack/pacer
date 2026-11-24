@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createPacedSignal } from '../utils/createPacedSignal'
 import { createRateLimiter } from './createRateLimiter'
 import type { RateLimiterState } from '@tanstack/pacer/rate-limiter'
 import type { Accessor, Setter } from 'solid-js'
@@ -105,17 +105,8 @@ export function createRateLimitedSignal<TValue, TSelected = {}>(
   Setter<TValue>,
   SolidRateLimiter<Setter<TValue>, TSelected>,
 ] {
-  const [rateLimitedValue, setRateLimitedValue] = createSignal<TValue>(value)
-
-  const rateLimiter = createRateLimiter(
-    setRateLimitedValue,
-    initialOptions,
-    selector,
+  return createPacedSignal(
+    () => value,
+    (set) => createRateLimiter(set, initialOptions, selector),
   )
-
-  return [
-    rateLimitedValue,
-    rateLimiter.maybeExecute as Setter<TValue>,
-    rateLimiter,
-  ]
 }

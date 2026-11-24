@@ -1,7 +1,7 @@
+import { render } from '@solidjs/web'
 import { createAsyncBatcher } from '@tanstack/solid-pacer/async-batcher'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
 
 const fakeProcessingTime = 1000
 

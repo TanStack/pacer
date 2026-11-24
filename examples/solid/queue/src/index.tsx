@@ -1,8 +1,6 @@
-import { TanStackDevtools } from '@tanstack/solid-devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/solid-pacer-devtools'
+import { render } from '@solidjs/web'
 import { queue } from '@tanstack/solid-pacer/queuer'
 import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
 
 function App1() {
   const [queueItems, setQueueItems] = createSignal<Array<number>>([])
@@ -213,12 +211,6 @@ render(
       <App2 />
       <hr />
       <App3 />
-      <TanStackDevtools
-        eventBusConfig={{
-          debug: false,
-        }}
-        plugins={[pacerDevtoolsPlugin()]}
-      />
     </div>
   ),
   document.getElementById('root')!,

@@ -1,14 +1,13 @@
 import { AsyncQueuer } from '@tanstack/pacer/async-queuer'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   AsyncQueuerOptions,
   AsyncQueuerState,
 } from '@tanstack/pacer/async-queuer'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
 
 export interface SolidAsyncQueuerOptions<
@@ -47,8 +46,8 @@ export interface SolidAsyncQueuer<TValue, TSelected = {}> extends Omit<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: AsyncQueuerState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the queuer state changes
    *
@@ -195,52 +194,10 @@ export function createAsyncQueuer<TValue, TSelected = {}>(
   const mergedOptions = createPacerOptions<
     SolidAsyncQueuerOptions<TValue, TSelected>
   >(options, () => useDefaultPacerOptions().asyncQueuer)
-  const asyncQueuer = untrack(
-    () => new AsyncQueuer<TValue>(fn, mergedOptions()),
-  ) as unknown as SolidAsyncQueuer<TValue, TSelected>
-
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => asyncQueuer.setOptions(latest))
-  })
-
-  asyncQueuer.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: AsyncQueuerState<TValue>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) {
-    const selected = useSelector(asyncQueuer.store, props.selector, {
-      compare: shallow,
-    })
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncQueuer.store, selector, { compare: shallow })
-
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = asyncQueuer.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        asyncQueuer.stop()
-        asyncQueuer.abort()
-      }
-    })
-  })
-
-  const result = {
-    ...asyncQueuer,
-    get options() {
-      return asyncQueuer.options
-    },
-    set options(value) {
-      asyncQueuer.options = value
-    },
-    state,
-  } as SolidAsyncQueuer<TValue, TSelected> // omit `store` in favor of `state`
-
-  return result
+  return createPacer(
+    (options) => new AsyncQueuer<TValue>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.stop(),
+  ) as SolidAsyncQueuer<TValue, TSelected>
 }

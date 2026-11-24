@@ -10,14 +10,13 @@
     "test:e2e": "PLAYWRIGHT_TEST_DIR=$PWD/tests/e2e playwright test --config ../../../playwright.config.ts"
   },
   "dependencies": {
-    "@tanstack/solid-devtools": "0.8.14",
+    "@solidjs/web": "^2.0.0",
     "@tanstack/solid-pacer": "^0.24.0",
-    "@tanstack/solid-pacer-devtools": "0.8.1",
-    "solid-js": "^1.9.19"
+    "solid-js": "^2.0.0"
   },
   "devDependencies": {
-    "vite": "^8.3.8",
-    "vite-plugin-solid": "^2.11.16"
+    "@solidjs/vite-plugin": "^3.0.0",
+    "vite": "^8.3.8"
   },
   "browserslist": {
     "production": [

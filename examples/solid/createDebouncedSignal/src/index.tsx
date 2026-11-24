@@ -1,6 +1,6 @@
+import { render } from '@solidjs/web'
 import { createDebouncedSignal } from '@tanstack/solid-pacer/debouncer'
-import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
+import { createSignal, flush } from 'solid-js'
 
 function App1() {
   const [instantCount, setInstantCount] = createSignal(0)
@@ -8,7 +8,7 @@ function App1() {
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
   // optionally, grab the debouncer from the last index of the returned array
   const [debouncedCount, setDebouncedCount, debouncer] = createDebouncedSignal(
-    instantCount(),
+    0,
     {
       wait: 500,
       // get enabled() {
@@ -53,7 +53,7 @@ function App1() {
             )}
           </debouncer.Subscribe>
           <tr>
-            <td colSpan={2}>
+            <td colspan={2}>
               <hr />
             </td>
           </tr>
@@ -80,7 +80,7 @@ function App2() {
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
   const [debouncedSearch, setDebouncedSearch, debouncer] =
     createDebouncedSignal(
-      instantSearch(),
+      '',
       {
         wait: 500,
         get enabled() {
@@ -97,6 +97,8 @@ function App2() {
     const target = e.target as HTMLInputElement
     const newValue = target.value
     setInstantSearch(newValue)
+    // Apply the new value to reactive options (such as `enabled`) first.
+    flush()
     setDebouncedSearch(newValue)
   }
 
@@ -135,7 +137,7 @@ function App2() {
             )}
           </debouncer.Subscribe>
           <tr>
-            <td colSpan={2}>
+            <td colspan={2}>
               <hr />
             </td>
           </tr>
@@ -159,7 +161,7 @@ function App3() {
 
   // higher-level hook that uses Solid.createSignal with the state setter automatically debounced
   const [debouncedValue, setDebouncedValue, debouncer] = createDebouncedSignal(
-    currentValue(),
+    50,
     {
       wait: 250,
     },

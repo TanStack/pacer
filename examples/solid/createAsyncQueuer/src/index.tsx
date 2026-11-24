@@ -1,7 +1,7 @@
+import { render } from '@solidjs/web'
 import { createAsyncQueuer } from '@tanstack/solid-pacer/async-queuer'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { For, createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
 
 const fakeWaitTime = 500
 

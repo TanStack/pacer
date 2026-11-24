@@ -1,6 +1,6 @@
+import { render } from '@solidjs/web'
 import { asyncDebounce } from '@tanstack/solid-pacer/async-debouncer'
 import { For, createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
 
 function SearchApp() {
   const [searchText, setSearchText] = createSignal('')

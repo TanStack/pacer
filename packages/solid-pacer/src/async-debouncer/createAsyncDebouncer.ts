@@ -1,7 +1,6 @@
 import { AsyncDebouncer } from '@tanstack/pacer/async-debouncer'
-import { shallow, useSelector } from '@tanstack/solid-store'
-import { createEffect, createRenderEffect, onCleanup, untrack } from 'solid-js'
 import { useDefaultPacerOptions } from '../provider/PacerProvider'
+import { createPacer } from '../utils/createPacer'
 import { createPacerOptions } from '../utils/createPacerOptions'
 import type {
   AsyncDebouncerOptions,
@@ -9,7 +8,7 @@ import type {
 } from '@tanstack/pacer/async-debouncer'
 import type { AnyAsyncFunction } from '@tanstack/pacer/types'
 import type { Store } from '@tanstack/solid-store'
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor, Element } from 'solid-js'
 import type { SolidPacerOptions } from '../types'
 
 export interface SolidAsyncDebouncerOptions<
@@ -48,8 +47,8 @@ export interface SolidAsyncDebouncer<
    */
   Subscribe: <TSelected>(props: {
     selector: (state: AsyncDebouncerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) => JSX.Element
+    children: ((state: Accessor<TSelected>) => Element) | Element
+  }) => Element
   /**
    * Reactive state that will be updated when the debouncer state changes
    *
@@ -191,54 +190,10 @@ export function createAsyncDebouncer<
   const mergedOptions = createPacerOptions<
     SolidAsyncDebouncerOptions<TFn, TSelected>
   >(options, () => useDefaultPacerOptions().asyncDebouncer)
-  const asyncDebouncer = untrack(
-    () => new AsyncDebouncer<TFn>(fn, mergedOptions()),
-  ) as unknown as SolidAsyncDebouncer<TFn, TSelected>
-
-  createRenderEffect(() => {
-    const latest = mergedOptions()
-    untrack(() => asyncDebouncer.setOptions(latest))
-  })
-
-  asyncDebouncer.Subscribe = function Subscribe<TSelected>(props: {
-    selector: (state: AsyncDebouncerState<TFn>) => TSelected
-    children: ((state: Accessor<TSelected>) => JSX.Element) | JSX.Element
-  }) {
-    const selected = useSelector(asyncDebouncer.store, props.selector, {
-      compare: shallow,
-    })
-
-    return typeof props.children === 'function'
-      ? props.children(selected)
-      : props.children
-  }
-
-  const state = useSelector(asyncDebouncer.store, selector, {
-    compare: shallow,
-  })
-
-  createEffect(() => {
-    onCleanup(() => {
-      const onUnmount = asyncDebouncer.options.onUnmount
-      if (onUnmount) {
-        onUnmount(result)
-      } else {
-        asyncDebouncer.cancel()
-        asyncDebouncer.abort()
-      }
-    })
-  })
-
-  const result = {
-    ...asyncDebouncer,
-    get options() {
-      return asyncDebouncer.options
-    },
-    set options(value) {
-      asyncDebouncer.options = value
-    },
-    state,
-  } as SolidAsyncDebouncer<TFn, TSelected> // omit `store` in favor of `state`
-
-  return result
+  return createPacer(
+    (options) => new AsyncDebouncer<TFn>(fn, options),
+    mergedOptions,
+    selector,
+    (instance) => instance.cancel(),
+  ) as SolidAsyncDebouncer<TFn, TSelected>
 }

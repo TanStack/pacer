@@ -135,5 +135,5 @@ export function createQueuedSignal<
 ] {
   const queue = createQueuer(fn, options, selector)
 
-  return [() => queue.state().items, queue.addItem, queue]
+  return [() => queue.state().items, (...args) => queue.addItem(...args), queue]
 }

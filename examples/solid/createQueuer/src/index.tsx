@@ -1,9 +1,7 @@
-import { TanStackDevtools } from '@tanstack/solid-devtools'
-import { pacerDevtoolsPlugin } from '@tanstack/solid-pacer-devtools'
+import { render } from '@solidjs/web'
 import { PacerProvider } from '@tanstack/solid-pacer/provider'
 import { createQueuer } from '@tanstack/solid-pacer/queuer'
 import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
 
 function App1() {
   // The function that we will be queuing
@@ -117,7 +115,9 @@ function App1() {
 
 function App2() {
   const [currentValue, setCurrentValue] = createSignal(50)
-  const [queuedValue, setQueuedValue] = createSignal(50)
+  // The queuer can process its initial items while this component is
+  // being created, so this signal allows writes from an owned scope.
+  const [queuedValue, setQueuedValue] = createSignal(50, { ownedWrite: true })
   const [submittedCount, setSubmittedCount] = createSignal(1)
 
   function processItem(item: number) {
@@ -129,7 +129,7 @@ function App2() {
     {
       key: 'Range Queue',
       maxSize: 100,
-      initialItems: [currentValue()],
+      initialItems: [50],
       wait: 100,
     },
     // Alternative to queuer.Subscribe: pass a selector as 3rd arg to track state and subscribe to updates
@@ -257,12 +257,6 @@ render(
         <hr />
         <App2 />
       </div>
-      <TanStackDevtools
-        eventBusConfig={{
-          debug: false,
-        }}
-        plugins={[pacerDevtoolsPlugin()]}
-      />
     </PacerProvider>
   ),
   document.getElementById('root')!,
