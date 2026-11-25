@@ -714,6 +714,36 @@ describe('AsyncQueuer', () => {
       expect(results).toContain('third')
     })
 
+    it('should fill a free concurrency slot when an item is added while another runs', async () => {
+      const started: Array<string> = []
+      let finishFirst!: () => void
+      const firstDone = new Promise<void>((resolve) => {
+        finishFirst = resolve
+      })
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          started.push(item)
+          if (item === 'first') {
+            await firstDone
+          }
+          return item
+        },
+        { concurrency: 2, started: false },
+      )
+
+      asyncQueuer.addItem('first')
+      asyncQueuer.start()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(started).toEqual(['first'])
+
+      asyncQueuer.addItem('second')
+      await vi.advanceTimersByTimeAsync(0)
+      expect(started).toEqual(['first', 'second'])
+
+      finishFirst()
+      await asyncQueuer.flush()
+    })
+
     it('should process items sequentially if concurrency is 1', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(

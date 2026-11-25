@@ -561,7 +561,12 @@ export class AsyncQueuer<TValue> {
       this.options.onItemsChange?.(this)
     }
 
-    if (this.store.state.isRunning && !this.store.state.pendingTick) {
+    if (
+      this.store.state.isRunning &&
+      (!this.store.state.pendingTick ||
+        (this.#getWait() === 0 &&
+          this.store.state.activeItems.length < this.#getConcurrency()))
+    ) {
       this.#tick()
     }
 
