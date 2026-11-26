@@ -714,6 +714,36 @@ describe('AsyncQueuer', () => {
       expect(results).toContain('third')
     })
 
+    it('should fill a free concurrency slot when an item is added while another runs', async () => {
+      const started: Array<string> = []
+      let finishFirst!: () => void
+      const firstDone = new Promise<void>((resolve) => {
+        finishFirst = resolve
+      })
+      const asyncQueuer = new AsyncQueuer<string>(
+        async (item) => {
+          started.push(item)
+          if (item === 'first') {
+            await firstDone
+          }
+          return item
+        },
+        { concurrency: 2, started: false },
+      )
+
+      asyncQueuer.addItem('first')
+      asyncQueuer.start()
+      await vi.advanceTimersByTimeAsync(0)
+      expect(started).toEqual(['first'])
+
+      asyncQueuer.addItem('second')
+      await vi.advanceTimersByTimeAsync(0)
+      expect(started).toEqual(['first', 'second'])
+
+      finishFirst()
+      await asyncQueuer.flush()
+    })
+
     it('should process items sequentially if concurrency is 1', async () => {
       const results: Array<string> = []
       const asyncQueuer = new AsyncQueuer<string>(
@@ -1621,6 +1651,37 @@ describe('AsyncQueuer', () => {
       resolvers.shift()!()
       await vi.advanceTimersByTimeAsync(0)
       expect(asyncQueuer.store.state.isExecuting).toBe(false)
+    })
+
+    it('should not overwrite active items when a task queues items synchronously', async () => {
+      const started: Array<string> = []
+      const resolvers = new Map<string, () => void>()
+      const queuer = new AsyncQueuer<string>(
+        (item) => {
+          started.push(item)
+          if (item === 'a') {
+            queuer.addItem('b')
+            queuer.addItem('c')
+          }
+          return new Promise<string>((resolve) => {
+            resolvers.set(item, () => resolve(item))
+          })
+        },
+        { concurrency: 2, started: false },
+      )
+
+      queuer.addItem('a')
+      queuer.start()
+      await vi.advanceTimersByTimeAsync(0)
+
+      expect(started).toEqual(['a', 'b'])
+      expect(queuer.peekActiveItems()).toEqual(['a', 'b'])
+      expect(queuer.store.state.items).toEqual(['c'])
+
+      for (const resolve of resolvers.values()) {
+        resolve()
+      }
+      await vi.advanceTimersByTimeAsync(0)
     })
 
     it('should process duplicate falsy items with concurrency > 1', async () => {
