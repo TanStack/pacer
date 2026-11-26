@@ -1653,6 +1653,37 @@ describe('AsyncQueuer', () => {
       expect(asyncQueuer.store.state.isExecuting).toBe(false)
     })
 
+    it('should not overwrite active items when a task queues items synchronously', async () => {
+      const started: Array<string> = []
+      const resolvers = new Map<string, () => void>()
+      const queuer = new AsyncQueuer<string>(
+        (item) => {
+          started.push(item)
+          if (item === 'a') {
+            queuer.addItem('b')
+            queuer.addItem('c')
+          }
+          return new Promise<string>((resolve) => {
+            resolvers.set(item, () => resolve(item))
+          })
+        },
+        { concurrency: 2, started: false },
+      )
+
+      queuer.addItem('a')
+      queuer.start()
+      await vi.advanceTimersByTimeAsync(0)
+
+      expect(started).toEqual(['a', 'b'])
+      expect(queuer.peekActiveItems()).toEqual(['a', 'b'])
+      expect(queuer.store.state.items).toEqual(['c'])
+
+      for (const resolve of resolvers.values()) {
+        resolve()
+      }
+      await vi.advanceTimersByTimeAsync(0)
+    })
+
     it('should process duplicate falsy items with concurrency > 1', async () => {
       const processed: Array<any> = []
       const asyncQueuer = new AsyncQueuer<any>(

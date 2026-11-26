@@ -432,18 +432,16 @@ export class AsyncQueuer<TValue> {
 
     // Process items concurrently up to the concurrency limit
     let scheduledAsyncWork = false
-    const activeItems = [...this.store.state.activeItems]
     while (
-      activeItems.length < this.#getConcurrency() &&
+      this.store.state.activeItems.length < this.#getConcurrency() &&
       this.store.state.items.length > 0
     ) {
       const nextItem = this.peekNextItem()
       if (nextItem === undefined) {
         break
       }
-      activeItems.push(nextItem)
       this.#setState({
-        activeItems: [...activeItems],
+        activeItems: [...this.store.state.activeItems, nextItem],
       })
       scheduledAsyncWork = true
       ;(async () => {
